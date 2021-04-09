@@ -1,0 +1,250 @@
+
+<div role="main" class="container pb-100">
+
+
+
+
+    <div class="row mt-4">
+
+
+        <!--Gesetzentwurf-->
+
+
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <!--<h6 class="text-primary text-uppercase text-break mb-5">Gesetzentwurf</h6>-->
+                    <p id="parlamentText">Parlament: ???</p>
+                    <p id="beitragsartText">Beitragsart: ???</p>
+                    <div class="form-group">
+                        <label for="inputtitle">Titel</label>
+                        <input type="text" class="form-control mr-3" id="inputtitle">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="inputabstract">Zusammenfassung</label>
+                        <!--<textarea rows="5" cols="60" name="text" placeholder="Enter text"></textarea>-->
+                        <textarea rows="5" cols="60" name="text" class="form-control mr-3" id="inputabstract"></textarea>
+                    </div>
+
+
+
+
+                    <div id="nurBeiGesetzentwurf">
+                        <p>Im Fall eines Gesetzentwurfs:</p>
+
+
+                        <!--
+                        <div class="form-group">
+                            <label for="inputParty">Partei</label>
+                            <input type="text" class="form-control mr-3" id="inputParty">
+                        </div>-->
+
+                        <form class="form-inline">
+                            <label class="mr-2" for="selectPartyPrev">Partei</label>
+
+                            <select id="selectPartyPrev">
+                                <option></option>
+                            </select>
+                        </form>
+
+
+                            <div class="form-group">
+                            <label for="inputType">Typ</label>
+                            <input type="text" class="form-control mr-3" id="inputType">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputVorgang">Vorgang</label>
+                            <input type="text" class="form-control mr-3" id="inputVorgang">
+                        </div>
+
+                        <form class="form-inline">
+                            <label class="mr-2" for="inputDatumVorgelegt">Datum vorgelegt</label>
+                            <input type="text" class="form-control mb-2" id="inputDatumVorgelegt" placeholder="TT.MM.JJJJ" style="width: 12rem">
+                        </form>
+
+                        <form class="form-inline">
+                            <label class="mr-2" for="inputDatumAbstimm">Datum Abstimmung</label>
+                            <input type="text" class="form-control mb-2" id="inputDatumAbstimm" placeholder="TT.MM.JJJJ" style="width: 12rem">
+                        </form>
+
+
+
+                        <div id="reprVotesContainer">
+                            <form class="form-inline" id="reprVotesTemplate">
+                                <p> FDP 16</p>
+                                <label class="mr-2" for="inputTemplateYes">JA: </label>
+                                <input type="text" class="form-control mb-2" id="inputTemplateYes" style="width: 12rem">
+
+                                <label class="mr-2" for="inputTemplateNo"> NEIN: </label>
+                                <input type="text" class="form-control mb-2" id="inputTemplateNo" style="width: 12rem">
+
+                                <label class="mr-2" for="inputTemplateAbst"> ENTHALTUNG: </label>
+                                <input type="text" class="form-control mb-2" id="inputTemplateAbst" style="width: 12rem">
+
+                            </form>
+                        </div>
+
+                    </div>
+
+
+
+                    <h6 class="text-primary text-uppercase text-break mt-5">Kategorien</h6>
+
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg1" kateg1>
+                        <label class="custom-control-label" for="kateg1">Arbeit und Soziales</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg2" kateg1>
+                        <label class="custom-control-label" for="kateg2">Außen- und Sicherheitspolitik</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg3" kateg1>
+                        <label class="custom-control-label" for="kateg3">Bildung</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg4" kateg1>
+                        <label class="custom-control-label" for="kateg4">Digitalisierung</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg5" kateg1>
+                        <label class="custom-control-label" for="kateg5">Energie</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg6" kateg1>
+                        <label class="custom-control-label" for="kateg6">Finanzen / Wirtschaft </label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg7" kateg1>
+                        <label class="custom-control-label" for="kateg7">Forschung und Wissenschaft</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg8" kateg1>
+                        <label class="custom-control-label" for="kateg8">Gesundheit</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg9" kateg1>
+                        <label class="custom-control-label" for="kateg9">Grundrechte</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg10" kateg1>
+                        <label class="custom-control-label" for="kateg10">Innere Sicherheit</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg11" kateg1>
+                        <label class="custom-control-label" for="kateg11">Klima</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg12" kateg1>
+                        <label class="custom-control-label" for="kateg12">Landwirtschaft</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg13" kateg1>
+                        <label class="custom-control-label" for="kateg13">Tierschutz</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg14" kateg1>
+                        <label class="custom-control-label" for="kateg14">Umwelt</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg15" kateg1>
+                        <label class="custom-control-label" for="kateg15">Verkehr</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg16" kateg1>
+                        <label class="custom-control-label" for="kateg16">Verteidigung / Rüstung</label>
+                    </div>
+
+
+
+                    <button type="button" id="billdataSpeichern"
+                            class="btn btn-outline-primary mt-3">Speichern
+                    </button>
+
+
+                    <!-- Datenimport section -->
+
+                    <div class="tab-pane" id="v-pills-import2" role="tabpanel"
+                         aria-labelledby="v-pills-import-tab">
+                        <form method="POST" enctype="multipart/form-data" id="fileUploadForm2">
+
+
+                            <h6 class="text-primary text-uppercase text-break mt-5">Dateien</h6>
+
+                            <div class="custom-file" id="cf0">
+                                <input type="file" class="custom-file-input" id="customFile2">
+                                <label class="custom-file-label" for="customFile2">Datei auswählen</label>
+                            </div>
+                            <button id="uploadImportData2" type="button"
+                                    class="btn btn-outline-primary mt-3"><i
+                                    class="fas fa-upload mr-2"></i>Hochladen
+                            </button>
+                        </form>
+                        <div class="modal" id="WaitingModal2" tabindex="-1" role="dialog"
+                             aria-hidden="true"
+                             data-keyboard="false" data-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content modal-min-height">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title">Uplodad wurde gestartet</h6>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Loading animation -->
+                                        <div class="sk-fading-circle float-left mr-4">
+                                            <div class="sk-circle1 sk-circle"></div>
+                                            <div class="sk-circle2 sk-circle"></div>
+                                            <div class="sk-circle3 sk-circle"></div>
+                                            <div class="sk-circle4 sk-circle"></div>
+                                            <div class="sk-circle5 sk-circle"></div>
+                                            <div class="sk-circle6 sk-circle"></div>
+                                            <div class="sk-circle7 sk-circle"></div>
+                                            <div class="sk-circle8 sk-circle"></div>
+                                            <div class="sk-circle9 sk-circle"></div>
+                                            <div class="sk-circle10 sk-circle"></div>
+                                            <div class="sk-circle11 sk-circle"></div>
+                                            <div class="sk-circle12 sk-circle"></div>
+                                        </div>
+                                        <span>Lade...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <form class="form-inline ml-4">
+                            <input type="text" class="form-control mt-2 searchField" placeholder="URL" id="urlField">
+                            <button id="urlBtn" type="button"
+                                    class="btn btn-outline-primary mt-2">Datei aus URL kopieren
+                            </button>
+                        </form>
+
+                        <div id="billfilesbody"></div>
+
+                        <button id="deleteData" type="button"
+                                class="btn btn-outline-primary mt-3"><i
+                                class="fas fa-trash mr-2"></i>Alle löschen
+                        </button>
+
+                        <a id="downloadtest" download>
+                            <u></u> <br>
+                        </a>
+                    </div>
+
+
+
+
+                    <button id="categoriesSaveChanges" type="button"
+                            class="btn btn-outline-primary mt-3">Änderungen speichern
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="js/template/addGesetz.js"></script>

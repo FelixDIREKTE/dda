@@ -1,0 +1,38 @@
+package com.dd.dda.service;
+
+import com.dd.dda.model.idclasses.FollowsId;
+import com.dd.dda.model.sqldata.Follows;
+import com.dd.dda.repository.FollowsRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Slf4j
+@Service
+public class FollowsService {
+
+    private final FollowsRepository followsRepository;
+
+    public FollowsService(FollowsRepository followsRepository) {
+        this.followsRepository = followsRepository;
+    }
+
+    public List<Long> getFollowindgIds(Long id) {
+        return followsRepository.getFollowingIds(id);
+    }
+
+    public void toggleFollow(Long id, Long idToFollow) {
+        FollowsId followsId = new FollowsId(id, idToFollow);
+        Optional<Follows> follows = followsRepository.findById(followsId);
+        if(follows.isPresent()){
+            followsRepository.delete(follows.get());
+        } else {
+            Follows f = new Follows();
+            f.setFollower_id(id);
+            f.setFollowee_id(idToFollow);
+            followsRepository.save(f);
+        }
+    }
+}

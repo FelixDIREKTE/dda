@@ -1,0 +1,65 @@
+<!-- "EINSTELLUNGEN" Modal -->
+<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settings" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content settings-modal">
+            <div class="modal-header">
+                <p class="modal-title" id="settings"><i class="fas fa-cog mr-2" aria-hidden="true"></i>Einstellungen
+                </p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <small><i class="fas fa-times"></i></small>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body pt-0 pb-0">
+                <!-- Side Panel Navigation -->
+                <div class="container m-0 p-0">
+                    <div class="row">
+                        <div class="col-4 col-lg-3 m-0 p-0 border-right border-secondary settings-modal">
+                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
+                                 aria-orientation="vertical">
+                                <a class="nav-link active rounded-0" id="v-pills-theme-tab" data-toggle="pill"
+                                   href="#v-pills-theme" role="tab" aria-controls="v-pills-theme"
+                                   aria-selected="true">Darstellung
+                                </a>
+
+                            </div>
+                        </div>
+                        <div class="col-8 col-lg-9 pt-4 pb-4">
+                            <div class="tab-content" id="v-pills-tabContent">
+
+                                <!-- Theme section -->
+                                <div class="tab-pane fade show active" id="v-pills-theme" role="tabpanel"
+                                     aria-labelledby="v-pills-theme-tab">
+                                    <h6 class="text-primary text-uppercase text-break mb-5">Darstellung der
+                                        Benutzeroberfläche</h6>
+
+                                    <div id="themeToggle">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="darkTheme" name="options" value="dark"
+                                                   class="custom-control-input" checked>
+                                            <label class="custom-control-label pointer" for="darkTheme">Default
+                                                <br>
+                                            </label>
+                                        </div>
+                                        <div class="custom-control custom-radio mt-4">
+                                            <input type="radio" id="brightTheme" name="options" value="bright"
+                                                   class="custom-control-input">
+                                            <label class="custom-control-label pointer" for="brightTheme">Option für Farbenblinde
+                                                <br>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div><!-- Close right col -->
+                        </div>
+                    </div><!-- Close row-->
+                </div><!-- Close container-->
+            </div><!-- Close modal body -->
+        </div><!-- Close modal content -->
+    </div><!-- Close model dialog -->
+</div> <!-- Close modal -->
+
+<!-- Wetterstation hinzufügen Modal -->
+<script src="js/template/settings-modal.js"></script>

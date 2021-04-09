@@ -1,0 +1,17 @@
+<!--  Global toast  message -->
+<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center">
+    <div class="toast shadow fade hide" data-delay="6500">
+        <div class="toast-body">
+            <div class="d-flex align-items-center">
+                <div>
+                    <i class="fas fa-check-circle mr-2 text-success icon-bigger" id="successIcon"></i>
+                    <i class="fas fa-exclamation-circle mr-2 text-danger display-none icon-bigger" id="errorIcon"></i>
+                    <i class="fas fa-info-circle mr-2 text-info display-none icon-bigger" id="infoIcon"></i>
+                </div>
+                <div id="toastMessage" class="align-self-center text-center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/withoutLogin/toast.js"></script>

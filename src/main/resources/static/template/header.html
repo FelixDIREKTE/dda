@@ -1,0 +1,94 @@
+<div class="navbar-bg border-bottom border-danger" id="theheader" style="display: none;">
+    <div class="container width70">
+        <nav class="navbar navbar-bg navbar-expand-md pl-0 pr-0">
+
+
+            <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="bottom"
+                    title="Zurück zum Dashboard" id="backToDashboard">
+                <i class="fas fa-home icon-big" aria-hidden="true"></i>
+            </button>
+
+            <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="bottom"
+                    title="Zurück" id="backToPrev">
+                <i class="fas fa-angle-left icon-big" aria-hidden="true"></i>
+            </button>
+
+
+
+            <div class="dropdown">
+                <button class="btn btn-link" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-bell mr-1 icon-big" id="notificationBell"></i>
+                    <div class="notifications-count active zindex" id="notificationcount">i</div>
+                    <!--<i class="fas fa-user-circle mr-1 icon-big" aria-hidden="true"></i>-->
+                </button>
+                <div class="dropdown-menu dropdown-menu-left" aria-labelledby="notificationBell" id="notificationcontainer">
+
+                </div>
+                <button class="dropdown-item dropdown-notification" type="button" id="notificationtemplate">
+                    <span> vor 4 Stunden</span>
+                    <p>Benachrichtigung</p>
+                </button>
+
+            </div>
+
+
+
+
+
+
+
+            <div class="ml-auto text-uppercase text-primary" id="pageTitle">
+                Parlament wählen
+            </div>
+            <div class="ml-auto"></div>
+            <div class="text-primary" id="userName"></div>
+            <div class="dropdown">
+
+                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <!--<i class="fas fa-user-circle mr-1 icon-big" aria-hidden="true"></i>-->
+
+
+                    <a class="avatar">
+                        <img src="img/defaultavatar.png" id="userimg" width="35" alt="Profile Avatar" title="DefaultAvatar" />
+                    </a>
+
+
+
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu">
+
+
+                    <button class="dropdown-item" type="button" id="settings" data-toggle="modal"
+                            data-target="#settingsModal"><i class=" fas fa-cog mr-2"
+                                                            aria-hidden="true"></i>Einstellungen
+                    </button>
+
+
+
+
+                    <button class="dropdown-item mt-2" type="button" id="kontoButton">
+                        <i class="fas fa-user-circle mr-2"></i> Benutzerkonto
+                    </button>
+
+
+                    <button class="dropdown-item mt-2" type="button" id="linkLogout">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Ausloggen
+                    </button>
+
+                    <button class="dropdown-item mt-2" type="button" id="linkVerif">
+                        <i class="fas fa-certificate mr-2"></i> Accounts verifizieren
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="text-center text-uppercase text-primary" id="pageTitleLong">
+
+        </div>
+    </div>
+</div>
+
+
+<script src="js/template/header.js"></script>

@@ -1,0 +1,49 @@
+<div class="login htmlblocker" style="display:none;">
+        <main class="d-flex justify-content-center align-items-center login-card-container">
+            <div class="card login-card"> <!--um ganzen Bildschirm breite&höhe-->
+
+
+                <div class="card-header">
+                    <div class="appTitle"> </div>
+                </div>
+
+                <!-- Login Body -->
+                <div class="card-body" id="loginCardBody">
+                    <div class="form-group">
+                        <label for="loginEmailInput">E-Mail </label>
+                        <input type="email" id="loginEmailInput" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPasswordInput">Kennwort</label>
+                        <input type="password" class="form-control" id="loginPasswordInput" aria-label="Kennwort">
+
+                        <small id="forgetPasswordLink" class="form-text mt-3 text-muted">
+                            <a href="#">Kennwort vergessen?</a>
+                        </small>
+
+                    </div>
+                    <div class="form-group custom-control custom-checkbox mb-4">
+                        <input type="checkbox" class="custom-control-input" id="stayLoggedInCheck" checked>
+                        <label class="custom-control-label" for="stayLoggedInCheck">Eingeloggt bleiben </label>
+                    </div>
+
+
+
+                <!-- Login Footer -->
+                    <div class="row mt-4">
+                        <div class="col">
+                            <button id="loginBtn" type="button"
+                                    class="btn btn-outline-primary w-100 mb-3">Einloggen
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button id="registerBtn" type="button"
+                                    class="btn btn-outline-primary w-100 mb-3">Registrieren
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- close card -->
+        </main>
+</div> <!-- close login -->
+<script src="../js/withoutLogin/login.js"></script>

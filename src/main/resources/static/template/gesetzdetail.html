@@ -1,0 +1,337 @@
+<div role="main" class="container-fluid pb-100" id="maincontainer" style="display: none;">
+
+
+
+
+
+    <div class="row mt-4">
+
+        <div class="col">
+
+            <div class="card shadowedcard" id="titlecard">
+                <div class="card-body">
+                    <h6 class="text-primary text-uppercase text-break mb-5" id="billname">Lorem ipsum
+
+                    </h6>
+
+                    <div class="col">
+                        <span class="float-right">
+
+                                    <button id="modifyBtn" type="button"
+                                        class="btn btn-outline-primary editbillbtn mt-3">bearbeiten
+                                    </button>
+
+                                    <button id="deleteBtn" type="button"
+                                            class="btn btn-outline-primary editbillbtn mt-3" href="#" data-toggle="modal" data-target="#areusureModal">
+                                        <i class="fas fa-trash-alt"></i> Beitrag löschen
+                                    </button>
+
+                        </span>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!--Zusammenfassung-->
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h6 class="text-primary text-uppercase text-break">Zusammenfassung
+                        </h6>
+                    <p id="abstract">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+                </div>
+            </div>
+        </div>
+
+        <!--Infos-->
+
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h6 class="text-primary text-uppercase text-break">Infos
+                        </h6>
+                    <p id="infos">
+
+
+
+                    <table style="width:100%" id="infoTable">
+
+                        <tr id="SachgebieteRow">
+                            <td>Sachgebiete</td>
+                            <td id="Sachgebiete">Gesundheit</td>
+                        </tr>
+                        <tr id="StandRow">
+                            <td>Aktueller Stand</td>
+                            <td id="Stand">Abgelehnt</td>
+                        </tr>
+                        <tr id="TypRow">
+                            <td>Typ</td>
+                            <td id="Typ">Antrag</td>
+                        </tr>
+                        <tr id="VorgangRow">
+                            <td>Vorgang</td>
+                            <td id="Vorgang">241868</td>
+                        </tr>
+                        <tr id="ErstelltDatumRow">
+                            <td>erstellt am</td>
+                            <td id="ErstelltDatum">23.11.18</td>
+                        </tr>
+                        <tr id="AbstimmDatumRow">
+                            <td>Abstimmung am</td>
+                            <td id="AbstimmDatum">11.02.21</td>
+                        </tr>
+                        <tr id="ParteiRow">
+                            <td>Fraktion</td>
+                            <td id="Partei">Direkte</td>
+                        </tr>
+                        <tr id="ParlamentRow">
+                            <td>Parlament</td>
+                            <td id="Parlament">Landtag Thüringen</td>
+                        </tr>
+                        <tr id="CategoryRow">
+                            <td>Kategorien</td>
+                            <td id="Category">Energie</td>
+                        </tr>
+                        <tr id="UserRow">
+                            <td>Beitrag erstellt von</td>
+                            <td id="UserDisplay">???</td>
+                        </tr>
+                    </table>
+
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row mt-4">
+        <!--Dokumente-->
+        <div class="col-lg-6" id="dokcol">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h6 class="text-primary text-uppercase text-break" id="dokheadline">Dokumente
+                        </h6>
+
+
+                        <div id="billfilesbody"></div>
+
+                        <a id="downloadtest" download>
+                            <u></u> <br>
+                        </a>
+
+
+                </div>
+            </div>
+        </div>
+        <!--Abstimmknöpfe-->
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h6 class="text-primary text-uppercase text-break" id="communityVoteHeadline">Abstimmung der Community
+                        </h6>
+                    <p>
+
+                    <h7 id="countdownheadline">Abstimmung endet in:</h7>
+                    <div class="countdowncontainer countdownelement">
+                        <div id="countdown">
+                            <ul>
+                                <li class="countdowncounter"><span id="days"></span>Tagen</li>
+                                <li class="countdowncounter"><span id="hours"></span>Stunden</li>
+                                <li class="countdowncounter"><span id="minutes"></span>Minuten</li>
+                                <li class="countdowncounter"><span id="seconds"></span>Sekunden</li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+
+                    <button id="btnYes" type="button"
+                            class="btn btn-outline-primary mt-3 votebtn">
+                        <div id="yesinactive"><i class="far fa-thumbs-up"></i> Ja</div>
+                        <div id="yesactive"><i class="fas fa-thumbs-up"></i></em><B> Ja</B></div>
+                    </button>
+                    <button id="btnNo" type="button"
+                            class="btn btn-outline-primary mt-3 votebtn">
+                        <div id="noinactive"><i class="far fa-thumbs-down"></i> Nein</div>
+                        <div id="noactive"><i class="fas fa-thumbs-down"></i></em><B> Nein</B></div>
+                    </button>
+                    </p>
+
+
+                    <div class="redbox" id="userRedbox">
+                        <div class="whitebox">
+                            <div class="greenbox">
+                                <p></p>
+                            </div>
+                        </div>
+                        <p></p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+   <!--Abstimmung des Parlaments-->
+    <div class="row mt-4">
+        <div class="col">
+            <div class="card shadowedcard" id="parlamentabstimmung">
+                <div class="card-body">
+                    <h6 class="text-primary text-uppercase text-break">Abstimmung des Parlaments</h6>
+
+                    <div class="row mt-4" id="reprVotesContainer">
+
+
+                        <div class="col-lg-6" id="reprVotesTemplate">
+                            <div class="form-group">
+                                <label for="parb0"> ??? </label>
+                                <div class="redbox" id="parb0">
+                                    <div class="whitebox">
+                                        <div class="greenbox">
+                                            <p></p>
+                                        </div>
+                                        <p></p>
+                                    </div>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--Kommentare-->
+
+
+
+
+            <div class="row mt-4">
+        <div class="col">
+            <div class="card">
+                <div class="card-body" id="commentsectionscontainer">
+                    <h6 class="text-primary text-uppercase text-break mb-5">Kommentare</h6>
+
+                    <meta charset="utf-8">
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <meta name="keywords" content="chat, user, comments, wide" />
+                    <!--<title>Comment Section With Flexbox</title>-->
+                    <link rel="stylesheet" href="css/comment-styles.css">
+                    <ul class="comment-section" id="writeCommentSection">
+
+
+                        <li class="write-new">
+
+                            <textarea placeholder="kommentieren" name="comment" id="inputComment" class=""></textarea>
+                            <div class="write-new-sub">
+                                <img src="img/defaultavatar.png" width="35" alt="Kommentieren" title="defaultavatar" id="usercommentprofilepic" />
+
+                                <button id="commentContraBtn" type="button"
+                                        class="btn btn-outline-primary mt-3 commentButton" id="postContraComment">Contra kommentieren
+                                </button>
+                                <button id="commentProBtn" type="button"
+                                        class="btn btn-outline-primary mt-3 commentButton" id="postProComment">Pro kommentieren
+                                </button>
+
+
+
+                                <!--<label class="btn btn-outline-secondary active" id="btnNot" > Nein </label>-->
+
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                    <form class="form-inline form-inline-top">
+                        <div class="comment-section-half">
+                            <p class="centertext">Pro</p>
+                            <ul class="comment-section" id="proCommentSection">
+
+
+
+                                <li class="comment user-comment" id="commenttemplate" style="display: none;">
+                                    <a class="avatar"> <!-- href="#"-->
+                                        <img src="img/defaultavatar.png"  alt="Profile Avatar" title="DefaultAvatar" />
+                                    </a>
+
+                                    <div class="textcolumn">
+                                        <div class="info">
+                                            <a id="atest">Gracilia Caelinus</a><!-- href="#"   -->
+                                            <a class="pointer" id="followlink"></a><!-- href="#"   -->
+                                            <span>vor 4 Stunden</span>
+                                        </div>
+                                        <p class="commenttext bluelinks"></p>
+                                        <div class="buttonline commenttext">
+
+                                            <div class="dropdown ratingpanel">
+                                                <a class="dropbtn pointer"><i class="fas fa-thumbs-up"></i></a>
+                                                <a>0</a>
+
+                                                <div class="dropdown-content">
+                                                    <a class="pointer"><i class="fas fa-thumbs-up"></i> Mag ich</a>
+                                                    <a class="pointer"><i class="fas fa-handshake"></i> Gutes Argument</a>
+                                                    <a class="pointer"><i class="fas fa-book-open"></i> Gute Quelle</a>
+                                                </div>
+                                            </div>
+
+                                            <!--editieren
+                                            <div class="ratingpanel">
+                                                <a> <i class="far fa-edit"></i></a>
+                                            </div>-->
+                                            <!--löschen-->
+                                            <div class="ratingpanel">
+                                                <a class="pointer" data-toggle="modal" data-target="#areusureModal" > <i class="fas fa-trash-alt"></i></a>
+                                            </div>
+                                            <!--Antworten-->
+                                            <div class="ratingpanel">
+                                                <a class="pointer">   Antworten   </a>
+                                            </div>
+
+                                            <div class="ratingpanel">
+                                                <a class="pointer"></a>
+                                            </div>
+
+
+                                        </div>
+
+
+
+                                    </div>
+
+                                    <div class="replycontainer"></div>
+
+                                </li>
+
+
+                            </ul>
+                        </div>
+                        <div class="comment-section-half">
+                            <p class="centertext">Contra</p>
+                            <ul class="comment-section" id="contraCommentSection">
+                            </ul>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script src="../js/template/gesetzdetail.js"></script>

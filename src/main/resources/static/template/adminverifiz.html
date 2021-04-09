@@ -1,0 +1,101 @@
+<div role="main" class="container pb-100">
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="row mt-4">
+
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mt-4">
+                        <div class="col-lg-6">
+
+                            <p id="accountswaiting"> Accounts in Warteschlange: UNBEKANNT</p>
+                            <div id="imagebody"></div>
+
+
+                        </div>
+                        <div class="col-lg-6" id="dataCol">
+
+                            <p style="color: red" class="my-3" id="recentlyVerifiedText"></p>
+                            <p style="color: red" id="duplicatesText"></p>
+
+
+                            <table style="width:100%">
+
+                                <tr>
+                                    <td>Vorname</td>
+                                    <td id="Vorname">???</td>
+                                </tr>
+                                <tr>
+                                    <td>Nachname</td>
+                                    <td id="Nachname">???</td>
+                                </tr>
+                                <tr>
+                                    <td>Geburtsdatum</td>
+                                    <td id="Geburtsdatum">???</td>
+                                </tr>
+                                <tr>
+                                    <td>Straße</td>
+                                    <td id="stra">?????</td>
+                                </tr>
+                                <tr>
+                                    <td>Hausnr</td>
+                                    <td id="hausnr">?????</td>
+                                </tr>
+                                <tr>
+                                    <td>PLZ</td>
+                                    <td id="PLZ">?????</td>
+                                </tr>
+                                <tr>
+                                    <td>Emailadresse</td>
+                                    <td id="Emailadresse">???</td>
+                                </tr>
+                                <tr>
+                                    <td>Parlamente</td>
+                                    <td id="Parlamente">???</td>
+                                </tr>
+                                <tr>
+                                    <td>Erstellt an</td>
+                                    <td id="Erstelltan">???</td>
+                                </tr>
+                            </table>
+
+
+
+
+                            <button id="verifizNein" type="button"
+                                    class="btn btn-outline-primary mt-3">Nicht verifizieren
+                            </button>
+
+                            <button id="verifizJa" type="button"
+                                    class="btn btn-outline-primary mt-3">Verifizieren
+                            </button>
+
+                            <button id="duplicateBtn" type="button"
+                                    class="btn btn-outline-primary mt-3">DUPLIKAT!
+                            </button>
+
+                            <label for="msgtounverified">Diese Nachricht wird an den Nutzer geschickt falls du 'Nicht verifizieren' wählst</label>
+                            <textarea rows="5" cols="60" name="text" class="form-control mr-3" id="msgtounverified"></textarea>
+
+
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="js/template/adminverifiz.js"></script>

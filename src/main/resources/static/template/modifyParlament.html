@@ -1,0 +1,129 @@
+<div role="main" class="container pb-100">
+
+
+    <div class="row mt-4">
+
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+
+
+                    <table style="width:100%" id="seatstable">
+
+                        <tr>
+                            <td>Partei </td>
+                            <td>seit </td>
+                            <td>Sitze </td>
+                            <td>      </td>
+                        </tr>
+
+                        <tr>
+                            <td>FDP </td>
+                            <td>15.08.2020 </td>
+                            <td>33 </td>
+                            <td>  <i class="fas fa-trash-alt"></i>   </td>
+                        </tr>
+
+                    </table>
+
+                    <h6 class="text-primary text-uppercase text-break mb-5"></h6>
+                    <h6 class="text-primary text-uppercase text-break mb-5">Neue Zeile</h6>
+
+
+
+                    <form class="form-inline">
+                        <label class="mr-2" for="selectPartyPrev">Partei (zuvor) </label>
+
+                        <select id="selectPartyPrev">
+                            <option></option>
+                        </select>
+
+                        <label class="mr-2" for="selectPartyAll"> oder Partei (alle)</label>
+
+                        <select id="selectPartyAll">
+                            <option></option>
+                        </select>
+
+                        <label class="mr-2" for="inputNewparty"> oder Partei (neu)</label>
+                        <input type="text" class="form-control mb-2" id="inputNewparty" style="width: 12rem">
+
+                    </form>
+
+
+                    <form class="form-inline">
+                        <label class="mr-2" for="inputSince">seit</label>
+                        <input type="text" class="form-control mb-2" id="inputSince" placeholder="TT.MM.JJJJ" style="width: 12rem">
+                        <p style="font-size: 70%">Gleiches Datum für gleiche Legislaturperioden. Bein Änderung innerhalb einer Periode müssen alle Sitze mit dem Datum der Änderung neu eingegeben werden.</p>
+                    </form>
+
+
+                    <form class="form-inline">
+                        <label class="mr-2" for="inputSeats">Sitze</label>
+                        <input type="text" class="form-control mb-2" id="inputSeats" style="width: 12rem">
+                    </form>
+
+                    <button id="btnAddRow" type="button"
+                            class="btn btn-outline-primary mt-3">Hinzufügen
+                    </button>
+
+
+                    <h6 class="text-primary text-uppercase text-break mb-5"></h6>
+                    <h6 class="text-primary text-uppercase text-break mb-5">Bild für das Parlament</h6>
+
+
+                    <form method="POST" enctype="multipart/form-data" id="fileUploadForm3">
+                        <div class="custom-file">
+                            <input type="file" accept=".jpg,.png" class="custom-file-input" id="customFile3">
+                            <label class="custom-file-label" for="customFile3">Datei auswählen</label>
+                        </div>
+
+                        <button id="uploadImportData3" type="button"
+                                class="btn btn-outline-primary mt-3">
+                            <i class="fas fa-upload mr-2"></i>Hochladen
+                        </button>
+                    </form>
+                    <div class="modal" id="WaitingModal3" tabindex="-1" role="dialog"
+                         aria-hidden="true"
+                         data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content modal-min-height">
+                                <div class="modal-header">
+                                    <h6 class="modal-title">Uplodad wurde gestartet</h6>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="sk-fading-circle float-left mr-4">
+                                        <div class="sk-circle1 sk-circle"></div>
+                                        <div class="sk-circle2 sk-circle"></div>
+                                        <div class="sk-circle3 sk-circle"></div>
+                                        <div class="sk-circle4 sk-circle"></div>
+                                        <div class="sk-circle5 sk-circle"></div>
+                                        <div class="sk-circle6 sk-circle"></div>
+                                        <div class="sk-circle7 sk-circle"></div>
+                                        <div class="sk-circle8 sk-circle"></div>
+                                        <div class="sk-circle9 sk-circle"></div>
+                                        <div class="sk-circle10 sk-circle"></div>
+                                        <div class="sk-circle11 sk-circle"></div>
+                                        <div class="sk-circle12 sk-circle"></div>
+                                    </div>
+                                    <span>Lade...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="profilepicbody"></div>
+
+                <button id="deleteData" type="button"
+                        class="btn btn-outline-primary mt-3"><i
+                        class="fas fa-trash mr-2"></i>Alle löschen
+                </button>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/template/modifyParlament.js"></script>

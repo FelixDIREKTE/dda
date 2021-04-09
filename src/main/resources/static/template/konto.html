@@ -1,0 +1,458 @@
+
+<div role="main" class="container pb-100">
+
+
+
+
+    <div class="row mt-4">
+
+
+
+
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h6 class="text-primary text-uppercase text-break mb-5">Daten zur Verifizierung</h6>
+
+                    <!--OPTIONALE DATEN; ABER VERPFLICHTEND FÜR VERIFIZIERUNG-->
+                    <p>Um zu überprüfen dass du wahlberechtigt und nicht mehrfach registriert bist, benötigen wir die folgenden Daten:</p>
+
+                    <div class="form-group">
+                        <label for="inputvorname">Vorname</label>
+                        <input type="text" class="form-control mr-3" id="inputvorname">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputname">Nachname</label>
+                        <input type="text" class="form-control mr-3" id="inputname">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputplz">Straße</label>
+                        <input type="text" class="form-control mr-3" id="inputstr">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputplz">Hausnummer</label>
+                        <input type="text" class="form-control mr-3" id="inputhausnr">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputplz">PLZ</label>
+                        <input type="text" class="form-control mr-3" id="inputplz">
+                    </div>
+
+                    <form class="form-inline">
+                        <label class="mr-2" for="geburtsdatum">Geburtsdatum</label>
+                        <input type="text" class="form-control mb-2" id="geburtsdatum" placeholder="TT.MM.JJJJ" style="width: 12rem">
+
+                    </form>
+
+                    <div class="form-group">
+                        <label for="andergspeichern">Nach Änderungen an diesem Bereich ist eine erneute Verifizierung erforderlich.</label>
+                        <button id="andergspeichern" type="button"
+                                class="btn btn-outline-primary mt-3">Änderungen speichern
+                        </button>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-lg-6" id="parliamentcol">
+            <div class="card mb-4">
+                <div class="card-body">
+
+                    <h6 class="text-primary text-uppercase text-break mb-5">Parlamente</h6>
+
+                    <div class="form-group">
+                        <label for="selectParliament1">Europäisches Parlament</label>
+                        <select class="custom-select mb-4" id="selectParliament1">
+                            <option selected>Europäisches Parlament</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectParliament2">Bundestag</label>
+                        <select class="custom-select mb-4" id="selectParliament2">
+                            <option selected>Bundestag</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectParliament3">Landtag</label>
+                        <select class="custom-select mb-4" id="selectParliament3">
+                            <option selected></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectParliament4">Kreistag</label>
+                        <select class="custom-select mb-4" id="selectParliament4">
+                            <option selected></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectParliament5">Stadt</label>
+                        <select class="custom-select mb-4" id="selectParliament5">
+                            <option selected></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectParliament6">Rathaus</label>
+                        <select class="custom-select mb-4" id="selectParliament6">
+                            <option selected></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="parliamentsSaveChanges">Nach Änderungen an diesem Bereich ist eine erneute Verifizierung erforderlich.</label>
+                        <button id="parliamentsSaveChanges" type="button"
+                                class="btn btn-outline-primary mt-3">Parlamente speichern
+                        </button>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="col-lg-6" id="verproofcard">
+            <div class="card mb-4">
+                <div class="card-body">
+
+
+                <!-- Datenimport section -->
+
+                    <div class="tab-pane" id="v-pills-import2" role="tabpanel"
+                         aria-labelledby="v-pills-import-tab">
+                        <form method="POST" enctype="multipart/form-data" id="fileUploadForm2">
+                            <label class="mr-2" id="verproofexplanation" for="cf0">
+                                Um Dein Stimmrecht freizuschalten, brauchen wir nur ein Foto Deines Personalausweises (Vorder- und Rückseite).  Alternativ zum Personalausweis kann auch ein Scan des Reisepasses mit Wohnsitzbestätigung eingereicht werden.<br>
+                                <br>
+                                Wofür brauchen wir das?<br>
+                                Mit diesem Verfahren möchten wir sicherstellen, dass wirklich nur stimmberechtigte Menschen abstimmen und sich niemand mehrfach anmeldet und abstimmt. Das ist essentiell für unsere Glaubwürdigkeit, schließlich führen wir echte Volksabstimmungen durch.<br>
+
+                                <br>
+                                Die Dokumente sollten im Format png oder jpg sein.
+                                Teile der Dokumente bis auf Name, Adresse und Geburtsdatum dürfen ausgeschwärzt werden.
+                                Nach der Verifizierung werden die Dokumente von unserem Server gelöscht.
+                            </label>
+
+                            <div class="custom-file" id="cf0">
+                                <!--  image/* -->
+                                <input type="file" accept=".jpg,.png" class="custom-file-input" id="customFile2">
+                                <label class="custom-file-label" for="customFile2">Datei auswählen</label>
+                            </div>
+                            <button id="uploadImportData2" type="button"
+                                    class="btn btn-outline-primary mt-3"><i
+                                    class="fas fa-upload mr-2"></i>Hochladen
+                            </button>
+                        </form>
+                        <div class="modal" id="WaitingModal2" tabindex="-1" role="dialog"
+                             aria-hidden="true"
+                             data-keyboard="false" data-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content modal-min-height">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title">Uplodad wurde gestartet</h6>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Loading animation -->
+                                        <div class="sk-fading-circle float-left mr-4">
+                                            <div class="sk-circle1 sk-circle"></div>
+                                            <div class="sk-circle2 sk-circle"></div>
+                                            <div class="sk-circle3 sk-circle"></div>
+                                            <div class="sk-circle4 sk-circle"></div>
+                                            <div class="sk-circle5 sk-circle"></div>
+                                            <div class="sk-circle6 sk-circle"></div>
+                                            <div class="sk-circle7 sk-circle"></div>
+                                            <div class="sk-circle8 sk-circle"></div>
+                                            <div class="sk-circle9 sk-circle"></div>
+                                            <div class="sk-circle10 sk-circle"></div>
+                                            <div class="sk-circle11 sk-circle"></div>
+                                            <div class="sk-circle12 sk-circle"></div>
+                                        </div>
+                                        <span>Lade...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                <div id="verproofbody"></div>
+
+                    <button id="deleteData" type="button"
+                            class="btn btn-outline-primary mt-3"><i
+                            class="fas fa-trash mr-2"></i>Alle löschen
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-body">
+
+
+
+
+                    <h6 class="text-primary text-uppercase text-break mb-5">Status</h6>
+
+
+
+
+                    <ul class="status-list">
+                        <li id="sli0">Verifizierungsdaten erforderlich</li>
+                        <li id="sli1">Daten eingegangen, warte auf Verifizierung</li>
+                        <li id="sli2">Account verifiziert</li>
+                    </ul>
+
+
+                    <h7 class="text-primary text-uppercase text-break mb-5" id="missingDataHeadline">Fehlende Daten:</h7>
+                    <ul>
+                        <li id="missingName">Vorname, Nachname</li>
+                        <li id="missingAddress">Straße, Hausnummer, PLZ</li>
+                        <li id="missingBirthdate">Geburtsdatum</li>
+                        <li id="missingParliaments">Parlamente</li>
+                        <li id="missingIdentityProof">Identitätsnachweis</li>
+                    </ul>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-6">
+            <div class="card mb-4" id="profilbildbox">
+                <div class="card-body">
+
+                    <h6 class="text-primary text-uppercase text-break mb-5">Optionale Daten</h6>
+
+                    <div class="form-group">
+                        <label for="inputphonenr">Telefonnummer</label>
+                        <input type="text" class="form-control mr-3" id="inputphonenr">
+                    </div>
+
+                    <button id="optandergspeichern" type="button"
+                            class="btn btn-outline-primary mt-3">Änderungen speichern
+                    </button>
+
+
+
+                    <div class="tab-pane" id="v-pills-import3" role="tabpanel"
+                         aria-labelledby="v-pills-import-tab">
+                        <p>Profilbild, das neben deinen Kommentaren zu sehen sein wird</p>
+                        <form method="POST" enctype="multipart/form-data" id="fileUploadForm3">
+                            <div class="custom-file">
+                                <input type="file" accept=".jpg,.png" class="custom-file-input" id="customFile3">
+                                <label class="custom-file-label" for="customFile3">Datei auswählen</label>
+                            </div>
+
+                            <button id="uploadImportData3" type="button"
+                                    class="btn btn-outline-primary mt-3">
+                                <i class="fas fa-upload mr-2"></i>Hochladen
+                            </button>
+                        </form>
+                        <div class="modal" id="WaitingModal3" tabindex="-1" role="dialog"
+                             aria-hidden="true"
+                             data-keyboard="false" data-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content modal-min-height">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title">Uplodad wurde gestartet</h6>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="sk-fading-circle float-left mr-4">
+                                            <div class="sk-circle1 sk-circle"></div>
+                                            <div class="sk-circle2 sk-circle"></div>
+                                            <div class="sk-circle3 sk-circle"></div>
+                                            <div class="sk-circle4 sk-circle"></div>
+                                            <div class="sk-circle5 sk-circle"></div>
+                                            <div class="sk-circle6 sk-circle"></div>
+                                            <div class="sk-circle7 sk-circle"></div>
+                                            <div class="sk-circle8 sk-circle"></div>
+                                            <div class="sk-circle9 sk-circle"></div>
+                                            <div class="sk-circle10 sk-circle"></div>
+                                            <div class="sk-circle11 sk-circle"></div>
+                                            <div class="sk-circle12 sk-circle"></div>
+                                        </div>
+                                        <span>Lade...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="profilepicbody"></div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="col-lg-6" id="interestscol">
+            <div class="card mb-4">
+                <div class="card-body">
+
+
+                    <h6 class="text-primary text-uppercase text-break mb-5">Interessen</h6>
+
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg1" kateg1>
+                        <label class="custom-control-label" for="kateg1">Arbeit und Soziales</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg2" kateg1>
+                        <label class="custom-control-label" for="kateg2">Außen- und Sicherheitspolitik</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg3" kateg1>
+                        <label class="custom-control-label" for="kateg3">Bildung</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg4" kateg1>
+                        <label class="custom-control-label" for="kateg4">Digitalisierung</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg5" kateg1>
+                        <label class="custom-control-label" for="kateg5">Energie</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg6" kateg1>
+                        <label class="custom-control-label" for="kateg6">Finanzen / Wirtschaft </label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg7" kateg1>
+                        <label class="custom-control-label" for="kateg7">Forschung und Wissenschaft</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg8" kateg1>
+                        <label class="custom-control-label" for="kateg8">Gesundheit</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg9" kateg1>
+                        <label class="custom-control-label" for="kateg9">Grundrechte</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg10" kateg1>
+                        <label class="custom-control-label" for="kateg10">Innere Sicherheit</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg11" kateg1>
+                        <label class="custom-control-label" for="kateg11">Klima</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg12" kateg1>
+                        <label class="custom-control-label" for="kateg12">Landwirtschaft</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg13" kateg1>
+                        <label class="custom-control-label" for="kateg13">Tierschutz</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg14" kateg1>
+                        <label class="custom-control-label" for="kateg14">Umwelt</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg15" kateg1>
+                        <label class="custom-control-label" for="kateg15">Verkehr</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="kateg16" kateg1>
+                        <label class="custom-control-label" for="kateg16">Verteidigung / Rüstung</label>
+                    </div>
+
+                    <button id="interestSaveChanges" type="button"
+                            class="btn btn-outline-primary mt-3">Änderungen speichern
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-body">
+
+                    <!--VERPFLICHTENDE DATEN-->
+                    <h6 class="text-primary text-uppercase text-break mb-5">Accountdaten</h6>
+
+                    <div class="form-group">
+                        <label for="loginEmailInput2">E-Mail </label>
+                        <input type="email" id="loginEmailInput2" class="form-control">
+                    </div>
+
+                    <button id="Emailandern" type="button"
+                            class="btn btn-outline-primary mt-3">Email ändern
+                    </button>
+
+                    <div class="form-group" id = "currentPasswordGroup">
+                        <label for="currentPasswordInput">jetziges Kennwort</label>
+                        <input type="password" class="form-control" id="currentPasswordInput" aria-label="Kennwort">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newPasswordInput">neues Kennwort</label>
+                        <input type="password" class="form-control" id="newPasswordInput" aria-label="Kennwort">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="repeatNewPasswordInput">Kennwort wiederholen</label>
+                        <input type="password" class="form-control" id="repeatNewPasswordInput" aria-label="Kennwort">
+                    </div>
+
+                    <button id="Kennwortandern" type="button"
+                            class="btn btn-outline-primary mt-3">Kennwort ändern
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-body">
+
+                    <h6 class="text-primary text-uppercase text-break mb-5">Account löschen</h6>
+
+                    <button id="deleteUser" type="button"
+                            class="btn btn-outline-primary mt-3" href="#" data-toggle="modal" data-target="#areusureModal" >
+                        <i class="fas fa-user-slash"></i> Account löschen
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+</div>
+
+<script src="js/template/konto.js"></script>
