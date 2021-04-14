@@ -16,7 +16,7 @@ public interface CommentRatingRepository  extends JpaRepository<CommentRating, C
     @Query(value = "select count(*) from comment_rating cr join user u on cr.user_id = u.id where cr.comment_id = :comment_id and cr.rating = :crevalue and u.verificationstatus = 3", nativeQuery = true)
     Integer getNrOfVotesFor(Long comment_id, int crevalue);
 
-    //TODO
+
     @Query(value = "select cr.comment_id, count(cr.user_id) from comment_rating cr join user u on cr.user_id = u.id where cr.comment_id in :comment_ids and cr.rating = :crevalue and u.verificationstatus = 3 group by cr.comment_id", nativeQuery = true)
     List<Object> getNrOfVotesFor(List<Long> comment_ids, int crevalue);
 

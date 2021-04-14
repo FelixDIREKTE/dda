@@ -42,7 +42,6 @@ public class RepresentativesBillVoteService {
         representativesBillVoteRepository.save(rbv);
         return rbv;
 
-
     }
 
     public List<RepresentativesBillVote> getVotes(Long bill_id) {

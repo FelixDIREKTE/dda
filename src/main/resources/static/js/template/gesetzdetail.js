@@ -7,7 +7,7 @@ $('#backToPrev').off().click(function () {
 })
 
 if(passedParliamentRole == 0) {
-    document.getElementById("communityVoteHeadline").innerHTML = "Abstimmung der Community";
+    document.getElementById("communityVoteHeadline").innerHTML = "Abstimmung der Bevölkerung";
     document.getElementById("dokheadline").innerHTML = "Gesetzestext";
 }
 
@@ -107,15 +107,14 @@ function updateCommentsFollowUser(user_id){
             }
             if( followingIds.indexOf(user_id) >= 0) {
                 clone.children[1].children[0].children[1].innerHTML = "(<i class=\"fas fa-user-minus\"></i> nicht mehr folgen)";
+                return true;
             } else {
                 clone.children[1].children[0].children[1].innerHTML = "(<i class=\"fas fa-user-plus\"></i> folgen)";
             }
         }
 
     }
-
-
-
+    return false;
 
 
 }
@@ -283,11 +282,11 @@ if(passedBill.categories_bitstring == 0) {
 }
 
 
-if(passedBill.parliament_role == 0) {
-    $('#UserRow').hide();
-} else {
+//if(passedBill.parliament_role == 0) {
+//    $('#UserRow').hide();
+//} else {
     document.getElementById("UserDisplay").textContent = passedBill.created_by.firstname + " " + passedBill.created_by.name;
-}
+//}
 
 
 
@@ -975,7 +974,9 @@ function showComment(commentdata, commenttemplate, readCommentSection){
 
         $('#'+rndid52).off().click(function () {
             toggleFollow(pp.user.id);
-            updateCommentsFollowUser(pp.user.id);
+            if(updateCommentsFollowUser(pp.user.id)){
+                showSuccessToast("Kommentare von "+clone.children[1].children[0].children[0].textContent+" werden nun für Dich weiter oben angezeigt.");
+            }
         });
 
         //Löschen-Knopf wird Report-Knopf
@@ -1160,18 +1161,6 @@ function showOthersProfilepicBundle(comment_ids){
 ///////////////////////////////////////
 ///////////////////////////////////////
 ///////////////////////////////////////
-
-function stringToMap(s){
-    var result = new Map();
-    var s1 = s.split(";")
-
-    for(var i = 0; i < s1.length; i++){
-        var s2 = s1[i];
-        var s3 = s2.split(":");
-        result.set(s3[0], parseInt(s3[1]));
-    }
-    return result;
-}
 
 function nothingToMap(){
     var result = new Map();

@@ -1,6 +1,6 @@
 $(document).ready(function () {
     if (DDA.Cookie.getThemeSetting() == null) {
-        DDA.Cookie.saveThemeSetting({theme: "dark"});
+        DDA.Cookie.saveThemeSetting({theme: "bright"});
     }
 
     if (DDA.Cookie.getThemeSetting().theme === 'dark') {
@@ -326,4 +326,16 @@ function updateSessionUser(){
             DDA.Cookie.saveSessionUser(data);
         }
     });
+}
+
+function stringToMap(s){
+    var result = new Map();
+    var s1 = s.split(";")
+
+    for(var i = 0; i < s1.length; i++){
+        var s2 = s1[i];
+        var s3 = s2.split(":");
+        result.set(s3[0], parseInt(s3[1]));
+    }
+    return result;
 }

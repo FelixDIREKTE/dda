@@ -1,0 +1,48 @@
+logging:
+  level:
+    ROOT: info
+    com:
+      dd: info
+  file:
+    max-history: 10
+    path: /opt/dda/logs
+    name: ${logging.file.path}/dda.log
+
+server:
+  port: ${SPRING_SERVER_PORT:8080}
+
+spring:
+  profiles:
+    active: ${SPRING_PROFILES}
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  flyway:
+    url: ${DB_URL}
+    schemas: ${DB_SCHEMA}
+    user: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
+
+file:
+  storage:
+    rootLocation: /opt/dda/files
+    verificationProofLocation: ${file.storage.rootLocation}/verificationproof
+    profilcePicLocation: ${file.storage.rootLocation}/profilepics
+    parliamentPicLocation: ${file.storage.rootLocation}/parliamentpics
+    billAbstractLocation: ${file.storage.rootLocation}/billAbstract
+    billFilesLocation: ${file.storage.rootLocation}/billFiles
+    windowsDisk: 'C:'
+

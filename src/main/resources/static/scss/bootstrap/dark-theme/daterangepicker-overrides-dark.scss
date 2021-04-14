@@ -1,0 +1,72 @@
+/*
+ *   Override of Date Range Picker variables only for DARK theme
+ */
+
+// Background color doprdown menu
+$drp-bg: $gray-800;
+
+// Border color dropdown menu 
+$drp-border-color: $gray-600;
+
+// Drop shadow dropdown menu
+$drp-dropshadow: 0 .5rem 1rem rgba(0, 0, 0, .5);
+
+$drp-border-radius: 0;
+
+$drp-before-and-after-border-bottom-color: $gray-600;
+$drp-before-border-bottom-color: $gray-600;
+$drp-after-border-bottom-color: $gray-600;
+
+$drp-drop-up-before-border-top-color: $gray-600;
+$drp-drop-up-after-border-top-color: $gray-600;
+
+$drp-calendar-table-next-and-prev-span-color: $gray-100;
+
+// Previous and next month chevrons
+$drp-calendar-table-next-and-prev-span-border-color: $white;
+
+$drp-calendar-table-bg: $gray-800;
+
+// Hover over dates
+$drp-td-and-th-available-hover-bg: $gray-600;
+
+$drp-td-and-th-week-color: $gray-400;
+
+// Days of next or previous month background color
+$drp-td-off-bg: $gray-800;
+
+// Days of next or previous month font color
+$drp-td-off-color: $gray-400;
+
+// Selected range background color
+$drp-td-in-range-bg: $gray-700;
+
+// Selected range font color
+$drp-td-in-range-color: $white;
+
+// First and last date of selected range background color
+$drp-td-active-bg: $primary;
+
+// First and last date of selected range text color
+$drp-td-active-color: $white;
+
+$drp-td-disabled-color: $gray-300;
+
+$drp-select-bg: $gray-500;
+$drp-select-border-color: $gray-500;
+
+$drp-calendar-time-select-disabled-color: $gray-500;
+
+$drp-buttons-border-top-color: $gray-600;
+
+$drp-show-ranges-single-rtl-calendar-left-border-right-color: $gray-600;
+$drp-show-ranges-single-ltr-calendar-left-border-right-color: $gray-600;
+$drp-show-ranges-rtl-drp-calendar-right-border-right-color: $gray-600;
+$drp-show-ranges-ltr-drp-calendar-left-border-left-color: $gray-600;
+
+$drp-ranges-li-active-bg: $primary;
+
+// Dropdown menu hover background color
+$drp-ranges-li-hover-bg: $gray-600;
+
+$drp-ranges-li-active-color: $white;

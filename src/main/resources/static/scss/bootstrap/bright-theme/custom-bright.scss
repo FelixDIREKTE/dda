@@ -1,0 +1,101 @@
+/*
+ *  Custom styles only for BRIGHT Bootstrap theme
+ *
+ *  Table of contents:
+ *  
+ *  1. Images
+ *  2. Tables
+ *  3. Cards & Tiles
+ *  4. Navbar
+ *  5. Miscellaneous
+ *
+ */
+
+/*--------------------------------------------------------------------------------------
+    1. Images
+---------------------------------------------------------------------------------------*/
+
+$login-background: url('../img/background-bright.jpg') no-repeat center center fixed;
+$logo: url('../img/logo-bright.svg');
+
+/*--------------------------------------------------------------------------------------
+    2. Tables
+---------------------------------------------------------------------------------------*/
+
+.thead-light th {
+    background-color: $gray-100 !important;
+}
+
+/*--------------------------------------------------------------------------------------
+    3. Cards & Tiles
+---------------------------------------------------------------------------------------*/
+
+.card {
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.1), 0px 4px 5px 0px rgba(0, 0, 0, 0.1), 0px 1px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: $gray-100;
+    color: $primary;
+    padding-top: 1.25rem;
+    border-bottom: none;
+}
+
+.card-footer {
+    background-color: $gray-100;
+    border-top: none;
+}
+
+.tile:hover {
+    // background-color: $white;
+    cursor: pointer;
+}
+
+.tile:active {
+    box-shadow: none;
+    border-style: solid;
+    border-width: 1px;
+    border-color: $gray-300;
+}
+
+/*--------------------------------------------------------------------------------------
+    4. Navbar
+---------------------------------------------------------------------------------------*/
+
+// Navbar
+.navbar-bg {
+    background-color: $gray-200;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.appTitle {
+    content: url("../img/app-title-bright.png");
+    background-repeat: no-repeat;
+    width: auto;
+    height: 3.25rem;
+}
+
+/*--------------------------------------------------------------------------------------
+    5. Miscellaneous
+---------------------------------------------------------------------------------------*/
+
+// Progress bar
+.progress {
+    border: 1px solid $gray-500;
+}
+
+// Modal
+.modal-header {
+    background-color: $gray-300;
+}
+
+.bg-dark {
+    background: $gray-200 !important;
+}
+
+.form-control {
+    box-shadow: none;
+}

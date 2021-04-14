@@ -79,6 +79,9 @@ public class PartyParliamentSeatsService {
     }
 
     public List<PartyParliamentSeats> getSeatsAtTime(long parliament_id, Date date) {
+        if(date == null){
+            return new ArrayList<>();
+        }
         Map<Date, List<PartyParliamentSeats>> xx = partyParliamentSeatsRepository.getSeatsFor(parliament_id).stream().collect(Collectors.groupingBy(PartyParliamentSeats::getFrom_date));
         Optional<Date> maxdate = xx.keySet().stream().filter(d -> d.compareTo(date) < 0).max(Date::compareTo);
         if(maxdate.isEmpty()) {

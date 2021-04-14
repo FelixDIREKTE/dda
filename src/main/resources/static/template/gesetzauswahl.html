@@ -5,7 +5,11 @@
         <div class="col">
             <div class="card shadowedcard">
                 <div class="card-body">
+                    <div class="row mt-4" id="parlroledescription">
+
+                    </div>
                     <div class="row mt-4">
+
                         <!-- Daterange -->
                         <div class="col" id="viewRangeC">
                             <h6 class="text-primary text-uppercase text-break mb-5">Zeitraum</h6>
@@ -15,7 +19,7 @@
 
                         <form class="form-inline ml-4">
 
-                            <input type="text" class="form-control mt-2 searchField" id="searchField">
+                            <input type="text" class="form-control mt-2 searchField" id="searchField" placeholder="Suchbegriff">
 
                             <button id="searchBtn" type="button"
                                     class="btn btn-outline-primary mt-2"><i class="fas fa-search"></i>
@@ -38,16 +42,93 @@
                             </span>
                         </div>
 
-
-
-
                     </div>
+
+
+
+
+
+
+                <h6 class="text-primary text-uppercase text-break mt-1 pointer" id="categoriesHeadline">Themengebiete (anzeigen)</h6>
+
+                <div id="categories" style="display:none;">
+
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg1" kateg1>
+                    <label class="custom-control-label" for="kateg1">Arbeit und Soziales</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg2" kateg1>
+                    <label class="custom-control-label" for="kateg2">Außen- und Sicherheitspolitik</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg3" kateg1>
+                    <label class="custom-control-label" for="kateg3">Bildung</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg4" kateg1>
+                    <label class="custom-control-label" for="kateg4">Digitalisierung</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg5" kateg1>
+                    <label class="custom-control-label" for="kateg5">Energie</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg6" kateg1>
+                    <label class="custom-control-label" for="kateg6">Finanzen / Wirtschaft </label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg7" kateg1>
+                    <label class="custom-control-label" for="kateg7">Forschung und Wissenschaft</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg8" kateg1>
+                    <label class="custom-control-label" for="kateg8">Gesundheit</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg9" kateg1>
+                    <label class="custom-control-label" for="kateg9">Grundrechte</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg10" kateg1>
+                    <label class="custom-control-label" for="kateg10">Innere Sicherheit</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg11" kateg1>
+                    <label class="custom-control-label" for="kateg11">Klima</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg12" kateg1>
+                    <label class="custom-control-label" for="kateg12">Landwirtschaft</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg13" kateg1>
+                    <label class="custom-control-label" for="kateg13">Tierschutz</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg14" kateg1>
+                    <label class="custom-control-label" for="kateg14">Umwelt</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg15" kateg1>
+                    <label class="custom-control-label" for="kateg15">Verkehr</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="kateg16" kateg1>
+                    <label class="custom-control-label" for="kateg16">Verteidigung / Rüstung</label>
+                </div>
+
+                <button id="interestSaveChanges" type="button"
+                        class="btn btn-outline-primary mt-3">Anwenden
+                </button>
+                </div>
+
+
                 </div>
             </div>
         </div>
-
-
     </div>
+
 
     <div class="row mt-4">
     </div>
@@ -62,7 +143,7 @@
             </div>
 
 
-            <div class="card mb-4 shadowedcard pointer" id="billTileTemplate">
+            <div class="card mb-4 shadowedcard pointer hovergrey" id="billTileTemplate">
                 <div class="card-body"> <!--d-flex align-items-start flex-column-->
                     <div class="text-primary mb-auto text-uppercase text-break">Default-Gesetz 1</div>
                     <p></p>

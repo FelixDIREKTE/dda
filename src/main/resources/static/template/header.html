@@ -15,22 +15,7 @@
 
 
 
-            <div class="dropdown">
-                <button class="btn btn-link" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-bell mr-1 icon-big" id="notificationBell"></i>
-                    <div class="notifications-count active zindex" id="notificationcount">i</div>
-                    <!--<i class="fas fa-user-circle mr-1 icon-big" aria-hidden="true"></i>-->
-                </button>
-                <div class="dropdown-menu dropdown-menu-left" aria-labelledby="notificationBell" id="notificationcontainer">
 
-                </div>
-                <button class="dropdown-item dropdown-notification" type="button" id="notificationtemplate">
-                    <span> vor 4 Stunden</span>
-                    <p>Benachrichtigung</p>
-                </button>
-
-            </div>
 
 
 
@@ -42,7 +27,28 @@
                 Parlament wählen
             </div>
             <div class="ml-auto"></div>
+
+            <div class="dropdown">
+                <button class="btn btn-link" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-bell mr-1 icon-big" id="notificationBell"></i>
+                    <div class="notifications-count active zindex" id="notificationcount">i</div>
+                    <!--<i class="fas fa-user-circle mr-1 icon-big" aria-hidden="true"></i>-->
+                </button>
+                <div class="dropdown-menu dropdown-menu-right pt-3" aria-labelledby="notificationBell" id="notificationcontainer">
+
+                </div>
+                <button class="dropdown-item dropdown-notification" type="button" id="notificationtemplate">
+                    <span> vor 4 Stunden</span>
+                    <p>Benachrichtigung</p>
+                </button>
+
+            </div>
+
+
+            <!--
             <div class="text-primary" id="userName"></div>
+            -->
             <div class="dropdown">
 
                 <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown"
@@ -82,6 +88,9 @@
                     </button>
                 </div>
             </div>
+
+
+
         </nav>
 
         <div class="text-center text-uppercase text-primary" id="pageTitleLong">

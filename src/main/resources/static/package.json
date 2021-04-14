@@ -1,0 +1,30 @@
+{
+  "name": "dda",
+  "version": "1.0.0",
+  "description": "Demokratie DIREKT! Abstimmung",
+  "main": "src/main/resources/static/js/index.js",
+  "homepage": "https://demokratiedirekt.info/",
+  "scripts": {
+    "build-charts-dark": "node-sass --importer=node_modules/node-sass-tilde-importer scss/highcharts/dark-theme/main-dark.scss css/highcharts-dark.css",
+    "build-charts-bright": "node-sass --importer=node_modules/node-sass-tilde-importer scss/highcharts/bright-theme/main-bright.scss css/highcharts-bright.css",
+    "build-bs-dark": "node-sass --importer=node_modules/node-sass-tilde-importer scss/bootstrap/dark-theme/main-dark.scss css/style-dark.css",
+    "build-bs-bright": "node-sass --importer=node_modules/node-sass-tilde-importer scss/bootstrap/bright-theme/main-bright.scss css/style-bright.css",
+    "build-all": "node-sass --importer=node_modules/node-sass-tilde-importer scss/highcharts/dark-theme/main-dark.scss css/highcharts-dark.css && node-sass --importer=node_modules/node-sass-tilde-importer scss/highcharts/bright-theme/main-bright.scss css/highcharts-bright.css && node-sass --importer=node_modules/node-sass-tilde-importer scss/bootstrap/dark-theme/main-dark.scss css/style-dark.css && node-sass --importer=node_modules/node-sass-tilde-importer scss/bootstrap/bright-theme/main-bright.scss css/style-bright.css",
+    "min-all": "cssnano css/highcharts-dark.css css/highcharts-dark.min.css && cssnano css/highcharts-bright.css css/highcharts-bright.min.css && cssnano css/style-bright.css css/style-bright.min.css && cssnano css/style-dark.css css/style-dark.min.css",
+    "watch-bs-dark": "npm run build-bs-dark -- --watch",
+    "watch-bs-bright": "npm run build-bs-bright -- --watch",
+    "watch-charts-dark": "npm run build-charts-dark -- --watch"
+  },
+  "author": "Demokratie DIREKT!",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "cssnano-cli": "^1.0.5",
+    "highcharts": "^7.2.1",
+    "node-sass": "^4.13.1",
+    "node-sass-tilde-importer": "^1.0.2"
+  },
+  "devDependencies": {
+    "cssnano": "^4.1.10"
+  }
+}

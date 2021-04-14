@@ -22,4 +22,7 @@ public interface UserBillVoteRepository  extends JpaRepository<UserBillVote, Use
 
     @Query(value = "select user_id from user_bill_vote WHERE bill_id = :bill_id ", nativeQuery = true)
     List<Long> findIdsOfUsersWhoVotedOn(Long bill_id);
+
+    @Query(value = "select ubv.bill_id, count(ubv.user_id) from user_bill_vote ubv join user u on ubv.user_id = u.id where ubv.bill_id in :bill_ids and ubv.vote = :v and u.verificationstatus = 3 group by ubv.bill_id", nativeQuery = true)
+    List<Object> getNrOfVotesFor(List<Long> bill_ids, Boolean v);
 }

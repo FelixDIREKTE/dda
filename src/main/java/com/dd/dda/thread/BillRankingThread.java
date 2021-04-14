@@ -31,7 +31,6 @@ public class BillRankingThread extends Thread{
 
     @Override
     public void run() {
-        //TODO nochmal mit negativ gerankter Diskussion testen
         log.info("start reranking thread");
         List<Bill> bills = billRepository.findAllById(ids);
         //EntityManager ?

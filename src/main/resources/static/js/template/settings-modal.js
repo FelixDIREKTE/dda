@@ -55,7 +55,7 @@ $("#uploadImportData").off().click(function () {
         }
     });
 });
-$('#v-pills-theme').hide();
+//$('#v-pills-theme').hide();
 
 $('#btnAbbrechen').off().click(function () {
     $('#btnEditieren').show();

@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/dda?serverTimezone=UTC&charset=utf8mb4&collation=utf8mb4_unicode_ci
+    username: 'FILLIN'
+    password: 'FILLIN'
+  flyway:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    schemas: dda
+
+noreplymail:
+  smtp-server: 'FILLIN'
+  username: 'no-reply@FILLIN'
+  password: 'FILLIN'
+  email-from: 'no-reply@FILLIN'
+  duplicate-info-destinations: 'no-reply@FILLIN'
+

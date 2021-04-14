@@ -1,0 +1,652 @@
+/* 
+ *  Custom styles for DARK AND BRIGHT Bootstrap themes
+ *
+ *  Table of contents:
+ *
+ *  1. Fonts
+ *  2. General
+ *  3. Solid Buttons
+ *  4. Outline Buttons
+ *  5. Modals
+ *  6. Login Page
+ *  7. Logos
+ *  8. Icons
+ *  9. Nav tabs
+ *  10. Tables
+ *  11. Alerts
+ *  12. Color testing
+ *
+ */
+
+/*--------------------------------------------------------------------------------------
+    1. Fonts
+---------------------------------------------------------------------------------------*/
+
+@font-face {
+  font-family: 'Whitney Book';
+  src: url('../webfonts/whitney/whitney-book.woff2') format('woff2'),
+  url('../webfonts/whitney/whitney-book.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Whitney Book';
+  src: url('../webfonts/whitney/whitney-semibold.woff2') format('woff2'),
+  url('../webfonts/whitney/whitney-semibold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Whitney Book';
+  src: url('../webfonts/whitney/whitney-bookItalic.woff2') format('woff2'),
+  url('../webfonts/whitney/whitney-bookItalic.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+}
+
+/*--------------------------------------------------------------------------------------
+    2. General
+---------------------------------------------------------------------------------------*/
+
+/* h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 600;
+} */
+
+body {
+  line-height: 1.4;
+}
+
+// Global bottom padding
+.pb-100 {
+  padding-bottom: 100px;
+}
+
+// Squared tiles on dashboard
+
+
+// Different size of tiles for small and big screens
+@include media-breakpoint-up(sm) {
+
+}
+
+
+.small-input {
+  width: 6rem;
+  height: 1.75rem;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.toast {
+  padding: .75em;
+  margin-bottom: 2rem;
+  z-index: 100000;
+  position: absolute;
+  bottom: 2rem;
+
+}
+
+#viewRange {
+  width: 12rem;
+}
+
+.increased-letter-spacing {
+  letter-spacing: 0.25em;
+}
+
+.dropdown-menu {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.dropdown-item {
+  color: $link-color;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.hidden {
+  display: none;
+}
+
+/*--------------------------------------------------------------------------------------
+    3. Solid Buttons
+---------------------------------------------------------------------------------------*/
+
+// Primary
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:not(:disabled):not(.disabled).active {
+  border-color: $primary-border !important;
+}
+
+.btn-primary:hover {
+  background-color: $primary-hover;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: $primary-down !important;
+}
+
+// Secondary
+
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:not(:disabled):not(.disabled).active {
+  border-color: $secondary-border !important;
+}
+
+.btn-secondary:hover {
+  background-color: $secondary-hover;
+}
+
+.btn-secondary:not(:disabled):not(.disabled).active,
+.btn-secondary:not(:disabled):not(.disabled):active,
+.show > .btn-secondary.dropdown-toggle {
+  background-color: $secondary-down !important;
+}
+
+// Warning
+
+.btn-warning,
+.btn-warning:hover,
+.btn-warning:not(:disabled):not(.disabled).active {
+  border-color: $warning-border !important;
+  color: $white;
+}
+
+.btn-warning:hover {
+  background-color: $warning-hover;
+}
+
+.btn-warning:not(:disabled):not(.disabled).active,
+.btn-warning:not(:disabled):not(.disabled):active,
+.show > .btn-warning.dropdown-toggle {
+  background-color: $warning-down !important;
+}
+
+// Success
+
+.btn-success,
+.btn-success:hover,
+.btn-success:not(:disabled):not(.disabled).active {
+  border-color: $success-border !important;
+}
+
+.btn-success:hover {
+  background-color: $success-hover;
+}
+
+.btn-success:not(:disabled):not(.disabled).active,
+.btn-success:not(:disabled):not(.disabled):active,
+.show > .btn-success.dropdown-toggle {
+  background-color: $success-down !important;
+}
+
+// Danger
+
+.btn-danger,
+.btn-danger:hover,
+.btn-danger:not(:disabled):not(.disabled).active {
+  border-color: $danger-border !important;
+}
+
+.btn-danger:hover {
+  background-color: $danger-hover;
+}
+
+.btn-danger:not(:disabled):not(.disabled).active,
+.btn-danger:not(:disabled):not(.disabled):active,
+.show > .btn-danger.dropdown-toggle {
+  background-color: $danger-down !important;
+}
+
+// Info
+
+.btn-info,
+.btn-info:hover,
+.btn-info:not(:disabled):not(.disabled).active {
+  border-color: $info-border !important;
+}
+
+.btn-info:hover {
+  background-color: $info-hover;
+}
+
+.btn-info:not(:disabled):not(.disabled).active,
+.btn-info:not(:disabled):not(.disabled):active,
+.show > .btn-info.dropdown-toggle {
+  background-color: $info-down !important;
+}
+
+// Light
+
+.btn-light,
+.btn-light:hover,
+.btn-light:not(:disabled):not(.disabled).active {
+  border-color: $light-border !important;
+}
+
+.btn-light:hover {
+  background-color: $light-hover;
+}
+
+.btn-light:not(:disabled):not(.disabled).active,
+.btn-light:not(:disabled):not(.disabled):active,
+.show > .btn-light.dropdown-toggle {
+  background-color: $light-down !important;
+}
+
+// Dark
+
+.btn-dark,
+.btn-dark:hover,
+.btn-dark:not(:disabled):not(.disabled).active {
+  border-color: $dark-border !important;
+}
+
+.btn-dark:hover {
+  background-color: $dark-hover;
+}
+
+.btn-dark:not(:disabled):not(.disabled).active,
+.btn-dark:not(:disabled):not(.disabled):active,
+.show > .btn-dark.dropdown-toggle {
+  background-color: $dark-down !important;
+}
+
+/*--------------------------------------------------------------------------------------
+    4. Outline Buttons
+---------------------------------------------------------------------------------------*/
+// Primary
+
+.btn-outline-primary {
+  color: $primary-border;
+}
+
+.btn-outline-primary:hover {
+  background-color: $primary-hover;
+}
+
+// Secondary
+
+.btn-outline-secondary {
+  color: $secondary-border;
+}
+
+.btn-outline-secondary:hover {
+  background-color: $secondary-hover;
+}
+
+// Warning
+
+.btn-outline-warning {
+  color: $warning-border;
+}
+
+.btn-outline-warning:hover {
+  background-color: $warning-hover;
+  color: $white;
+}
+
+// Success
+
+.btn-outline-success {
+  color: $success-border;
+}
+
+.btn-outline-success:hover {
+  background-color: $success-hover;
+}
+
+// Danger
+
+.btn-outline-danger {
+  color: $danger-border;
+}
+
+.btn-outline-danger:hover {
+  background-color: $danger-hover;
+}
+
+// Info
+
+.btn-outline-info {
+  color: $info-border;
+}
+
+.btn-outline-info:hover {
+  background-color: $info-hover;
+}
+
+// Light
+
+.btn-outline-light {
+  color: $light-border;
+}
+
+.btn-outline-light:hover {
+  background-color: $light-hover;
+}
+
+// Dark
+
+.btn-outline-dark {
+  color: $dark-border;
+  border-color: $dark-border;
+}
+
+.btn-outline-dark:hover {
+  background-color: $dark-hover;
+}
+
+/*--------------------------------------------------------------------------------------
+    5. Modals
+---------------------------------------------------------------------------------------*/
+
+
+.modal-title {
+  color: $primary;
+  text-transform: uppercase;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
+.modal-header {
+  padding: .5rem 1rem;
+}
+
+.modal-body {
+  padding-top: 2rem;
+}
+
+// "EINSTELLUNGEN" modal
+.settings-modal {
+  min-height: 480px;
+}
+
+@include media-breakpoint-down(sm) {
+  .modal-dialog {
+    min-width: 100%;
+    margin: 0;
+  }
+
+  .modal-dialog .modal-content {
+    min-height: 100vh;
+  }
+
+  .settings-modal {
+    min-height: 100vh;
+  }
+}
+
+/*--------------------------------------------------------------------------------------
+    6. Login Page
+---------------------------------------------------------------------------------------*/
+
+.login {
+  background: $login-background;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+// Necessary to position login card vertically centered
+.login-card-container {
+  height: 100vh;
+}
+
+.login-card {
+  width: 20rem;
+  height: 28rem;
+}
+
+/*--------------------------------------------------------------------------------------
+    7. Logos
+---------------------------------------------------------------------------------------*/
+
+.logo {
+  background-image: $logo;
+  background-repeat: no-repeat;
+  width: auto;
+  height: 1.25rem;
+}
+
+/*--------------------------------------------------------------------------------------
+    8. Icons
+---------------------------------------------------------------------------------------*/
+
+.icon-big {
+  vertical-align: middle;
+  font-size: 1.3rem;
+}
+
+.icon-bigger {
+  font-size: 2rem;
+}
+
+.icon-huge {
+  font-size: 3rem;
+}
+
+/*--------------------------------------------------------------------------------------
+    9. Nav tabs
+---------------------------------------------------------------------------------------*/
+
+/* .nav-tabs {
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: -webkit-box;
+    display: -moz-box;
+
+} */
+
+/*--------------------------------------------------------------------------------------
+    10. Tables
+---------------------------------------------------------------------------------------*/
+
+// Bootstrap table pagination
+.page-list {
+  margin-left: 1rem;
+}
+
+.fixed-table-pagination {
+  margin-top: 1rem;
+}
+
+/*--------------------------------------------------------------------------------------
+    11. Alerts
+---------------------------------------------------------------------------------------*/
+
+.alert {
+  color: white;
+  border-radius: 0;
+}
+
+/*--------------------------------------------------------------------------------------
+    12. Color testing
+---------------------------------------------------------------------------------------*/
+
+// This only for the test page test_components.html
+
+.color-test {
+  width: 6rem;
+  height: 6rem;
+}
+
+.color-gray-100 {
+  background-color: $gray-100;
+}
+
+.color-gray-200 {
+  background-color: $gray-200;
+}
+
+.color-gray-300 {
+  background-color: $gray-300;
+}
+
+.color-gray-400 {
+  background-color: $gray-400;
+}
+
+.color-gray-500 {
+  background-color: $gray-500;
+}
+
+.color-gray-600 {
+  background-color: $gray-600;
+}
+
+.color-gray-700 {
+  background-color: $gray-700;
+}
+
+.color-gray-800 {
+  background-color: $gray-800;
+}
+
+.color-gray-900 {
+  background-color: $gray-900;
+}
+
+.color-blue {
+  background-color: $blue;
+}
+
+.color-cyan {
+  background-color: $cyan;
+}
+
+.color-red {
+  background-color: $red;
+}
+
+.color-yellow {
+  background-color: $yellow;
+}
+
+.color-green {
+  background-color: $green;
+}
+
+// Button Color Tester
+
+.color-primary-dark {
+  background-color: $primary-down;
+}
+
+.color-primary-bright {
+  background-color: $primary-border;
+}
+
+.color-primary-hover {
+  background-color: $primary-hover;
+}
+
+
+.color-secondary-dark {
+  background-color: $secondary-down;
+}
+
+.color-secondary-bright {
+  background-color: $secondary-border;
+}
+
+.color-secondary-hover {
+  background-color: $secondary-hover;
+}
+
+
+.color-success-dark {
+  background-color: $success-down;
+}
+
+.color-success-bright {
+  background-color: $success-border;
+}
+
+.color-success-hover {
+  background-color: $success-hover;
+}
+
+
+.color-warning-dark {
+  background-color: $warning-down;
+}
+
+.color-warning-bright {
+  background-color: $warning-border;
+}
+
+.color-warning-hover {
+  background-color: $warning-hover;
+}
+
+
+.color-danger-dark {
+  background-color: $danger-down;
+}
+
+.color-danger-bright {
+  background-color: $danger-border;
+}
+
+.color-danger-hover {
+  background-color: $danger-hover;
+}
+
+
+.color-info-dark {
+  background-color: $info-down;
+}
+
+.color-info-bright {
+  background-color: $info-border;
+}
+
+.color-info-hover {
+  background-color: $info-hover;
+}
+
+
+.color-light-dark {
+  background-color: $light-down;
+}
+
+.color-light-bright {
+  background-color: $light-border;
+}
+
+.color-light-hover {
+  background-color: $light-hover;
+}
+
+.color-dark-dark {
+  background-color: $dark-down;
+}
+
+.color-dark-bright {
+  background-color: $dark-border;
+}
+
+.color-dark-hover {
+  background-color: $dark-hover;
+}

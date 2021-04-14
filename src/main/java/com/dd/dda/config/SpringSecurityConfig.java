@@ -63,7 +63,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8080", "https://direktwahl.com/", "http://172.16.1.40")); //TODO durch ip des Servers ersetzen
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8080", "https://abstimmung.demokratiedirekt.info/", "http://128.0.64.34"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));

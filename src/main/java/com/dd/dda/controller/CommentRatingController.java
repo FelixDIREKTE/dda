@@ -30,29 +30,17 @@ public class CommentRatingController {
     }
 
 
-
-    /*@GetMapping("/{id}/getVotes")
-    @PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<Map<Object, Integer>> getVotes(@PathVariable(value = "id") Long id,
-                                                                    @RequestParam(value = "comment_id") Long comment_id
-    ) {
-        log.info("Enter getVotes");
-        Map<Object, Integer> result = commentRatingService.getVotes(comment_id);
-        return ResponseEntity.ok(result);
-    }*/
-
-    @GetMapping("/{id}/getVotesAsString")
+    /*@GetMapping("/{id}/getVotesAsString")
     @PreAuthorize("hasAuthority('User') and principal.id == #id")
     public ResponseEntity<String> getVotesAsString(@PathVariable(value = "id") Long id,
                                                                     @RequestParam(value = "comment_id") Long comment_id
     ) {
-        log.info("Enter getVotes");
         Map<Object, Integer> result0 = commentRatingService.getVotes(comment_id);
         int repl = commentService.getNrOfReplies(comment_id);
         result0.put("REPLIES", repl);
         String result = utilService.mapToString(result0);
         return ResponseEntity.ok(result);
-    }
+    }*/
 
 
     @GetMapping("/{id}/getVotesAsStringBundle")

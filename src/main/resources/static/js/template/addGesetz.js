@@ -79,7 +79,7 @@ $('#customFile2').on('change', function () {
 
 $("#uploadImportData2").off().click(function () {
     if(passedBill == null){
-        showErrorToast("Bitte erst Änderungen speichern");
+        showErrorToast("Der Beitrag muss angelegt werden bevor Du Dateien hochladen kannst. Klicke dafür auf 'Speichern'.");
     } else {
         logoutIfExpired();
         $("#uploadImportData2, #customFile2").attr("disabled", true);
@@ -196,6 +196,19 @@ function sendResultNotification(){
 
 
 function createBill(){
+    if($("#inputtitle").val().length > 200){
+        showErrorToast("Titel zu lang");
+        return;
+    }
+    if($("#inputtitle").val().length == 0){
+        showErrorToast("Titel erforderlich");
+        return;
+    }
+    if($("#inputabstract").val().length == 0){
+        showErrorToast("Zusammenfassung erforderlich");
+        return;
+    }
+
     logoutIfExpired();
     $.ajax({
         url: "/bills/" + DDA.Cookie.getSessionUser().id + "/create",
@@ -215,11 +228,15 @@ function createBill(){
 
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            showErrorToast("Etwas lief schief. Sind Titel, Zusammenfassung und bei Gesetz Datum der Abstimmung gegeben?");
+            showErrorToast("Etwas lief schief. Sind Titel und Zusammenfassung gegeben?");
         },
         success: function (data) {
             passedBill = data;
-            showSuccessToast("Beitrag angelegt");
+            if(passedParliamentRole == 1){
+                showSuccessToast("Deine Initiative wurde erfolgreich angelegt.");
+            } else {
+                showSuccessToast("Beitrag angelegt");
+            }
 
         }
     });

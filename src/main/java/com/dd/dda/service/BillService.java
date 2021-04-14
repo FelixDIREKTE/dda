@@ -71,9 +71,10 @@ public class BillService {
     }
 
     public Bill createNewBill(String title, String abstra, Long userid, long parliament_id, int parliament_role, String inputParty, String inputType, String inputVorgang, String inputDatumVorgelegt, String inputDatumAbstimm, int categoryBits) {
-        if(parliament_role == 0 && (inputDatumAbstimm == null || inputDatumAbstimm.isEmpty())){
+
+        /*if(parliament_role == 0 && (inputDatumAbstimm == null || inputDatumAbstimm.isEmpty())){
             throw new DDAException("Datum der Abstimmung muss gegeben sein");
-        }
+        }*/
 
         Bill bill = new Bill();
         bill.setCreated_time(new Date());

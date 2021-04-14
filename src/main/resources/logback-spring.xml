@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/spring.log}"/>
+    <property name="LOG_PATH" value="/opt/dda/logs"/>
+
+    <appender name="KUBE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
+
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeCallerData>true</includeCallerData>
+            <includeMdc>true</includeMdc>
+            <includeContext>true</includeContext>
+
+            <customFields>{"application": {"name":"@name@", "version":"@version@"}}</customFields>
+
+            <timeZone>Europe/Berlin</timeZone>
+            <version>5</version>
+            <writeVersionAsString>false</writeVersionAsString>
+
+            <fieldNames class="net.logstash.logback.fieldnames.ShortenedFieldNames">
+                <timestamp>timestamp</timestamp>
+                <message>message</message>
+                <version>version</version>
+            </fieldNames>
+        </encoder>
+    </appender>
+
+    <springProfile name="dev">
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+
+        <logger name="info.demokratiedirekt" level="debug"/>
+    </springProfile>
+
+    <springProfile name="!dev">
+        <root level="info">
+<!--            <appender-ref ref="KUBE"/>-->
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+        <logger name="info.demokratiedirekt" level="info"/>
+    </springProfile>
+</configuration>

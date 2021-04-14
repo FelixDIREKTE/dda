@@ -112,7 +112,7 @@
   box-sizing: border-box; }
 
 html {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Calibri, Arial, Helvetica, sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
@@ -122,13 +122,13 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Calibri, Arial, Helvetica, sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
   color: #e6e6e6;
   text-align: left;
-  background-color: #5b9bd4; }
+  background-color: #111111; }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important; }
@@ -220,7 +220,7 @@ pre,
 code,
 kbd,
 samp {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Calibri, Arial, Helvetica, sans-serif;
   font-size: 1em; }
 
 pre {
@@ -464,7 +464,7 @@ mark,
 
 .img-thumbnail {
   padding: 0.25rem;
-  background-color: #5b9bd4;
+  background-color: #111111;
   border: 1px solid #8796a6;
   border-radius: 0.25rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
@@ -2349,7 +2349,7 @@ input[type="button"].btn-block {
   color: #e6e6e6;
   text-align: left;
   list-style: none;
-  background-color: #002341;
+  background-color: #161616;
   background-clip: padding-box;
   border: 1px solid #364049;
   border-radius: 0;
@@ -2495,7 +2495,7 @@ input[type="button"].btn-block {
 .dropdown-item:hover, .dropdown-item:focus {
   color: #f2f2f2;
   text-decoration: none;
-  background-color: #00335e; }
+  background-color: #212121; }
 .dropdown-item.active, .dropdown-item:active {
   color: #f2f2f2;
   text-decoration: none;
@@ -3007,11 +3007,11 @@ select option{
 .custom-range:focus {
   outline: none; }
 .custom-range:focus::-webkit-slider-thumb {
-  box-shadow: 0 0 0 1px #5b9bd4, 0 0 0 0 rgba(34, 114, 155, 0.25); }
+  box-shadow: 0 0 0 1px #111111, 0 0 0 0 rgba(34, 114, 155, 0.25); }
 .custom-range:focus::-moz-range-thumb {
-  box-shadow: 0 0 0 1px #5b9bd4, 0 0 0 0 rgba(34, 114, 155, 0.25); }
+  box-shadow: 0 0 0 1px #111111, 0 0 0 0 rgba(34, 114, 155, 0.25); }
 .custom-range:focus::-ms-thumb {
-  box-shadow: 0 0 0 1px #5b9bd4, 0 0 0 0 rgba(34, 114, 155, 0.25); }
+  box-shadow: 0 0 0 1px #111111, 0 0 0 0 rgba(34, 114, 155, 0.25); }
 .custom-range::-moz-focus-outer {
   border: 0; }
 .custom-range::-webkit-slider-thumb {
@@ -4412,7 +4412,7 @@ a.close.disabled {
   .modal-content {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.7); }
   .modal-sm {
-    max-width: 300px; } }
+    max-width: 400px; } }
 
 @media (min-width: 992px) {
   .modal-lg,
@@ -4428,7 +4428,7 @@ a.close.disabled {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Calibri, Arial, Helvetica, sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -4513,7 +4513,7 @@ a.close.disabled {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Calibri, Arial, Helvetica, sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -7077,7 +7077,7 @@ button.bg-dark:focus {
     margin-left: auto !important; } }
 
 .text-monospace {
-  font-family: Arial, Helvetica, sans-serif, monospace !important; }
+  font-family: Calibri, Arial, Helvetica, sans-serif, monospace !important; }
 
 .text-justify {
   text-align: justify !important; }
@@ -7424,19 +7424,19 @@ a.text-dark:hover, a.text-dark:focus {
     1. Fonts
 ---------------------------------------------------------------------------------------*/
 @font-face {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Calibri, Arial, Helvetica, sans-serif;
   src: url("../webfonts/whitney/whitney-book.woff2") format("woff2"), url("../webfonts/whitney/whitney-book.woff") format("woff");
   font-weight: normal;
   font-style: normal; }
 
 @font-face {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Calibri, Arial, Helvetica, sans-serif;
   src: url("../webfonts/whitney/whitney-semibold.woff2") format("woff2"), url("../webfonts/whitney/whitney-semibold.woff") format("woff");
   font-weight: 600;
   font-style: normal; }
 
 @font-face {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Calibri, Arial, Helvetica, sans-serif;
   src: url("../webfonts/whitney/whitney-bookItalic.woff2") format("woff2"), url("../webfonts/whitney/whitney-bookItalic.woff") format("woff");
   font-weight: normal;
   font-style: italic; }
@@ -7494,13 +7494,16 @@ body {
 /*--------------------------------------------------------------------------------------
     3. Solid Buttons
 ---------------------------------------------------------------------------------------*/
+
+
+
 .btn-primary,
 .btn-primary:hover,
 .btn-primary:not(:disabled):not(.disabled).active {
   border-color: #ffffff !important; }
 
 .btn-primary:hover {
-  background-color: #002341; }
+  background-color: #212121; }
 
 .btn-primary:not(:disabled):not(.disabled).active,
 .btn-primary:not(:disabled):not(.disabled):active,
@@ -7602,11 +7605,16 @@ body {
 /*--------------------------------------------------------------------------------------
     4. Outline Buttons
 ---------------------------------------------------------------------------------------*/
+
+.hovergrey:hover {
+  background-color: #212121; }
+
+
 .btn-outline-primary {
   color: #ffffff; }
 
 .btn-outline-primary:hover {
-  background-color: #002341; }
+  background-color: #212121; }
 
 .btn-outline-secondary {
   color: #b3c0c7; }
@@ -7722,8 +7730,11 @@ body {
 }
 .parltypebtn {
   width: 140px;
-  background: #5b9bd4 !important;
+  background: #111111 !important;
 }
+
+.parltypebtn:hover {
+  background-color: #212121 !important; }
 
 .editbillbtn {
   width: 180px;
@@ -8793,7 +8804,7 @@ Comments
   }
 
   .login {
-    background: #002341 !important;
+    background: #212121 !important;
   }
 
   .replycontainer{
@@ -8953,7 +8964,7 @@ Comments
   height: 27px;
   color: #fff;
   font-size: 1.7rem;
-  font-family: Arial;
+  font-family: Calibri, Arial;
   font-weight: bold;
   text-align: center;
   line-height: 0.1;

@@ -75,11 +75,11 @@ if(!DDA.Cookie.getSessionUser().admin) {
 
     });
 }
-$('#settings').hide();
+//$('#settings').hide();
 
-if(DDA.Cookie.getSessionUser().firstname != null &&  DDA.Cookie.getSessionUser().name != null) {
+/*if(DDA.Cookie.getSessionUser().firstname != null &&  DDA.Cookie.getSessionUser().name != null) {
     $('#userName').html(DDA.Cookie.getSessionUser().firstname + " " + DDA.Cookie.getSessionUser().name);
-}
+}*/
 
 function showHeaderProfilePic() {
     $.ajax({

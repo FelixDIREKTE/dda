@@ -154,15 +154,16 @@ public class Bill {
 
     public void customRankFutureBills(User u, Date today) {
         double categBonus = categBonus(u);
-        double timeBonus = 8640000.0 /*0.1/Tag*/ / (date_vote.getTime() - today.getTime() + 86400000 /*1 Tag */ ) ;
-
+        long timeleft = date_vote == null ? 8640000000L : date_vote.getTime() - today.getTime(); //100 Tage
+        double timeBonus = 8640000.0 /*0.1/Tag*/ / (timeleft + 86400000 /*1 Tag */ ) ;
         customRanking = ranking + categBonus + timeBonus;
 
     }
 
     public void customRankPastBills(User u, Date today) {
         double categBonus = categBonus(u);
-        double timeBonus = (date_vote.getTime() - today.getTime()) / 86400000000.0; //1000 Tage = 1 Ranking weniger
+        long timeleft = date_vote == null ? -8640000000L : date_vote.getTime() - today.getTime();
+        double timeBonus = timeleft / 86400000000.0; //1000 Tage = 1 Ranking weniger
         customRanking = ranking + categBonus + timeBonus;
 
     }

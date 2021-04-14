@@ -61,7 +61,7 @@ public class HtmlConverterService {
     }
 
     private String standardLink(String linkurl, String msg){
-        return "<a href='" + linkurl + "'>" + msg + "</a>";
+        return "<a href='" + linkurl + "' target=\"_blank\" rel=\"noopener noreferrer\">" + msg + "</a>";
     }
 
     private String embeddedLink(String linkurl){

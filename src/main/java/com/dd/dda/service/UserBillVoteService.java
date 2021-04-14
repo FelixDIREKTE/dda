@@ -14,9 +14,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -110,5 +108,28 @@ public class UserBillVoteService {
         List<Long> user_ids = userBillVoteRepository.findIdsOfUsersWhoVotedOn(bill_id);
         Bill bill = billService.getBillById(bill_id);
         notificationService.sendVoteResultNotificationBundle(user_ids, bill);
+    }
+
+    public List<Map<Object, Integer>> getVotesBundle(List<Long> ids) {
+        List<Map<Object, Integer>> result = new ArrayList<>();
+        for(int i = 0; i < ids.size(); i++){
+            result.add(new HashMap<>());
+        }
+        for(int j = 0; j < 2; j++){
+            Boolean v = j == 0;
+            for(int i = 0; i < ids.size(); i++){
+                result.get(i).put(v, 0);
+            }
+            List<Object> crs = userBillVoteRepository.getNrOfVotesFor(ids, v);
+            for(Object o : crs){
+                Object[] u =  (Object[]) o;
+                Long bill_id = ((java.math.BigInteger) u[0]).longValue(); //bill_id
+                Integer count = ((java.math.BigInteger) u[1]).intValue(); //count
+
+                int index = ids.indexOf(bill_id);
+                result.get(index).put(v, count);
+            }
+        }
+        return result;
     }
 }

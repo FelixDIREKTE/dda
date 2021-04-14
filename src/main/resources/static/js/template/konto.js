@@ -73,11 +73,10 @@ function updateDisplay() {
         $('#missingDataHeadline').hide();
     }
 
-
     vss = "" + verifstatus;
     if(vss == "DATANEEDED"){
         //TODO bright mode
-        document.getElementById("sli0").style="color:white;"
+        document.getElementById("sli0").style="color:inherit;";
         document.getElementById("sli1").style="color:grey;"
         document.getElementById("sli2").style="color:grey;"
         //$('#verproofexplanation').show();
@@ -88,7 +87,7 @@ function updateDisplay() {
 
     if(vss == "WAITINGFORVERIF" || vss == "LOCKEDBYADMIN"){
         document.getElementById("sli0").style="color:grey;"
-        document.getElementById("sli1").style="color:white;"
+        document.getElementById("sli1").style="color:inherit;";
         document.getElementById("sli2").style="color:grey;"
     }
 
@@ -97,7 +96,7 @@ function updateDisplay() {
 
         document.getElementById("sli0").style="color:grey;"
         document.getElementById("sli1").style="color:grey;"
-        document.getElementById("sli2").style="color:white;"
+        document.getElementById("sli2").style="color:inherit;";
         $('#verproofcard').hide();
     }  else {
         $('#verproofcard').show();
@@ -139,9 +138,7 @@ function updateDisplay() {
 }
 
 
-if (DDA.Cookie.getThemeSetting() != null && DDA.Cookie.getThemeSetting().theme === "dark") {
-} else {
-}
+
 
 //Import Section
 $('#customFile2').on('change', function () {
@@ -278,9 +275,9 @@ function changePassword(){
 }
 
 
-$('#andergspeichern').off().click(function () {
+/*$('#andergspeichern').off().click(function () {
     updateUser()
-});
+});*/
 
 
 function updateUser(){
@@ -463,7 +460,7 @@ function fillParliamentsSelect(data, parliamentLvl){
 
         var selectParliamentLandtag = document.getElementById("selectParliament" + parliamentLvl)
         var div = document.createElement('option');  //creating element
-        div.textContent = "wählen";         //adding text on the element
+        div.textContent = "";         //adding text on the element
         selectParliamentLandtag.appendChild(div);           //appending the element
         var correctI = -1;
         for(var i = 0; i < data.length; i++) {
@@ -518,6 +515,12 @@ function requestParliamentAccess(parliament_id, parliamentLvl){
 
 $('#parliamentsSaveChanges').off().click(function () {
     logoutIfExpired();
+    updateUser();
+    saveParliaments();
+
+});
+
+function saveParliaments(){
     $.ajax({
         url: "/parliaments/" + DDA.Cookie.getSessionUser().id + "/requestAccess",
         method: "PUT",
@@ -539,15 +542,14 @@ $('#parliamentsSaveChanges').off().click(function () {
                     isParliamentMissing = true;
                 }
                 updateDisplay();
-                showSuccessToast("Parlamente gespeichert");
+                showSuccessToast("Änderungen gespeichert");
             } else {
                 showErrorToast(data);
             }
 
         }
     });
-
-});
+}
 
 
 
@@ -665,62 +667,7 @@ function updateOptUser(){
             }
         }
     });
-
 }
-
-
-/////////////////////////
-///////KATEGORIEN////////
-/////////////////////////
-
-$('#interestSaveChanges').off().click(function () {
-    updateUserInterests()
-});
-
-function initInterests(){
-    $.ajax({
-        url: "/users/" + DDA.Cookie.getSessionUser().id + "/getCategories",
-        method: "GET",
-        async: false,
-        data: {
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            showErrorToast("Etwas lief schief");
-        },
-        success: function (data) {
-            intToCategories(data, "kateg1", "kateg2", "kateg3", "kateg4", "kateg5", "kateg6", "kateg7", "kateg8", "kateg9", "kateg10", "kateg11", "kateg12", "kateg13", "kateg14", "kateg15", "kateg16");
-        }
-    });
-}
-initInterests()
-
-function updateUserInterests(){
-
-    catInt = CategoriesToInt("kateg1", "kateg2", "kateg3", "kateg4", "kateg5", "kateg6", "kateg7", "kateg8", "kateg9", "kateg10", "kateg11", "kateg12", "kateg13", "kateg14", "kateg15", "kateg16");
-
-
-
-    $.ajax({
-        url: "/users/" + DDA.Cookie.getSessionUser().id + "/updateCategories",
-        method: "POST",
-        async: false,
-        data: {
-            "categoryBits":catInt
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            showErrorToast("Etwas lief schief");
-        },
-        success: function (data) {
-            if(data == "ok") {
-                showSuccessToast("Änderungen gespeichert!");
-            } else {
-                showErrorToast(data);
-            }
-        }
-    });
-
-}
-
 
 
 

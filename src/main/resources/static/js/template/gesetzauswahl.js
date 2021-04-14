@@ -9,13 +9,16 @@ $('#backToPrev').off().click(function () {
 title = "";
 if(passedParliamentRole == 0){
     title = passedParliament.name + " - Gesetze";
+    document.getElementById("parlroledescription").innerHTML = "Hier findest Du Gesetze, die im Parlament zur Abstimmung vorliegen. Eure Abstimmung entscheidet, wie die Abgeordneten der DIREKTEn abstimmen werden. ";
 }
 if(passedParliamentRole == 1){
     title = passedParliament.name + " - Initiativen";
     document.getElementById("adminAddBtn").innerHTML = "Initivative einreichen";
+    document.getElementById("parlroledescription").innerHTML = "Hier kannst du Initiativen einreichen oder unterzeichnen. Die Initiativen mit den meisten Unterschriften werden von den Abgeordneten der DIREKTEn im Parlament zur Abstimmung vorgelegt. ";
 }
 if(passedParliamentRole == 2){
     title = passedParliament.name + " - Diskussionen";
+    document.getElementById("parlroledescription").innerHTML = "Hier werden Diskussionen angezeigt. Du kannst deine Ansichten mit anderen Wählern austauschen, Unterstützung für deine Anliegen im Parlament und bei der Formulierung von Initiativen finden, oder Fragen stellen.";
 }
 
 var billSequences = []; // hier wird je Kommentarsektion eine Liste der Kommentare von oben nach unten abgelegt um festzustellen welche gelesen sind
@@ -64,10 +67,10 @@ if((!DDA.Cookie.getSessionUser().admin)) {
 
 
 // Load Settings modal and About modal:
-$('#modalContainer').load('template/settings-modal.html', function () {
+/*$('#modalContainer').load('template/settings-modal.html', function () {
     $('#modalContainer').append('<div id="holderForNextLoad" />');
     $('#holderForNextLoad').load('template/about-modal.html');
-});
+});*/
 
 logoutIfExpired();
 
@@ -158,7 +161,6 @@ function showBills(data) {
         billContainer.removeChild(billContainer.lastChild);
     }
 
-    //TODO billTileTemplate sichtbar, unsichtbar
     var billTileTemplate = document.querySelector('#billTileTemplate');
     for (var i = 0; i < data.length; i++) {
         var clone = billTileTemplate.cloneNode(true);
@@ -187,8 +189,8 @@ function showBills(data) {
         });
 
     }
+    //loadBillVotesBundle(billids);
     $('#billTileTemplate').hide();
-    //billTileTemplate.parentNode.removeChild(billTileTemplate);
     billContainer.style = "display:block;"
 
 }
@@ -274,15 +276,20 @@ function loadReadbills(){
 loadReadbills();
 
 $("#searchBtn").off().click(function () {
+    updateSearch();
+});
+
+function updateSearch(){
     searchterm = $("#searchField").val();
     if(searchterm == "") {
         getRankedBills();
     } else {
         getBillSearch(searchterm);
     }
-});
+}
 
 function getBillSearch(searchterm){
+
     $.ajax({
         url: "/bills/" + DDA.Cookie.getSessionUser().id + "/getBillSearch",
         method: "GET",
@@ -300,6 +307,147 @@ function getBillSearch(searchterm){
         }
     });
 }
+
+/////////////////////////////////////
+////////VOTES LADEN///////////////////
+////////////////////////////////////////
+
+
+
+
+
+
+function loadBillVotesBundle(billids){
+
+    if(billids.length > 0) {
+
+        $.ajax({
+            url: "/userBillVotes/" + DDA.Cookie.getSessionUser().id + "/getVotesAsStringBundle",
+            method: "GET",
+            async: false,
+            data: {
+                "bill_ids": arrayToString(billids)
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                showErrorToast("Etwas lief schief");
+            },
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    datamap = stringToMap(data[i]);
+                    //allCommentVotes.set(commentids[i], datamap);
+                    //setCommentVotesText(commentids[i]);
+                }
+            }
+        });
+
+        /*$.ajax({
+            url: "/commentrating/" + DDA.Cookie.getSessionUser().id + "/getUserVoteBundle",
+            method: "GET",
+            async: false,
+            data: {
+                "comment_ids": arrayToString(commentids)
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                showErrorToast("Etwas lief schief");
+            },
+            success: function (data) {
+                for (var i = 0; i < commentids.length; i++) {
+                    ownCommentVotes.set(commentids[i], data[i]);
+                    if (data[i] == "") {
+                        ownCommentVotes.set(commentids[i], null);
+                    }
+                    updateCommentVoteButtons(commentids[i]);
+                }
+            }
+        });*/
+        //loadCommentVotes(commentids[i]);
+    }
+
+}
+
+
+
+
+
+
+
+
+
+/////////////////////////
+///////KATEGORIEN////////
+/////////////////////////
+
+$('#interestSaveChanges').off().click(function () {
+    updateUserInterests();
+    updateSearch();
+});
+
+function initInterests(){
+    $.ajax({
+        url: "/users/" + DDA.Cookie.getSessionUser().id + "/getCategories",
+        method: "GET",
+        async: false,
+        data: {
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            showErrorToast("Etwas lief schief");
+        },
+        success: function (data) {
+            intToCategories(data, "kateg1", "kateg2", "kateg3", "kateg4", "kateg5", "kateg6", "kateg7", "kateg8", "kateg9", "kateg10", "kateg11", "kateg12", "kateg13", "kateg14", "kateg15", "kateg16");
+        }
+    });
+}
+initInterests()
+
+function updateUserInterests(){
+
+    catInt = CategoriesToInt("kateg1", "kateg2", "kateg3", "kateg4", "kateg5", "kateg6", "kateg7", "kateg8", "kateg9", "kateg10", "kateg11", "kateg12", "kateg13", "kateg14", "kateg15", "kateg16");
+
+
+
+    $.ajax({
+        url: "/users/" + DDA.Cookie.getSessionUser().id + "/updateCategories",
+        method: "POST",
+        async: false,
+        data: {
+            "categoryBits":catInt
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            showErrorToast("Etwas lief schief");
+        },
+        success: function (data) {
+            if(data == "ok") {
+                //showSuccessToast("Änderungen gespeichert!");
+            } else {
+                showErrorToast(data);
+            }
+        }
+    });
+
+}
+
+var categories = document.getElementById("categories");
+var categoriesHeadline = document.getElementById("categoriesHeadline");
+var showCateg = false;
+
+$('#categoriesHeadline').off().click(function () {
+    toggleShowCategories();
+});
+function toggleShowCategories(){
+    if(showCateg){
+        showCateg=false;
+        categories.style="display:none;"
+        categoriesHeadline.innerText="Themengebiete (anzeigen)"
+    } else {
+        showCateg=true;
+        categories.style="display:block;"
+        categoriesHeadline.innerText="Themengebiete (einklappen)"
+
+    }
+}
+
+
+
 
 ///////////////////////
 //////SHOW/////////////

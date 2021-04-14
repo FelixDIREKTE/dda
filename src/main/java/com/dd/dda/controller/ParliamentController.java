@@ -81,7 +81,7 @@ public class ParliamentController {
     ) {
         String plz = userService.getUserByIdUnencrypted(id).getZipcode();
         if(plz == null){
-            return ResponseEntity.ok("Bitte zuerst PLZ angeben und Änderungen speichern");
+            return ResponseEntity.ok("Bei Angabe der Parlamente wird auch eine PLZ benötigt");
         }
         List<Long> parliamentIds = Arrays.asList(parliament_id3, parliament_id4, parliament_id5, parliament_id6);
         if(!parliamentService.parliamentsConsistentWithZipcode(parliamentIds, plz)){

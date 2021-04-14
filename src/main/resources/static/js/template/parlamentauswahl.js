@@ -10,6 +10,9 @@ $('#footerBar').fadeIn();
 $('#modalContainer').load('template/settings-modal.html', function () {
     $('#modalContainer').append('<div id="holderForNextLoad" />');
     $('#holderForNextLoad').load('template/about-modal.html');
+
+    $('#modalContainer').append('<div id="holderForNextLoad1" />');
+    $('#holderForNextLoad1').load('template/help-modal.html');
 });
 
 //alert("1");

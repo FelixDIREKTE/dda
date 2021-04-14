@@ -1,0 +1,212 @@
+/*
+ *  Override of Bootstrap variables only for DARK theme
+ *
+ *  Table of contents:
+ *
+ *   1. Main Bootstrap Colors
+ *   2. Button Border Colors
+ *   3. Button Down Colors
+ *   4. Button Hover Colors  
+ *   5. General Styles
+ *   6. Inputs
+ *   7. Cards
+ *   8. Modals
+ *   9. Paginations
+ *  10. Dropdowns
+ *  11. Alerts
+ *  12. Popovers
+ *  13. Progress Bars
+ *  14. Tables
+ *  15. Navs
+ *
+ */
+
+/*--------------------------------------------------------------------------------------
+    1. Main Bootstrap colors
+---------------------------------------------------------------------------------------*/
+
+$gray-100: hsl(210, 15%, 78%);
+$gray-200: hsl(210, 15%, 69%);
+$gray-300: hsl(210, 15%, 59%);
+$gray-400: hsl(210, 15%, 46%);
+$gray-500: hsl(210, 15%, 41%);
+$gray-600: hsl(210, 15%, 29%);
+$gray-700: hsl(210, 15%, 25%);
+$gray-800: hsl(210, 15%, 18%);
+$gray-900: hsl(210, 15%, 13%);
+
+$blue: hsl(200, 64%, 37%);
+$cyan: hsl(180, 80%, 38%);
+$red: hsl(357, 73%, 57%);
+$yellow: hsl(45, 64%, 52%);
+$green: hsl(135, 46%, 50%);
+$white: hsl(0, 0%, 95%);
+$black: hsl(0, 0%, 0%);
+
+/*--------------------------------------------------------------------------------------
+    2. Button Border Colors
+---------------------------------------------------------------------------------------*/
+
+$primary-border: hsl(200, 100%, 82%);
+$secondary-border: hsl(200, 15%, 74%);
+$success-border: hsl(136, 100%, 85%);
+$warning-border: hsl(46, 100%, 84%);
+$danger-border: hsl(358, 100%, 87%);
+$info-border: hsl(180, 100%, 80%);
+$light-border: hsl(200, 15%, 59%);
+$dark-border: hsl(200, 15%, 29%);
+
+/*--------------------------------------------------------------------------------------
+    3. Button Down Colors
+---------------------------------------------------------------------------------------*/
+
+$primary-down: hsl(200, 67%, 18%);
+$secondary-down: hsl(200, 15%, 22%);
+$success-down: hsl(135, 54%, 36%);
+$warning-down: hsl(45, 59%, 41%);
+$danger-down: hsl(357, 60%, 40%);
+$info-down: hsl(180, 73%, 30%);
+$light-down: hsl(200, 15%, 31%);
+$dark-down: hsl(200, 15%, 11%);
+
+/*--------------------------------------------------------------------------------------
+    4. Button Hover Colors  
+---------------------------------------------------------------------------------------*/
+
+$primary-hover: hsl(200, 64%, 56%);
+$secondary-hover: hsl(200, 15%, 50%);
+$success-hover: hsl(135, 71%, 62%);
+$warning-hover: hsl(45, 88%, 66%);
+$danger-hover: hsl(357, 100%, 70%);
+$info-hover: hsl(180, 80%, 46%);
+$light-hover:hsl(200, 15%, 50%);
+$dark-hover: hsl(200, 15%, 20%);
+
+/*--------------------------------------------------------------------------------------
+    5. General Styles
+---------------------------------------------------------------------------------------*/
+
+$body-color: hsl(0, 0%, 90%);
+$body-bg: hsl(200, 20%, 10%);
+
+$hr-border-color: $gray-700;
+
+$link-color: hsl(200, 100%, 82%);
+
+$light: $gray-400;
+$dark: $gray-900;
+
+$btn-disabled-opacity: 0.5;
+
+//Close Icon
+$close-color: $link-color;
+
+//List Groups
+$list-group-bg: $gray-700;
+
+$border-color: $gray-600;
+
+
+/*--------------------------------------------------------------------------------------
+    6. Inputs
+---------------------------------------------------------------------------------------*/
+
+$input-color: $gray-100;
+$input-bg: $gray-800;
+$input-border-color: $gray-500;
+
+$input-focus-bg: $gray-700;
+$input-placeholder-color: $gray-400;
+
+$input-group-addon-bg: $gray-600;
+$input-group-addon-color: $gray-100;
+$input-disabled-bg: $gray-900;
+
+/*--------------------------------------------------------------------------------------
+    7. Cards
+---------------------------------------------------------------------------------------*/
+
+$card-bg: $gray-900;
+$card-border-color: $gray-700;
+$card-cap-bg: $gray-800;
+
+/*--------------------------------------------------------------------------------------
+    8. Modals
+---------------------------------------------------------------------------------------*/
+
+$modal-content-bg: hsl(210, 15%, 10%);
+$modal-content-border-color: $gray-600;
+$modal-header-border-color: $gray-600;
+$modal-footer-border-color: $gray-600;
+$modal-backdrop-opacity: .75;
+$modal-header-padding-y: .7rem;
+$modal-content-border-radius: 0;
+$modal-content-box-shadow-sm-up: 0 .5rem 1rem rgba($black, .7);
+
+/*--------------------------------------------------------------------------------------
+    9. Paginations
+---------------------------------------------------------------------------------------*/
+
+$pagination-bg: $gray-700;
+$pagination-border-color: $gray-500;
+
+$pagination-hover-bg: $gray-600;
+$pagination-hover-color: $white;
+
+$pagination-disabled-bg: $gray-800;
+$pagination-disabled-border-color: $gray-600;
+
+$pagination-active-border-color: $gray-500;
+
+/*--------------------------------------------------------------------------------------
+    10. Dropdowns
+---------------------------------------------------------------------------------------*/
+
+$dropdown-bg: $gray-800;
+$dropdown-border-color: $gray-700;
+$dropdown-link-color: $gray-100;
+
+$dropdown-link-hover-bg: $gray-700;
+$dropdown-link-hover-color: $white;
+
+/*--------------------------------------------------------------------------------------
+    11. Alerts
+---------------------------------------------------------------------------------------*/
+
+$alert-bg-level: 0;
+$alert-border-level: -9;
+$alert-color-level: 10;
+
+/*--------------------------------------------------------------------------------------
+    12. Popovers
+---------------------------------------------------------------------------------------*/
+
+$popover-bg: $gray-800;
+$popover-border-color: $gray-500;
+$popover-box-shadow: 0 .25rem .5rem rgba($black, .5);
+$popover-header-bg: $gray-600;
+
+/*--------------------------------------------------------------------------------------
+    13. Progress Bars
+---------------------------------------------------------------------------------------*/
+
+$progress-bg: $gray-700;
+$progress-border-radius: 1rem;
+
+/*--------------------------------------------------------------------------------------
+    14. Tables
+---------------------------------------------------------------------------------------*/
+
+$table-cell-padding: 1rem;
+$table-border-color: $gray-600;
+
+/*--------------------------------------------------------------------------------------
+    15. Navs
+---------------------------------------------------------------------------------------*/
+
+$nav-tabs-border-color: $gray-600;
+$nav-tabs-border-radius: 0;
+$nav-tabs-link-hover-border-color: $gray-200 $gray-200 $nav-tabs-border-color;
+$nav-tabs-link-active-color: $gray-700;
+$nav-tabs-link-active-bg: $gray-900;
+$nav-tabs-link-active-border-color: $gray-600 $gray-600 $nav-tabs-link-active-bg;

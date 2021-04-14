@@ -23,7 +23,7 @@ public interface BillRepository  extends JpaRepository<Bill, Long> {
     @Query(value = "select * from bill WHERE parliament_id = :parliament_id and parliament_role = :parliament_role and date_vote <= :today order by date_vote desc", nativeQuery = true)
     List<Bill> getPastBillsForParliamentOrderedByDateVote(Long parliament_id, Long parliament_role, Date today);
 
-    @Query(value = "select * from bill WHERE parliament_id = :parliament_id and parliament_role = :parliament_role and date_vote > :today  order by date_vote asc", nativeQuery = true)
+    @Query(value = "select * from bill WHERE parliament_id = :parliament_id and parliament_role = :parliament_role and (date_vote is null or date_vote > :today)  order by date_vote asc", nativeQuery = true)
     List<Bill> getFutureBillsForParliamentOrderedByDateVote(Long parliament_id, Long parliament_role, Date today);
 
     @Query(value = "select * from bill WHERE date_vote = :day", nativeQuery = true)

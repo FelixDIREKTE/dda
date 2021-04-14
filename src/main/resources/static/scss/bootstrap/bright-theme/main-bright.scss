@@ -1,0 +1,23 @@
+/*
+ *  Build BRIGHT Bootstrap theme
+ */
+
+// Override of Bootstrap variables for bright and dark theme
+@import "../bootstrap-overrides-global";
+
+// Override of Bootstrap variables only for bright theme
+@import "bootstrap-overrides-bright";
+
+// Get all Bootstrap styles to apply variable overrides
+@import "../bootstrap-import.scss";
+
+// Custom CSS styles only for bright theme
+@import "custom-bright";
+// Custom CSS styles for bright and dark theme
+@import "../custom-global";
+
+// Date Range Pocker variable overrides only for bright theme
+@import "daterangepicker-overrides-bright";
+
+// Styles for Date Range Picker for dark and bright theme to apply overrides
+@import "../daterangepicker-global";
