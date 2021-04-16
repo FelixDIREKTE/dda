@@ -152,6 +152,7 @@ function showBills(data) {
         billids.push(data[i].id);
     }
     billSequences.push(billids);
+    allBillVotes = loadBillVotesBundle(billids);
 
     $('#billTileTemplate').show();
 
@@ -167,11 +168,26 @@ function showBills(data) {
         //TODO das hier muss geändert werden falls billTileTemplate geändert wird
 
         clone.children[0].children[0].textContent = data[i].name;
+
+        //Votes
+        datamap = stringToMap(allBillVotes[i]);
+        yv = datamap.get("true");
+        nv = datamap.get("false");
+        votestring = "";
+        if(yv > 0){
+            votestring = votestring + "  <i class=\"far fa-thumbs-up\"></i> " + yv + " ";
+        }
+        if(nv > 0){
+            votestring = votestring + " &nbsp; &nbsp; &nbsp;  <i class=\"far fa-thumbs-down\"></i> " + nv;
+        }
+
+        clone.children[0].children[1].innerHTML = votestring;
+
         if(data[i].date_vote != null) {
-            clone.children[0].children[1].textContent = faellig(data[i].date_vote);
+            clone.children[0].children[2].textContent = faellig(data[i].date_vote);
         }
         if((DDA.Cookie.getSessionUser().admin) && (DDA.Cookie.getSessionUser().id==1)){
-            clone.children[0].children[2].textContent = "" + data[i].readCount + ";" + data[i].read_detail_count + ";" + data[i].relative_value + ";" + data[i].ranking;
+            clone.children[0].children[3].textContent = "R" + data[i].readCount + ";RD" + data[i].read_detail_count + ";rV" + data[i].relative_value + ";Ra" + data[i].ranking +";cuRa" + data[i].customRanking;
         }
         bid0 = "btn" + i;
         clone.id = bid0;
@@ -189,7 +205,7 @@ function showBills(data) {
         });
 
     }
-    //loadBillVotesBundle(billids);
+
     $('#billTileTemplate').hide();
     billContainer.style = "display:block;"
 
@@ -318,7 +334,7 @@ function getBillSearch(searchterm){
 
 
 function loadBillVotesBundle(billids){
-
+    result = [];
     if(billids.length > 0) {
 
         $.ajax({
@@ -332,11 +348,13 @@ function loadBillVotesBundle(billids){
                 showErrorToast("Etwas lief schief");
             },
             success: function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    datamap = stringToMap(data[i]);
+
+                //for (var i = 0; i < data.length; i++) {
+                    //datamap = stringToMap(data[i]);
                     //allCommentVotes.set(commentids[i], datamap);
                     //setCommentVotesText(commentids[i]);
-                }
+                //}
+                result = data;
             }
         });
 
@@ -362,6 +380,7 @@ function loadBillVotesBundle(billids){
         });*/
         //loadCommentVotes(commentids[i]);
     }
+    return result;
 
 }
 
@@ -451,6 +470,18 @@ function toggleShowCategories(){
 
 ///////////////////////
 //////SHOW/////////////
+
+
+
+$(':input:not(textarea)').keypress(function(event) {
+    if(event.keyCode == 13){
+        updateSearch();
+        return false;
+    }
+    return true;
+});
+
+
 document.getElementById("maincontainer").style.display = "block";
 ///////THE END///////////
 /////////////////////////

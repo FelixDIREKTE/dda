@@ -1,6 +1,7 @@
 package com.dd.dda.service;
 
 import com.dd.dda.model.CommentRatingEnum;
+import com.dd.dda.model.VerificationStatus;
 import com.dd.dda.model.exception.DDAException;
 import com.dd.dda.model.idclasses.CommentRatingId;
 import com.dd.dda.model.sqldata.Comment;
@@ -19,11 +20,13 @@ public class CommentRatingService {
     private final CommentRatingRepository commentRatingRepository;
     private final CommentService commentService;
     private final UserService userService;
+    private final NotificationService notificationService;
 
-    public CommentRatingService(CommentRatingRepository commentRatingRepository, CommentService commentService, UserService userService) {
+    public CommentRatingService(CommentRatingRepository commentRatingRepository, CommentService commentService, UserService userService, NotificationService notificationService) {
         this.commentRatingRepository = commentRatingRepository;
         this.commentService = commentService;
         this.userService = userService;
+        this.notificationService = notificationService;
     }
 
 
@@ -89,7 +92,15 @@ public class CommentRatingService {
         }
         cr.setRating(vote);
         saveUserBilVote(cr);
+
+        if(vote.getValue() <= 2 && userService.getUserByIdUnencrypted(user_id).getVerificationstatus() == VerificationStatus.VERIFIED) {
+            notificationService.sendFirstLikeNotification(c);
+        }
+
+
         return cr;
+
+
 
     }
 

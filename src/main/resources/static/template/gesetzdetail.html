@@ -230,20 +230,22 @@
                     <meta name="keywords" content="chat, user, comments, wide" />
                     <!--<title>Comment Section With Flexbox</title>-->
                     <link rel="stylesheet" href="css/comment-styles.css">
-                    <ul class="comment-section" id="writeCommentSection">
+                    <ul class="comment-section" id="writeCommentSection" style="display:none;">
 
 
                         <li class="write-new">
 
                             <textarea placeholder="kommentieren" name="comment" id="inputComment" class=""></textarea>
                             <div class="write-new-sub">
-                                <img src="img/defaultavatar.png" width="35" alt="Kommentieren" title="defaultavatar" id="usercommentprofilepic" />
+                                <img src="img/defaultavatar.png" width="35" alt="Kommentieren" id="usercommentprofilepic" />
 
+                                <!--
                                 <button id="commentContraBtn" type="button"
-                                        class="btn btn-outline-primary mt-3 commentButton" id="postContraComment">Contra kommentieren
+                                        class="btn btn-outline-primary mt-3 commentButton">Contra kommentieren
                                 </button>
+                                -->
                                 <button id="commentProBtn" type="button"
-                                        class="btn btn-outline-primary mt-3 commentButton" id="postProComment">Pro kommentieren
+                                        class="btn btn-outline-primary mt-3 commentButton">Kommentieren
                                 </button>
 
 
@@ -257,15 +259,17 @@
                     </ul>
 
                     <form class="form-inline form-inline-top">
-                        <div class="comment-section-half">
-                            <p class="centertext">Pro</p>
+                        <div class="comment-section-half" id="proCommentSectionHalf">
+                            <button id="writeCommentProBtn" type="button"
+                                    class="btn btn-outline-primary mt-3 openCommentButton">Pro kommentieren
+                            </button>
                             <ul class="comment-section" id="proCommentSection">
 
 
 
                                 <li class="comment user-comment" id="commenttemplate" style="display: none;">
                                     <a class="avatar"> <!-- href="#"-->
-                                        <img src="img/defaultavatar.png"  alt="Profile Avatar" title="DefaultAvatar" />
+                                        <img src="img/defaultavatar.png"  alt="Profile Avatar"/>
                                     </a>
 
                                     <div class="textcolumn">
@@ -301,9 +305,6 @@
                                                 <a class="pointer">   Antworten   </a>
                                             </div>
 
-                                            <div class="ratingpanel">
-                                                <a class="pointer"></a>
-                                            </div>
 
 
                                         </div>
@@ -319,8 +320,11 @@
 
                             </ul>
                         </div>
-                        <div class="comment-section-half">
-                            <p class="centertext">Contra</p>
+                        <div class="comment-section-half" id="contraCommentSectionHalf">
+                            <button id="writeCommentContraBtn" type="button"
+                                    class="btn btn-outline-primary mt-3 openCommentButton">Contra kommentieren
+                            </button>
+                            <div class="replycontainer"></div>
                             <ul class="comment-section" id="contraCommentSection">
                             </ul>
                         </div>

@@ -70,7 +70,6 @@ moment.locale("de", {
 const RP_LIKE = 0;
 const RP_DELETE = 1;
 const RP_REPLY = 2;
-const RP_SECRET = 3;
 const RP_DP_SOURCE = 2;
 const RP_DP_POINT = 0;
 const RP_DP_PROP = 1;
@@ -339,3 +338,7 @@ function stringToMap(s){
     }
     return result;
 }
+
+$(':input:not(textarea)').keypress(function(event) {
+    return event.keyCode != 13;
+});

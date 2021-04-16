@@ -3,6 +3,7 @@ package com.dd.dda.service;
 import com.dd.dda.model.sqldata.Bill;
 import com.dd.dda.model.sqldata.Comment;
 import com.dd.dda.model.sqldata.Notification;
+import com.dd.dda.model.sqldata.User;
 import com.dd.dda.repository.NotificationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,9 @@ public class NotificationService {
         notification.setReceiver_user_id(user_id);
         notification.setMessage(msg);
         notification.setCreated_time(new Date());
-        notificationRepository.save(notification);
+        if(notificationRepository.findByMsg(user_id, msg).isEmpty()){
+            notificationRepository.save(notification);
+        }
     }
 
     //sende wenn verifizierter Nutzer antowrtet,
@@ -103,6 +106,24 @@ public class NotificationService {
         }
         notificationRepository.saveAll(result);
     }
+
+
+    public void sendFirstLikeNotification(Comment comment){
+        String cmttxt = htmlConverterService.htmlToString(comment.getText());
+        cmttxt = comment.getText().length() < 128 ? cmttxt : cmttxt.substring(0, 128) + "...";
+        String msg = "Jemandem gefällt dein Kommentar zu \"" +comment.getBill().getName()+
+                "\": \"" + cmttxt + "\"";
+        sendNotification(comment.getUser().getId(), msg); //TODO nur beim 1.
+    }
+
+    public void sendFollowsNotification(User follower, User followee){
+        String msg = follower.getFirstname() + " " + follower.getName() +" folgt dir jetzt.";
+        sendNotification(followee.getId(), msg); //TODO nur beim 1.
+    }
+
+
+
+
 
     public void markReadNotifications(List<Long> readNotificationsIds) {
         notificationRepository.markReadNotifications(readNotificationsIds);

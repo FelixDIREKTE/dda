@@ -13,6 +13,18 @@ $('#themeToggle input:radio').change(function () {
     }
 });
 
+
+$('#colorblindBox').change(function () {
+    DDA.Cookie.saveColorblind(document.getElementById("colorblindBox").checked);
+});
+
+if (DDA.Cookie.getColorblind() != null && DDA.Cookie.getColorblind()) {
+    document.getElementById("colorblindBox").checked = true;
+} else {
+    document.getElementById("colorblindBox").checked = false;
+}
+
+
 if (DDA.Cookie.getThemeSetting() != null && DDA.Cookie.getThemeSetting().theme === "dark") {
     $("#brightTheme").prop("checked", false);
     $("#darkTheme").prop("checked", true);

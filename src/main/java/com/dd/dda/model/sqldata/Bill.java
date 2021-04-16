@@ -144,7 +144,7 @@ public class Bill {
             return 0.0;
         }
         int mutualCateg = u.getCategories_bitstring() & categories_bitstring;
-        return 0.2 * q2(mutualCateg) / q2(categories_bitstring);
+        return 0.7 * q2(mutualCateg) / q2(categories_bitstring);
     }
 
     public void customRank(User u) {
@@ -152,18 +152,19 @@ public class Bill {
         customRanking = ranking + categBonus;
     }
 
+    // 86.400.000 ms = 1 Tag
+
     public void customRankFutureBills(User u, Date today) {
         double categBonus = categBonus(u);
         long timeleft = date_vote == null ? 8640000000L : date_vote.getTime() - today.getTime(); //100 Tage
-        double timeBonus = 8640000.0 /*0.1/Tag*/ / (timeleft + 86400000 /*1 Tag */ ) ;
+        double timeBonus = 86400000.0 /*1Tag*/ / (timeleft + 86400000 /*1 Tag */ ) ;
         customRanking = ranking + categBonus + timeBonus;
-
     }
 
     public void customRankPastBills(User u, Date today) {
         double categBonus = categBonus(u);
         long timeleft = date_vote == null ? -8640000000L : date_vote.getTime() - today.getTime();
-        double timeBonus = timeleft / 86400000000.0; //1000 Tage = 1 Ranking weniger
+        double timeBonus = timeleft / 864000000.0; //10 Tage = 1 Ranking weniger
         customRanking = ranking + categBonus + timeBonus;
 
     }

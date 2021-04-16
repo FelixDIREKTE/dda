@@ -6,8 +6,10 @@ $('#backToPrev').off().click(function () {
     });
 })
 
+//Gesetz
 if(passedParliamentRole == 0) {
     document.getElementById("communityVoteHeadline").innerHTML = "Abstimmung der Bevölkerung";
+    document.getElementById("dokheadline").innerHTML = "Gesetzestext";
     document.getElementById("dokheadline").innerHTML = "Gesetzestext";
 }
 
@@ -21,9 +23,17 @@ if(passedParliamentRole == 1){
     document.getElementById("communityVoteHeadline").innerHTML = "Unterschriften";
     document.getElementById("dokheadline").innerHTML = "Gesetzestext";
 }
+
+//Diskussion
 if(passedParliamentRole == 2) {
     document.getElementById("communityVoteHeadline").innerHTML = "Bewertung des Beitrags";
     document.getElementById("dokheadline").innerHTML = "Dokumente";
+    document.getElementById("contraCommentSectionHalf").style = "display:none;";
+    document.getElementById("proCommentSectionHalf").style = "width:100% !important;";
+    document.getElementById("writeCommentProBtn").innerHTML = "Kommentar schreiben";
+
+
+
 }
 
 
@@ -409,6 +419,9 @@ function setBars(redbox, yesvotes, novotes, abstvotes){
     if(passedParliamentRole != 1) {
         redbox.children[1].innerHTML = '' + novotes.toString() + "   <em class=\"fas fa-thumbs-down mr-2\"></em>";
     }
+    if (DDA.Cookie.getColorblind() != null && DDA.Cookie.getColorblind()) {
+        redbox.style="background-color:#2c7bb6;"
+    }
 }
 
 
@@ -638,16 +651,18 @@ function getParty(party_id){
 
 //Kommentar abgeben
 $('#commentProBtn').off().click(function () {
-    createComment(true);
+
+    createComment();
     if(repliedCommentId != null) {
-        resetWriteCommentSection()
+        resetWriteCommentSection();
     }
 })
-$('#commentContraBtn').off().click(function () {
-    createComment(false);
-})
 
-function createComment(pro){
+/*$('#commentContraBtn').off().click(function () {
+    createComment(false);
+})*/
+
+function createComment(){
     if($("#inputComment").val() == ""){
     } else {
         logoutIfExpired();
@@ -658,8 +673,8 @@ function createComment(pro){
             data: {
                 "text": $("#inputComment").val(),
                 "bill_id": passedBill.id,
-                "replied_comment_id": repliedCommentId,
-                "pro": pro
+                "replied_comment_id": repliedCommentId
+                //"pro": pro
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 showErrorToast("Fehler beim Kommentieren");
@@ -675,24 +690,22 @@ function createComment(pro){
                     var commenttemplate = document.querySelector('#commenttemplate');
 
 
-                    if(repliedCommentId == null){
-                        if(pro) {
-                            whereToPost = document.getElementById("proCommentSection");
-                        } else {
-                            whereToPost = document.getElementById("contraCommentSection");
-                        }
+                    if(repliedCommentId == -1){
+                        whereToPost = document.getElementById("proCommentSection");
+                    } else if(repliedCommentId == -2){
+                        whereToPost = document.getElementById("contraCommentSection");
                     } else {
-
                         var cc = commentHtmls.get(repliedCommentId);
                         whereToPost = cc.children[2].lastChild;
                         v1 = allCommentVotes.get(repliedCommentId).get("REPLIES");
                         allCommentVotes.get(repliedCommentId).set("REPLIES", v1+1);
-                        setCommentVotesText(repliedCommentId);
+                        //setCommentVotesText(repliedCommentId);
                     }
 
                     showComment(data, commenttemplate, whereToPost);
                     showOthersProfilepicBundle([data.id]);
                     updateCommentVoteButtons(data.id);
+
 
 
                     datamap = nothingToMap();
@@ -925,6 +938,12 @@ function showComment(commentdata, commenttemplate, readCommentSection){
     clone.children[1].children[0].children[2].textContent = erstelltVor(commentdata.created_time);
     //Kommentar
     clone.children[1].children[1].innerHTML = commentdata.text;
+
+    //Ranking-Info, zu löschen
+    if((DDA.Cookie.getSessionUser().admin) && (DDA.Cookie.getSessionUser().id==1)) {
+        clone.children[1].children[1].innerHTML = commentdata.text +  "<br>R" + commentdata.readCount + ";Rv" + strip(commentdata.relative_value) + ";Ra" + strip(commentdata.ranking) + ";cuRa" + strip(commentdata.customRanking);
+    }
+
     //Profilbild
     commentHtmls.set(commentdata.id, clone);
 
@@ -1048,11 +1067,7 @@ function showComment(commentdata, commenttemplate, readCommentSection){
 
     //clone.children[1].children[2].children[4].style.visibility='hidden'; //Editieren
 
-    //Ranking-Info, zu löschen
-    if((DDA.Cookie.getSessionUser().admin) && (DDA.Cookie.getSessionUser().id==1)) {
-        clone.children[1].children[2].children[RP_SECRET].innerHTML = "" + commentdata.readCount + ";" + strip(commentdata.relative_value) + ";" + strip(commentdata.ranking);
-    } else {
-    }
+
 }
 
 function deleteComment(c_id){
@@ -1301,8 +1316,17 @@ function setCommentVotesText(comment_id){
 ////////////ANTWORTEN///////////////////////
 ////////////////////////////////////////////
 
+$('#writeCommentProBtn').off().click(function () {
+    toggleShowReplies(-1);
+});
+
+$('#writeCommentContraBtn').off().click(function () {
+    toggleShowReplies(-2);
+});
+
 function toggleShowReplies(comment_id){
-    if(repliedCommentId == comment_id){
+    if(isReplysectionOpen(comment_id)){
+    //if(repliedCommentId == comment_id){ //TODO if replycontainer leer
         //alle Antworten ausblenden
         closeReplySection(comment_id)
     } else {
@@ -1317,40 +1341,71 @@ function toggleShowReplies(comment_id){
 function resetWriteCommentSection(){
     var commentsectionscontainer = document.getElementById("commentsectionscontainer");
     var writeCommentSection = document.getElementById("writeCommentSection");
+    writeCommentSection.style="display:none;";
     commentsectionscontainer.insertBefore(writeCommentSection, commentsectionscontainer.children[1]);
-    $('#commentContraBtn').show();
-    document.getElementById("commentProBtn").innerText="Pro kommentieren";
+    //$('#commentContraBtn').show();
+    document.getElementById("commentProBtn").innerText="Kommentieren";
     repliedCommentId = null;
 }
 
 function closeReplySection(comment_id){
     resetWriteCommentSection();
-    var clone = commentHtmls.get(comment_id);
-    clone.children[1].children[2].children[RP_REPLY].children[0].innerHTML = getRplMsg(comment_id);
-    var replycontainer = clone.children[2];
-    //vorherige Antworten ausblenden
-    while (replycontainer.lastChild) {
-        replycontainer.removeChild(replycontainer.lastChild);
+    if(comment_id > 0) {
+        var clone = commentHtmls.get(comment_id);
+        clone.children[1].children[2].children[RP_REPLY].children[0].innerHTML = getRplMsg(comment_id);
+        var replycontainer = clone.children[2];
+        //vorherige Antworten ausblenden
+        while (replycontainer.lastChild) {
+            replycontainer.removeChild(replycontainer.lastChild);
+        }
     }
+}
 
-
+function isReplysectionOpen(comment_id){
+    if(comment_id > 0) {
+        var clone = commentHtmls.get(comment_id);
+        var replycontainer = clone.children[2];
+        if (replycontainer.lastChild) {
+            return true;
+        }
+        return false;
+    } else {
+        return repliedCommentId == comment_id
+    }
+    return false;
 }
 
 function openReplySection(comment_id){
-    var clone = commentHtmls.get(comment_id);
-    clone.children[1].children[2].children[RP_REPLY].children[0].innerHTML = "Antworten einklappen";
-    var replycontainer = clone.children[2];
     repliedCommentId = comment_id;
-    //Input-Feld verschieben
     var writeCommentSection = document.getElementById("writeCommentSection");
-    replycontainer.appendChild(writeCommentSection);
-    $('#commentContraBtn').hide();
-    document.getElementById("commentProBtn").innerText="Antworten";
-    //Kommentarsektion erstellen
-    var replyCommentSection = document.createElement('ul');
-    replyCommentSection.className = "comment-section";
-    replycontainer.appendChild(replyCommentSection);
-    loadReplies(comment_id);
+    writeCommentSection.style="display:block;";
+
+    if(comment_id < 0) {
+        if (comment_id == -1) {
+            document.getElementById("writeCommentProBtn").after(writeCommentSection)
+        }
+        if (comment_id == -2) {
+            document.getElementById("writeCommentContraBtn").after(writeCommentSection)
+        }
+    } else {
+        //Antwort-Text in Kommentar ändern
+        var clone = commentHtmls.get(comment_id);
+        clone.children[1].children[2].children[RP_REPLY].children[0].innerHTML = "Antworten einklappen";
+
+        var replycontainer = clone.children[2];
+        //repliedCommentId = comment_id;
+        //Input-Feld verschieben
+        replycontainer.appendChild(writeCommentSection);
+
+        //Nur 1 Knopf
+        //$('#commentContraBtn').hide();
+        document.getElementById("commentProBtn").innerText = "Antworten";
+        //Kommentarsektion erstellen
+        var replyCommentSection = document.createElement('ul');
+        replyCommentSection.className = "comment-section";
+        replycontainer.appendChild(replyCommentSection);
+        loadReplies(comment_id);
+    }
 }
 
 /////////////////////////////////////////////////////////

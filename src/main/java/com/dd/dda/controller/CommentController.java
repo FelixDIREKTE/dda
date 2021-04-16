@@ -37,19 +37,27 @@ public class CommentController {
     public ResponseEntity<Comment> createComment(    @PathVariable(value = "id") Long id,
                                                     @RequestParam(value = "text") String text,
                                                     @RequestParam(value = "bill_id") Long bill_id,
-                                                     @RequestParam(value = "replied_comment_id") Long replied_comment_id,
-                                                     @RequestParam(value = "pro") Boolean pro
+                                                     @RequestParam(value = "replied_comment_id") Long replied_comment_id
+                                                     //@RequestParam(value = "pro") Boolean pro
 
     ) {
         log.info("Enter into comment");
         if (text == null || text.isEmpty()) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
         }
-        if( bill_id == null || pro == null){
+        if( bill_id == null || replied_comment_id == null){
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
         }
-        Comment result = commentService.createComment(id, bill_id, text, replied_comment_id, pro);
-        return ResponseEntity.ok(result);
+        if(replied_comment_id == -1) {
+            Comment result = commentService.createComment(id, bill_id, text, null, true);
+            return ResponseEntity.ok(result);
+        } else if (replied_comment_id == -2){
+            Comment result = commentService.createComment(id, bill_id, text, null, false);
+            return ResponseEntity.ok(result);
+        } else {
+            Comment result = commentService.createComment(id, bill_id, text, replied_comment_id, true);
+            return ResponseEntity.ok(result);
+        }
     }
 
 

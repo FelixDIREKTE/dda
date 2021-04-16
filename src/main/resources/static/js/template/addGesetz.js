@@ -1,5 +1,7 @@
 setTabTitleName("");
 parties = [];
+var selectType = document.getElementById("selectType")
+
 function showPartiesInParliament(data){
     var x = document.getElementById("selectPartyPrev");
     for(var i = 0; i < data.length; i++) {
@@ -132,7 +134,7 @@ function updateBill(){
             "abstract": $("#inputabstract").val(),
             "bill_id": passedBill.id,
             "inputParty": document.getElementById("selectPartyPrev").value,
-            "inputType": $("#inputType").val(),
+            "inputType": selectType.value,
             "inputVorgang": $("#inputVorgang").val(),
             "inputDatumVorgelegt": $("#inputDatumVorgelegt").val(),
             "inputDatumAbstimm": $("#inputDatumAbstimm").val(),
@@ -220,7 +222,7 @@ function createBill(){
             "parliament_id": passedParliament.id,
             "parliament_role": passedParliamentRole,
             "inputParty": document.getElementById("selectPartyPrev").value,
-            "inputType": $("#inputType").val(),
+            "inputType": selectType.value,
             "inputVorgang": $("#inputVorgang").val(),
             "inputDatumVorgelegt": $("#inputDatumVorgelegt").val(),
             "inputDatumAbstimm": $("#inputDatumAbstimm").val(),
@@ -266,7 +268,7 @@ function updateDisplay() {
         }
 
         if (passedBill.billtype != null) {
-            document.getElementById("inputType").value = passedBill.billtype;
+            selectType.value = passedBill.billtype;
         }
 
         if (passedBill.procedurekey != null) {
@@ -521,4 +523,9 @@ $("#urlBtn").off().click(function () {
             showSuccessToast("Dateien hochgeladen");
         }
     });
+});
+
+
+$(':input:not(textarea)').keypress(function(event) {
+    return event.keyCode != 13;
 });
