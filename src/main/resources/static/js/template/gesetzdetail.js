@@ -1,20 +1,17 @@
+$('#header').load('template/header.html', function (){
+    [passedParliament, passedParliamentRole, passedBill]=getPassedStuff();
 setTabTitleName(passedBill.name);
 
-$('#backToPrev').off().click(function () {
-    $('#stage').fadeOut(300, function () {
-        $('#stage').load('template/gesetzauswahl.html?uu=' + randomString()).fadeIn(300);
-    });
-})
 
 //Gesetz
-if(passedParliamentRole == 0) {
+if(passedBill.parliament_role == 0) {
     document.getElementById("communityVoteHeadline").innerHTML = "Abstimmung der Bevölkerung";
     document.getElementById("dokheadline").innerHTML = "Gesetzestext";
     document.getElementById("dokheadline").innerHTML = "Gesetzestext";
 }
 
 ////Initiative : Unterstützen statt ja/nein
-if(passedParliamentRole == 1){
+if(passedBill.parliament_role == 1){
     $('#btnNo').hide();
     document.getElementById("yesinactive").innerHTML = "<i class=\"far fa-thumbs-up\"></i> Unterstützen";
     document.getElementById("yesactive").innerHTML = "<i class=\"fas fa-thumbs-up\"></i></em><B> Unterstützt</B>";
@@ -25,7 +22,7 @@ if(passedParliamentRole == 1){
 }
 
 //Diskussion
-if(passedParliamentRole == 2) {
+if(passedBill.parliament_role == 2) {
     document.getElementById("communityVoteHeadline").innerHTML = "Bewertung des Beitrags";
     document.getElementById("dokheadline").innerHTML = "Dokumente";
     document.getElementById("contraCommentSectionHalf").style = "display:none;";
@@ -43,15 +40,15 @@ document.getElementById("abstract").innerHTML = passedBill.abstr;
 
 var userRedbox = document.getElementById("userRedbox");
 
-if(passedParliamentRole == 0){
+if(passedBill.parliament_role == 0){
     role = "Gesetzentwurf: ";
 }
-if(passedParliamentRole == 1){
+if(passedBill.parliament_role == 1){
     role = "Initiative: ";
     //$('#nurBeiGesetzentwurf').hide();
 
 }
-if(passedParliamentRole == 2){
+if(passedBill.parliament_role == 2){
     role = "Diskussion: ";
     //$('#nurBeiGesetzentwurf').hide();
 }
@@ -147,8 +144,8 @@ function Sleep(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 async function waitshortly() {
-    await Sleep(1000); // Pausiert die Funktion für 3 Sekunden
-    $('#stage').load('template/gesetzauswahl.html?uu=' + randomString()).fadeIn(300);
+    await Sleep(1000);
+    window.location.href = '/gesetzauswahl.html?p='+passedBill.parliament.id+'&pr='+passedBill.parliament_role;
 }
 
 $('#modalContainer').append('<div id="holderForNextLoad" />');
@@ -222,7 +219,7 @@ if(passedBill.created_by != null && (passedBill.created_by.id == DDA.Cookie.getS
     )) {
     $('#modifyBtn').off().click(function () {
         $('#stage').fadeOut(300, function () {
-            $('#stage').load('template/addGesetz.html?uu=' + randomString()).fadeIn(300);
+            window.location.href = '/editgesetz.html?p='+passedBill.parliament.id+'&pr='+passedBill.parliament_role+'&b=' + passedBill.id;
         });
     });
 
@@ -317,7 +314,7 @@ if(passedBill.date_vote == null) {
     document.getElementById("AbstimmDatum").textContent = s2;
 }
 
-document.getElementById("Parlament").textContent = passedParliament.name;
+document.getElementById("Parlament").textContent = passedBill.parliament.name;
 
 ////////////////////////////////////
 ////////////////////////////////////
@@ -381,48 +378,7 @@ function showOwnFiles(data){
 ////////////////////////////////////
 ////////////////////////////////////
 
-function setBars(redbox, yesvotes, novotes, abstvotes){
-    //Balken skalieren
-    if(passedParliamentRole == 1){
-        greenwidthpercent = 100;
-        whitewidthpercent = 100;
-    } else {
-        if (yesvotes == 0 && novotes == 0 && abstvotes == 0) {
-            greenwidthpercent = 0;
-            whitewidthpercent = 100;
-        } else {
-            whitewidthpercent = 100.0 * (yesvotes + abstvotes) / (yesvotes + novotes + abstvotes);
-            if(yesvotes == 0 && abstvotes == 0) {
-                greenwidthpercent = 0.0;
-            } else {
-                greenwidthpercent = 100.0 * yesvotes / (yesvotes + abstvotes);
-            }
-        }
-    }
-    greenmsg = "width: " + greenwidthpercent + "%;";
-    whitemsg = "width: " + whitewidthpercent + "%;";
-    //Ecken rund bei 100%
-    if (whitewidthpercent > 99){
-        whitemsg = whitemsg + "border-radius:9px;";
-        if (greenwidthpercent > 99){
-            greenmsg = greenmsg + "border-radius:9px;";
-        }
-    }
-    redbox.children[0].children[0].style = greenmsg;
-    if(abstvotes > 0){
-        redbox.children[0].children[1].innerHTML = '' + abstvotes.toString() + "  <i class=\"fas fa-hand-paper\"></i>";
-        rightmargin = 0.5*(100 - greenwidthpercent);
-        redbox.children[0].children[1].style = "right:"+rightmargin+"%;";
-    }
-    redbox.children[0].style = whitemsg;
-    redbox.children[0].children[0].children[0].innerHTML = '' + yesvotes.toString() + "   <em class=\"fas fa-thumbs-up mr-2\"></em>";
-    if(passedParliamentRole != 1) {
-        redbox.children[1].innerHTML = '' + novotes.toString() + "   <em class=\"fas fa-thumbs-down mr-2\"></em>";
-    }
-    if (DDA.Cookie.getColorblind() != null && DDA.Cookie.getColorblind()) {
-        redbox.style="background-color:#2c7bb6;"
-    }
-}
+
 
 
 var yesvotes = 0;
@@ -446,7 +402,7 @@ $.ajax({
     }
 });
 
-setBars(userRedbox, yesvotes, novotes, 0);
+setBars(userRedbox, yesvotes, novotes, 0, passedBill.parliament_role == 1);
 
 
 $.ajax({
@@ -499,9 +455,10 @@ function pressVote(newvote) {
         }
     }
     if ("" + DDA.Cookie.getSessionUser().verificationstatus == "VERIFIED") {
-        setBars(userRedbox, yesvotes, novotes,0);
+        setBars(userRedbox, yesvotes, novotes,0, passedBill.parliament_role == 1);
     } else {
-        showLinkToKontoToast("Deine Stimme wurde abgegeben, wird aber erst gezählt sobald dein Account verifiziert ist. (s. Benutzerkonto)");
+        showLinkToKontoToast("Deine Stimme wurde abgegeben, wird aber erst gezählt sobald dein Account verifiziert ist. (<a href=\"/konto.html\" target=\"_blank\" rel=\"noopener noreferrer\">Klicke hier</a>)");
+
     }
 }
 
@@ -614,7 +571,7 @@ function showReprVote(partyName, reprVoteY, reprVoteN, reprVoteA){
     clone.children[0].children[0].textContent = partyName;
     container.appendChild(clone);
     var thisredbox = clone.children[0].children[1];
-    setBars(thisredbox, reprVoteY, reprVoteN, reprVoteA);
+    setBars(thisredbox, reprVoteY, reprVoteN, reprVoteA, false);
 
 }
 
@@ -714,7 +671,7 @@ function createComment(){
                     $('#commenttemplate').hide();
 
                 } else {
-                    showLinkToKontoToast("Dein Kommentar wurde abgegeben, wird aber erst angezeigt sobald dein Account verifiziert ist. (s. Benutzerkonto)");
+                    showLinkToKontoToast("Dein Kommentar wurde abgegeben, wird aber erst angezeigt sobald dein Account verifiziert ist. (<a href=\"/konto.html\" target=\"_blank\" rel=\"noopener noreferrer\">Klicke hier</a>)");
                 }
             }
         });
@@ -737,7 +694,7 @@ function initCountdown() {
     } else {
         clearInterval(lastInterval);
     }
-    if(passedParliamentRole == 0) {
+    if(passedBill.parliament_role == 0) {
         var second = 1000,
             minute = second * 60,
             hour = minute * 60,
@@ -1211,7 +1168,7 @@ function upvoteComment(comment_id, newrating, deleteany) {
     if ("" + DDA.Cookie.getSessionUser().verificationstatus == "VERIFIED") {
         setCommentVotesText(comment_id);
     } else {
-        showLinkToKontoToast("Deine Stimme wurde abgegeben, wird aber erst gezählt sobald dein Account verifiziert ist. (s. Benutzerkonto)");
+        showLinkToKontoToast("Deine Stimme wurde abgegeben, wird aber erst gezählt sobald dein Account verifiziert ist. (<a href=\"/konto.html\" target=\"_blank\" rel=\"noopener noreferrer\">Klicke hier</a>)");
     }
 }
 
@@ -1492,3 +1449,4 @@ loadReadComments();
 
 ///////THE END///////////
 /////////////////////////
+});

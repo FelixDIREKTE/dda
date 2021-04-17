@@ -21,14 +21,13 @@ function logoutIfExpired(){
     }
 }
 
-$('#appTitle').off().click(function () {
+/*$('#appTitle').off().click(function () {
     $(this).addClass('active');
     $('#linkLogbuch').removeClass('active');
     $('#stage').fadeOut(300, function () {
-        $('#stage').load('template/parlamentauswahl.html?uu=' + randomString());
-        $('#stage').fadeIn(300);
+        window.location.href = '/parlamentauswahl.html';
     });
-});
+});*/
 
 // Main Nav Link "Ausloggen"
 
@@ -46,8 +45,7 @@ function logout()
             $('#header, #footer').fadeOut(300);
 
             $('#stage').fadeOut(300, function () {
-                $('#stage').load('template/login.html?uu=' + randomString());
-                $('#stage').fadeIn(300);
+                window.location.href = '/login.html';
             });
         }
     });
@@ -59,7 +57,7 @@ $('#linkLogout').off().click(function () {
 
 $('#kontoButton').off().click(function () {
     $('#stage').fadeOut(300, function () {
-        $('#stage').load('template/konto.html?uu=' + randomString()).fadeIn(300);
+        window.location.href = '/konto.html';
     });
 
 });
@@ -245,15 +243,15 @@ var theheader = document.querySelector('#theheader');
 theheader.style = "display:block;"
 
 
-function backToDashboardLink() {
+/*function backToDashboardLink() {
     $('#backToDashboard').off().click(function () {
         $('#stage').fadeOut(300, function () {
-            $('#stage').load('template/parlamentauswahl.html?uu=' + randomString()).fadeIn(300);
+            window.location.href = '/parlamentauswahl.html';
         });
     })
 }
 
-backToDashboardLink();
+backToDashboardLink();*/
 
 
 

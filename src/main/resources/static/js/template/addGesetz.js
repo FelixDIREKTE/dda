@@ -1,3 +1,5 @@
+$('#header').load('template/header.html', function (){
+    [passedParliament, passedParliamentRole, passedBill]=getPassedStuff();
 setTabTitleName("");
 parties = [];
 var selectType = document.getElementById("selectType")
@@ -25,23 +27,6 @@ $.ajax({
         showPartiesInParliament(data);
     }
 });
-
-if(passedBill == null) {
-
-    $('#backToPrev').off().click(function () {
-        $('#stage').fadeOut(300, function () {
-            $('#stage').load('template/gesetzauswahl.html?uu=' + randomString()).fadeIn(300);
-        });
-    })
-} else {
-    $('#backToPrev').off().click(function () {
-        $('#stage').fadeOut(300, function () {
-            $('#stage').load('template/gesetzdetail.html?uu=' + randomString()).fadeIn(300);
-        });
-    })
-
-
-}
 
 setPageTitle('Beitrag hinzufügen / bearbeiten');
 //$('#backToDashboard').show();
@@ -528,4 +513,6 @@ $("#urlBtn").off().click(function () {
 
 $(':input:not(textarea)').keypress(function(event) {
     return event.keyCode != 13;
+});
+
 });

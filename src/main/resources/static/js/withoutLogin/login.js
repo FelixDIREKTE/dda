@@ -19,28 +19,7 @@ function loginProcess(data) {
     DDA.Cookie.saveSessionUser(data);
 
     $('#stage').fadeOut(300, function () {
-        $('#header').load('template/header.html?uu=' + randomString());
-        $('#stage').load('template/parlamentauswahl.html?uu=' + randomString());
-        $('#footer').load('template/footer.html?uu=' + randomString());
-        $('#header, #stage, #footer').fadeIn(300);
-    });
-}
-
-//Auto Login
-if (DDA.Cookie.getLoginData() != null && DDA.Cookie.getLoginData().basicAuth != null) {
-    $.ajax({
-        url: "login",
-        method: "POST",
-        async: false,
-        headers: {"Authorization": "Basic " + DDA.Cookie.getLoginData().basicAuth},
-        error: function (xhr, ajaxOptions, thrownError) {
-            DDA.Cookie.resetLoginInfo();
-
-            showErrorToast(xhr.responseJSON.message);
-        },
-        success: function (data) {
-            loginProcess(data)
-        }
+        window.location.href = '/parlamentauswahl.html';
     });
 }
 

@@ -1,3 +1,6 @@
+
+
+
 $(document).ready(function () {
     if (DDA.Cookie.getThemeSetting() == null) {
         DDA.Cookie.saveThemeSetting({theme: "bright"});
@@ -12,9 +15,45 @@ $(document).ready(function () {
         $('#theme').attr('href', 'css/style-bright.css');
         $('#highcharts').attr('href', 'css/highcharts-bright.css');
     }
-    $('#stage').load('template/login.html');
     $('#toastContainer').load("template/toast.html");
+
+    //Auto Login
+    function isLoggedIn(){
+        result = false;
+        $.ajax({
+            url: "isLoggedIn",
+            method: "GET",
+            async: false,
+            //headers: {"Authorization": "Basic " + DDA.Cookie.getLoginData().basicAuth},
+            error: function (xhr, ajaxOptions, thrownError) {
+            },
+            success: function (data) {
+                result = true;
+            }
+        });
+        return result;
+
+    }
+
+
+    if (DDA.Cookie.getLoginData() != null && DDA.Cookie.getLoginData().basicAuth != null && (DDA.Cookie.getSessionUser() == null || !isLoggedIn())) {
+        $.ajax({
+            url: "login",
+            method: "POST",
+            async: false,
+            headers: {"Authorization": "Basic " + DDA.Cookie.getLoginData().basicAuth},
+            error: function (xhr, ajaxOptions, thrownError) {
+                DDA.Cookie.resetLoginInfo();
+                showErrorToast(xhr.responseJSON.message);
+            },
+            success: function (data) {
+                DDA.Cookie.saveSessionUser(data);
+            }
+        });
+
+    }
 });
+
 
 function randomString() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -342,3 +381,103 @@ function stringToMap(s){
 $(':input:not(textarea)').keypress(function(event) {
     return event.keyCode != 13;
 });
+
+function getPassedStuff() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const passedParliamentI = urlParams.get('p');
+    passedParliamentRole = urlParams.get('pr');
+    const passedBillI = urlParams.get('b');
+    var passedParliament = null;
+    var passedBill = null;
+    if (passedBillI != null) {
+        $.ajax({
+            url: "/bills/" + DDA.Cookie.getSessionUser().id + "/getBill",
+            method: "GET",
+            async: false,
+            data: {
+                "bill_id": passedBillI
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                showErrorToast("Seite konnte nicht geladen werden.")
+            },
+            success: function (data) {
+                passedBill = data;
+            }
+        });
+    }
+    if (passedParliamentI != null) {
+
+        $.ajax({
+            url: "/parliaments/" + DDA.Cookie.getSessionUser().id + "/getParliament",
+            method: "GET",
+            async: false,
+            data: {
+                "parl_id": passedParliamentI
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                showErrorToast("Seite konnte nicht geladen werden.")
+            },
+            success: function (data) {
+
+                passedParliament = data;
+            }
+        });
+    }
+    return [passedParliament, passedParliamentRole, passedBill];
+}
+
+
+
+// Load Settings modal and About modal:
+$('#modalContainer').load('template/settings-modal.html', function () {
+    $('#modalContainer').append('<div id="holderForNextLoad" />');
+    $('#holderForNextLoad').load('template/about-modal.html');
+
+    $('#modalContainer').append('<div id="holderForNextLoad1" />');
+    $('#holderForNextLoad1').load('template/help-modal.html');
+});
+
+
+function setBars(redbox, yesvotes, novotes, abstvotes, isInitiative){
+    //Balken skalieren
+    if(isInitiative){
+        greenwidthpercent = 100;
+        whitewidthpercent = 100;
+    } else {
+        if (yesvotes == 0 && novotes == 0 && abstvotes == 0) {
+            greenwidthpercent = 0;
+            whitewidthpercent = 100;
+        } else {
+            whitewidthpercent = 100.0 * (yesvotes + abstvotes) / (yesvotes + novotes + abstvotes);
+            if(yesvotes == 0 && abstvotes == 0) {
+                greenwidthpercent = 0.0;
+            } else {
+                greenwidthpercent = 100.0 * yesvotes / (yesvotes + abstvotes);
+            }
+        }
+    }
+    greenmsg = "width: " + greenwidthpercent + "%;";
+    whitemsg = "width: " + whitewidthpercent + "%;";
+    //Ecken rund bei 100%
+    if (whitewidthpercent > 99){
+        whitemsg = whitemsg + "border-radius:9px;";
+        if (greenwidthpercent > 99){
+            greenmsg = greenmsg + "border-radius:9px;";
+        }
+    }
+    redbox.children[0].children[0].style = greenmsg;
+    if(abstvotes > 0){
+        redbox.children[0].children[1].innerHTML = '' + abstvotes.toString() + "  <i class=\"fas fa-hand-paper\"></i>";
+        rightmargin = 0.5*(100 - greenwidthpercent);
+        redbox.children[0].children[1].style = "right:"+rightmargin+"%;";
+    }
+    redbox.children[0].style = whitemsg;
+    redbox.children[0].children[0].children[0].innerHTML = '' + yesvotes.toString() + "   <em class=\"fas fa-thumbs-up mr-2\"></em>";
+    if(!isInitiative) {
+        redbox.children[1].innerHTML = '' + novotes.toString() + "   <em class=\"fas fa-thumbs-down mr-2\"></em>";
+    }
+    if (DDA.Cookie.getColorblind() != null && DDA.Cookie.getColorblind()) {
+        redbox.style="background-color:#2c7bb6;"
+    }
+}
+

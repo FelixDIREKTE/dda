@@ -6,11 +6,7 @@ $('#footerBar').fadeOut();
 
 //backToDashboardLink();
 
-$('#backToPrev').off().click(function () {
-    $('#stage').fadeOut(300, function () {
-        $('#stage').load('template/gesetzauswahl.html?uu=' + randomString()).fadeIn(300);
-    });
-})
+
 ///////////////////////////////////
 //// Parteien vorschlagen////////
 ////////////////////////////////

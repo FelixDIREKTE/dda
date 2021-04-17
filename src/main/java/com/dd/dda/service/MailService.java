@@ -36,10 +36,11 @@ public class MailService {
         this.noreplyMailConfiguration = noreplyMailConfiguration;
     }
 
-    public void sendRegistrationConfirmation(String email){
+    public void sendRegistrationConfirmation(String email, String emailverif){
         // for example, smtp.mailgun.org
         String EMAIL_SUBJECT = "Registrierung bei Demokratie DIREKT!";
-        String EMAIL_TEXT = "Hallo! \nDein Account wurde bei abstimmung.demokratiedirekt.info registriert. \nFalls Du die Registrierung vorgenommen hast, ist nichts weiter zu tun. Andernfalls solltest Du in Betracht ziehen, uns über diedirekte@posteo.de zu informieren. \n Viel Freude beim Diskutieren und Abstimmen wünscht dir das Team der DIREKTEN!";
+        //String EMAIL_TEXT = "Hallo! \nDein Account wurde bei abstimmung.demokratiedirekt.info registriert. \nFalls Du die Registrierung vorgenommen hast, ist nichts weiter zu tun. Andernfalls solltest Du in Betracht ziehen, uns über diedirekte@posteo.de zu informieren. \n Viel Freude beim Diskutieren und Abstimmen wünscht dir das Team der DIREKTEN!";
+        String EMAIL_TEXT = "Hallo! \nDein Account wurde bei abstimmung.demokratiedirekt.info registriert. \nFalls Du die Registrierung vorgenommen hast, klicke https://abstimmung.demokratie.direkt.info/parlamentauswahl.html?ve="+emailverif+" um deine Emailadresse zu verifizieren. Falls Du keine Registrierung vorgenommen hast, solltest Du in Betracht ziehen, uns über diedirekte@posteo.de zu informieren. \n Viel Freude beim Diskutieren und Abstimmen wünscht dir das Team der DIREKTEN!";
         sendMail(email, "", EMAIL_SUBJECT, EMAIL_TEXT);
     }
 

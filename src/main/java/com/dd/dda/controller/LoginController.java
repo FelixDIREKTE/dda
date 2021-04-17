@@ -32,4 +32,24 @@ public class LoginController {
     public ResponseEntity<User> authentication(@RequestBody @Valid Login userLogin) {
         return ResponseEntity.ok(userService.authenticate(userLogin.getEmail(), userLogin.getPassword()));
     }
+
+
+    @GetMapping("{id}/isLoggedIn")
+    @PreAuthorize("hasAuthority('User') and principal.id == #id")
+    public ResponseEntity isLoggedIn(@PathVariable(value = "id") Long id
+    ) {
+        return ResponseEntity.ok(true);
+    }
+
+
+    @GetMapping("/isLoggedIn")
+    @PreAuthorize("hasAuthority('User')")
+    public ResponseEntity isLoggedIn() {
+        return ResponseEntity.ok(true);
+    }
+
+
+
+
+
 }

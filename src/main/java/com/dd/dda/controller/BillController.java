@@ -91,7 +91,7 @@ public class BillController {
                                                      @RequestParam(value = "parliament_role") int parliament_role
 
     ) {
-        log.info("enter getBills " + id);
+        log.info("enter getRankedBills " + id);
         return ResponseEntity.ok(billService.getRankedBills(id, parliament_id, parliament_role));
     }
 
@@ -161,7 +161,7 @@ public class BillController {
                                                        @RequestParam(value = "parliament_id") Long parliament_id,
                                                           @RequestParam(value = "parliament_role") int parliament_role
     ) {
-        log.info("enter getBills " + id);
+        log.info("enter loadReadBillsIds " + id);
         List<Long> ratedbillsids = billService.getBillIdsOfRatingsForParliament(id, parliament_id, parliament_role );
         return ResponseEntity.ok(ratedbillsids);
     }

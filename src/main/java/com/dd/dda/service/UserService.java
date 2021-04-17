@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -431,5 +433,47 @@ public class UserService {
         Date d3 = DateUtils.addDays(d, -3);
         List<User> result = userRepository.getUsersCreatedBetween(d2, d3);
         return result;
+    }
+
+    public void createUser(String email, String password) {
+
+        if (password == null || password.isEmpty() || email == null || email.isEmpty()) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+        }
+
+        User user = new User();
+        user.setEmail(email);
+        user.setPasswordHash(bCryptPasswordEncoder.encode(password));
+        user.setActive(true);
+        user.setVerificationstatus(VerificationStatus.DATANEEDED);
+        user.setComments_read(0L);
+        user.setCommentwrite_weight(1.0);
+        user.setCreated_time(new Date());
+
+        String ve = RandomStringUtils.random(20, true, true);
+        user.setEmailverif( bCryptPasswordEncoder.encode(ve));
+        try{
+            User u2 = createUser(user);
+            parliamentService.giveDefaultAccess(user.getId());
+            mailService.sendRegistrationConfirmation(email, ve);
+        } catch (Exception e){
+            throw new DDAException("Nutzer konnte nicht angelegt werden");
+            //return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(false);
+        }
+
+    }
+
+    public boolean verifyMail(Long id, String ve) {
+        User u = getUserByIdUnencrypted(id);
+
+
+        if (bCryptPasswordEncoder.matches(ve, u.getEmailverif())) {
+            u.setEmailverif("");
+            updateVerificationStatusAndSave(u);
+            //userRepository.save(u);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

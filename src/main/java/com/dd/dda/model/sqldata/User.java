@@ -78,6 +78,9 @@ public class User {
     @Column(name = "comments_read")
     private Long comments_read;
 
+    @Column(name = "emailverif")
+    private String emailverif;
+
     //@Column(name = "commentrating_weight")
     //private double commentrating_weight;
 
@@ -140,6 +143,7 @@ public class User {
                 && zipcode != null && !zipcode.isEmpty()
                 && birthdate != null
                 && street != null && !street.isEmpty()
-                && housenr != null && !housenr.isEmpty();
+                && housenr != null && !housenr.isEmpty()
+                && (emailverif == null || emailverif.isEmpty());
     }
 }

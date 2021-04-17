@@ -1,17 +1,19 @@
-setTabTitleName("");
 
-setPageTitle('Benutzerkonto');
+
+$('#header').load('template/header.html?uu=' + randomString(), function (){
+
+    setTabTitleName("");
+    setPageTitle('Benutzerkonto');
+
+
+
+
+
 $('#footerBar').fadeOut();
 
 
 logoutIfExpired();
 
-
-$('#backToPrev').off().click(function () {
-    $('#stage').fadeOut(300, function () {
-        $('#stage').load('template/parlamentauswahl.html?uu=' + randomString()).fadeIn(300);
-    });
-})
 
 
 
@@ -33,10 +35,19 @@ function updateDisplay() {
     email = DDA.Cookie.getSessionUser().email;
     verifstatus = DDA.Cookie.getSessionUser().verificationstatus;
     phonenr = DDA.Cookie.getSessionUser().phonenr;
+    emailverif = DDA.Cookie.getSessionUser().emailverif;
 
     isNameMissing = (firstname == null || uname == null);
     isAddressMissing = (zipcode == null || street == null || housenr == null);
     isBirthdateMissing = (birthdate == null);
+    isemailverifmissing = (emailverif != null) && (emailverif != "");
+
+    //missingEmailVerif
+    if(isemailverifmissing){
+        $('#missingEmailVerif').show();
+    } else {
+        $('#missingEmailVerif').hide();
+    }
 
 
     if(isNameMissing){
@@ -67,7 +78,7 @@ function updateDisplay() {
         $('#missingIdentityProof').hide();
     }
 
-    if(isNameMissing || isAddressMissing || isBirthdateMissing || isParliamentMissing || isIdentityProofMissing ){
+    if(isNameMissing || isAddressMissing || isBirthdateMissing || isParliamentMissing || isIdentityProofMissing || isemailverifmissing){
         $('#missingDataHeadline').show();
     } else {
         $('#missingDataHeadline').hide();
@@ -224,7 +235,7 @@ function changeEmail(){
             },
             success: function (data) {
                 if (data == "ok") {
-                    showSuccessToast("Änderungen gespeichert!");
+                    showSuccessToast("Änderungen gespeichert");
                     updateDisplay();
                 } else {
                     showErrorToast(data);
@@ -669,6 +680,6 @@ function updateOptUser(){
     });
 }
 
-
-
 updateverproofbody();
+
+});

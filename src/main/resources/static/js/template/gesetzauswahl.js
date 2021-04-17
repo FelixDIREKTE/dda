@@ -1,12 +1,14 @@
-setTabTitleName("");
-$('#backToPrev').off().click(function () {
-    $('#stage').fadeOut(300, function () {
-        $('#stage').load('template/parlamentauswahl.html?uu=' + randomString()).fadeIn(300);
-    });
-})
 
+$('#header').load('template/header.html', function (){
+
+setTabTitleName("");
 
 title = "";
+
+
+    [passedParliament, passedParliamentRole, passedBill]=getPassedStuff();
+
+
 if(passedParliamentRole == 0){
     title = passedParliament.name + " - Gesetze";
     document.getElementById("parlroledescription").innerHTML = "Hier findest Du Gesetze, die im Parlament zur Abstimmung vorliegen. Eure Abstimmung entscheidet, wie die Abgeordneten der DIREKTEn abstimmen werden. ";
@@ -30,7 +32,6 @@ $('#footerBar').fadeIn();
 //$('#backToDashboard').show();
 $('#footerBar').fadeOut();
 
-
 /*dateRangePicker(function (start, end, label) {
 });*/
 
@@ -47,8 +48,7 @@ if((!DDA.Cookie.getSessionUser().admin && passedParliamentRole == 0) || DDA.Cook
     $('#adminAddBtn').off().click(function () {
 
         $('#stage').fadeOut(300, function () {
-            passedBill = null;
-            $('#stage').load('template/addGesetz.html?uu=' + randomString()).fadeIn(300);
+            window.location.href = '/editgesetz.html?p='+passedParliament.id+'&pr='+passedParliamentRole;
         });
     });
 }
@@ -173,21 +173,26 @@ function showBills(data) {
         datamap = stringToMap(allBillVotes[i]);
         yv = datamap.get("true");
         nv = datamap.get("false");
-        votestring = "";
-        if(yv > 0){
-            votestring = votestring + "  <i class=\"far fa-thumbs-up\"></i> " + yv + " ";
-        }
-        if(nv > 0){
-            votestring = votestring + " &nbsp; &nbsp; &nbsp;  <i class=\"far fa-thumbs-down\"></i> " + nv;
-        }
 
-        clone.children[0].children[1].innerHTML = votestring;
+        if(passedParliamentRole == 0){
+            setBars(clone.children[0].children[1].children[1].children[1], yv, nv, 0);
+        } else {
+            clone.children[0].children[1].children[1].children[1].style="display:none;";
+            votestring = "";
+            if(yv > 0){
+                votestring = votestring + "  <i class=\"far fa-thumbs-up\"></i> " + yv + " ";
+            }
+            if(nv > 0){
+                votestring = votestring + " &nbsp; &nbsp; &nbsp;  <i class=\"far fa-thumbs-down\"></i> " + nv;
+            }
+            clone.children[0].children[1].children[1].children[0].innerHTML = votestring;
+        }
 
         if(data[i].date_vote != null) {
-            clone.children[0].children[2].textContent = faellig(data[i].date_vote);
+            clone.children[0].children[1].children[0].children[0].textContent = faellig(data[i].date_vote);
         }
         if((DDA.Cookie.getSessionUser().admin) && (DDA.Cookie.getSessionUser().id==1)){
-            clone.children[0].children[3].textContent = "R" + data[i].readCount + ";RD" + data[i].read_detail_count + ";rV" + data[i].relative_value + ";Ra" + data[i].ranking +";cuRa" + data[i].customRanking;
+            clone.children[0].children[1].children[0].children[1].textContent = "R" + data[i].readCount + ";RD" + data[i].read_detail_count + ";rV" + data[i].relative_value + ";Ra" + data[i].ranking +";cuRa" + data[i].customRanking;
         }
         bid0 = "btn" + i;
         clone.id = bid0;
@@ -199,8 +204,7 @@ function showBills(data) {
         $("#" + bid0).off().click(function () {
             $('#stage').fadeOut(300, function () {
                 heProbablyReadTillHere(pp.id);
-                passedBill = pp;
-                $('#stage').load('template/gesetzdetail.html?uu=' + randomString()).fadeIn(300);
+                window.location.href = '/gesetz.html?b=' + pp.id;
             });
         });
 
@@ -485,3 +489,5 @@ $(':input:not(textarea)').keypress(function(event) {
 document.getElementById("maincontainer").style.display = "block";
 ///////THE END///////////
 /////////////////////////
+
+});

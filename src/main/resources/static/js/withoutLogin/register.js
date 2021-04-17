@@ -9,7 +9,6 @@ function validEmail(email) {
 
 //Login Button
 $('#loginBtn').off().click(function () {
-    //TODO check
     if($("#licencereadcheckbox").prop("checked")) {
         createUser()
     } else {

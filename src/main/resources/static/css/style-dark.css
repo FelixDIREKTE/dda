@@ -7376,6 +7376,14 @@ a.text-dark:hover, a.text-dark:focus {
   width: auto;
   height: 3.25rem; }
 
+.appLogo {
+  content: url("../img/logo-dark.png");
+  background-repeat: no-repeat;
+  width: auto;
+  height: 2.1rem; }
+
+
+
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
   color: #000000; }
@@ -8797,10 +8805,6 @@ Comments
 
   #pageTitle{
     width: 40%;
-  }
-
-  #backToDashboard{
-    display: none;
   }
 
   .login-card {

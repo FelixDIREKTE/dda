@@ -1,7 +1,6 @@
 package com.dd.dda.controller;
 
 import com.dd.dda.model.FileType;
-import com.dd.dda.model.VerificationStatus;
 import com.dd.dda.model.exception.DDAException;
 import com.dd.dda.model.sqldata.User;
 import com.dd.dda.service.MailService;
@@ -15,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 
 @Slf4j
 @RestController
@@ -92,30 +89,20 @@ public class UserController {
     public ResponseEntity<Boolean> createUser(    @RequestParam(value = "email") String email,
                                                   @RequestParam(value = "password") String password) {
 
-        if (password == null || password.isEmpty() || email == null || email.isEmpty()) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-        }
+        userService.createUser(email, password);
 
-        User user = new User();
-        user.setEmail(email);
-        user.setPasswordHash(bCryptPasswordEncoder.encode(password));
-        user.setActive(true);
-        user.setVerificationstatus(VerificationStatus.DATANEEDED);
-        user.setComments_read(0L);
-        user.setCommentwrite_weight(1.0);
-        user.setCreated_time(new Date());
-        try{
-            User u2 = userService.createUser(user);
-            parliamentService.giveDefaultAccess(user.getId());
+        return ResponseEntity.ok(true);
 
-            mailService.sendRegistrationConfirmation(email);
-            return ResponseEntity.ok(true);
 
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(false);
-        }
     }
 
+    @PutMapping("/{id}/verifymail")
+    public ResponseEntity<Boolean> verifymail(   @PathVariable(value = "id") Long id,
+                                                  @RequestParam(value = "ve") String ve) {
+
+        return ResponseEntity.ok(userService.verifyMail(id, ve));
+
+    }
 
     @PutMapping("/{id}/updateData")
     @PreAuthorize("hasAuthority('User') and principal.id == #id")

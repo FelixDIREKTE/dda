@@ -74,7 +74,9 @@
 <!-- Main JS -->
 <script src="js/withoutLogin/index.js"></script>
 <script>
-    $('#stage').load('template/login.html');
+    $('#stage').fadeOut(300, function () {
+        $('#stage').load('template/addGesetz.html').fadeIn(300);
+    });
 </script>
 </body>
 </html>

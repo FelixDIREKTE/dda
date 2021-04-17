@@ -1,3 +1,7 @@
+$('#header').load('template/header.html', function (){
+    $('#footer').load('template/footer.html');
+
+
 setTabTitleName("");
 setTabTitleName("");
 
@@ -6,14 +10,7 @@ $('#footerBar').fadeIn();
 
 
 
-// Load Settings modal and About modal:
-$('#modalContainer').load('template/settings-modal.html', function () {
-    $('#modalContainer').append('<div id="holderForNextLoad" />');
-    $('#holderForNextLoad').load('template/about-modal.html');
 
-    $('#modalContainer').append('<div id="holderForNextLoad1" />');
-    $('#holderForNextLoad1').load('template/help-modal.html');
-});
 
 //alert("1");
 
@@ -43,9 +40,6 @@ $.ajax({
     }
 });
 
-var passedParliament = null;
-var passedParliamentRole = null;
-
 function showParliaments(data) {
     var parliamentCardTemplate = document.querySelector('#parliamentCardTemplate');
     var lastCard = parliamentCardTemplate;
@@ -69,27 +63,20 @@ function showParliaments(data) {
         const pp = data[i];
         $("#" + bid0).off().click(function () {
             $('#stage').fadeOut(300, function () {
-                passedParliament = pp;
-                passedParliamentRole = 0;
-                $('#stage').load('template/gesetzauswahl.html?uu=' + randomString()).fadeIn(300);
+                window.location.href = '/gesetzauswahl.html?p='+pp.id+'&pr=0';
             });
         });
 
         $("#" + bid1).off().click(function () {
-            passedParliament = data[i];
             $('#stage').fadeOut(300, function () {
-                passedParliament = pp;
-                passedParliamentRole = 1;
-                $('#stage').load('template/gesetzauswahl.html?uu=' + randomString()).fadeIn(300);
+                window.location.href = '/gesetzauswahl.html?p='+pp.id+'&pr=1';
             });
         });
 
         $("#" + bid2).off().click(function () {
-            passedParliament = data[i];
             $('#stage').fadeOut(300, function () {
-                passedParliament = pp;
-                passedParliamentRole = 2;
-                $('#stage').load('template/gesetzauswahl.html?uu=' + randomString()).fadeIn(300);
+                window.location.href = '/gesetzauswahl.html?p='+pp.id+'&pr=2';
+
             });
         });
 
@@ -140,3 +127,34 @@ if (typeof setPageTitle === 'undefined') {
 if (DDA.Cookie.getSessionUser().verificationstatus == "VERIFIED") {
     $('#welcomeRow').hide();
 }
+
+
+
+
+//////Email verifizieren
+const urlPars = new URLSearchParams(window.location.search);
+const ve = urlPars.get('ve');
+if(ve != null && ve != ""){
+    $.ajax({
+        url: "/users/" + DDA.Cookie.getSessionUser().id + "/verifymail",
+        method: "PUT",
+        async: false,
+        data: {
+            "ve":ve
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            showErrorToast("Verifizierung fehlgeschlagen. Bist Du eingeloggt?");
+        },
+        success: function (data) {
+            if(data){
+                showSuccessToast("Emailadresse wurde verifiziert.");
+            } else {
+                showErrorToast("Verifizierung fehlgeschlagen. Bist Du eingeloggt?");
+            }
+        }
+    });
+}
+
+
+
+});
