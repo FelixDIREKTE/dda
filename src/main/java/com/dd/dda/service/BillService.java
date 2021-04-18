@@ -156,8 +156,8 @@ public class BillService {
         return null;
     }
 
-    public List<Bill> getRankedBills(long user_id, long parliament_id, long parliament_role) {
-        User u = userService.getUserByIdUnencrypted(user_id);
+    public List<Bill> getRankedBills(Long user_id, long parliament_id, long parliament_role) {
+        User u = user_id == null? null : userService.getUserByIdUnencrypted(user_id);
         if(parliament_role == 0){
             //Ranke Gesetze
             Date today = new Date();

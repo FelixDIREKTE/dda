@@ -82,6 +82,9 @@ public class ParliamentService {
     }
 
     public List<Parliament> getEligibleParliaments(Long user_id) {
+        if(user_id == null){
+            return Arrays.asList( parliamentRepository.findById(2L).get());
+        }
         return Arrays.asList( parliamentRepository.findById(2L).get());
         // TODO das hier reinnehmen wenn Leute zum Einspeisen da sine
         /*

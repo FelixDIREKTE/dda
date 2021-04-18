@@ -97,11 +97,17 @@ public class UserController {
     }
 
     @PutMapping("/{id}/verifymail")
+    @PreAuthorize("hasAuthority('User') and principal.id == #id")
     public ResponseEntity<Boolean> verifymail(   @PathVariable(value = "id") Long id,
-                                                  @RequestParam(value = "ve") String ve) {
-
+                                                 @RequestParam(value = "ve") String ve) {
         return ResponseEntity.ok(userService.verifyMail(id, ve));
+    }
 
+    @PutMapping("/{id}/resendVE")
+    @PreAuthorize("hasAuthority('User') and principal.id == #id")
+    public ResponseEntity<Boolean> resendVE(   @PathVariable(value = "id") Long id) {
+        userService.resendVE(id);
+        return ResponseEntity.ok(true);
     }
 
     @PutMapping("/{id}/updateData")

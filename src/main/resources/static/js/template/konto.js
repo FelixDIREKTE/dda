@@ -45,8 +45,12 @@ function updateDisplay() {
     //missingEmailVerif
     if(isemailverifmissing){
         $('#missingEmailVerif').show();
+        $('#resendEV').show();
+
     } else {
         $('#missingEmailVerif').hide();
+        $('#resendEV').hide();
+
     }
 
 
@@ -85,11 +89,14 @@ function updateDisplay() {
     }
 
     vss = "" + verifstatus;
+    document.getElementById("sli0").style="color:grey;";
+    document.getElementById("sli1").style="color:grey;"
+    document.getElementById("sli2").style="color:grey;"
+
     if(vss == "DATANEEDED"){
         //TODO bright mode
         document.getElementById("sli0").style="color:inherit;";
-        document.getElementById("sli1").style="color:grey;"
-        document.getElementById("sli2").style="color:grey;"
+        $('#verproofcard').show();
         //$('#verproofexplanation').show();
 
     } else {
@@ -97,21 +104,18 @@ function updateDisplay() {
     }
 
     if(vss == "WAITINGFORVERIF" || vss == "LOCKEDBYADMIN"){
-        document.getElementById("sli0").style="color:grey;"
         document.getElementById("sli1").style="color:inherit;";
-        document.getElementById("sli2").style="color:grey;"
+        $('#verproofcard').show();
     }
 
 
     if(vss == "VERIFIED"){
-
-        document.getElementById("sli0").style="color:grey;"
-        document.getElementById("sli1").style="color:grey;"
         document.getElementById("sli2").style="color:inherit;";
         $('#verproofcard').hide();
-    }  else {
-        $('#verproofcard').show();
+    }
 
+    if(vss == "REVERIFYEMAIL"){
+        $('#verproofcard').hide();
     }
 
     if (phonenr != null) {
@@ -235,7 +239,7 @@ function changeEmail(){
             },
             success: function (data) {
                 if (data == "ok") {
-                    showSuccessToast("Änderungen gespeichert");
+                    showSuccessToast("Email geändert. Bitte verifiziere deine Emailadresse über den dir zugesandten Link.");
                     updateDisplay();
                 } else {
                     showErrorToast(data);
@@ -345,7 +349,7 @@ function showOwnImages(data){
         parent.removeChild(parent.lastChild);
     }
 
-    isIdentityProofMissing = (data.length == 0 && DDA.Cookie.getSessionUser().verificationstatus != "VERIFIED" );
+    isIdentityProofMissing = (data.length == 0 && DDA.Cookie.getSessionUser().verificationstatus != "VERIFIED" && DDA.Cookie.getSessionUser().verificationstatus != "REVERIFYEMAIL" );
 
     for (var j = 0; j < data.length; j++) {
         testArray = data[j].bytes;
@@ -387,28 +391,62 @@ $('#modalContainer').append('<div id="holderForNextLoad" />');
 $('#holderForNextLoad').load('template/areusure-modal.html', function (){
     $("#confirmdeletebtn").off().click(function () {
         logoutIfExpired();
-        $.ajax({
-            url: "/users/" + DDA.Cookie.getSessionUser().id + "/deleteSelf",
-            method: "DELETE",
-            async: false,
-            data: {
 
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                showErrorToast("Fehler beim Löschen des Accounts");
-            },
-            success: function (data) {
-                showSuccessToast("Account gelöscht");
-                logout();
+        if(ondelete=="RESENDVE"){
+            resendVE();
+        } else {
+            if (ondelete=="DELETEUSER"){
+                deleteAccount();
+            } else {
+                if (ondelete==""){
+                    alert("ondelete empty");
+                } else {
+                    alert("ondelete weird: " + ondelete);
+
+                }
             }
-        });
+        }
+
+
     });
 
 });
 
+function resendVE(){
+    $.ajax({
+        url: "/users/" + DDA.Cookie.getSessionUser().id + "/resendVE",
+        method: "PUT",
+        async: false,
+        data: {
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            showErrorToast("Fehler");
+        },
+        success: function (data) {
+            showSuccessToast("Email wurde geschickt");
+        }
+    });
+}
 
 
 
+function deleteAccount(){
+    $.ajax({
+        url: "/users/" + DDA.Cookie.getSessionUser().id + "/deleteSelf",
+        method: "DELETE",
+        async: false,
+        data: {
+
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            showErrorToast("Fehler beim Löschen des Accounts");
+        },
+        success: function (data) {
+            showSuccessToast("Account gelöscht");
+            logout();
+        }
+    });
+}
 
 
 
@@ -530,6 +568,21 @@ $('#parliamentsSaveChanges').off().click(function () {
     saveParliaments();
 
 });
+
+var ondelete = "";
+$('#deleteUser').off().click(function () {
+    ondelete="DELETEUSER";
+    document.getElementById("AreUSureLabel").textContent = "Account wirklich löschen?";
+    document.getElementById("confirmdeletebtn").innerHTML = "<i class=\"fas fa-trash-alt\"></i>Löschen";
+});
+
+$('#resendEV').off().click(function () {
+    ondelete="RESENDVE";
+    document.getElementById("AreUSureLabel").textContent = "Email mit Verifizierungs-Link erneut senden?";
+    document.getElementById("confirmdeletebtn").innerHTML = "Senden";
+});
+
+
 
 function saveParliaments(){
     $.ajax({

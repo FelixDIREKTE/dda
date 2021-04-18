@@ -6,6 +6,10 @@ $(document).ready(function () {
         DDA.Cookie.saveThemeSetting({theme: "bright"});
     }
 
+    if(DDA.Cookie.getColorblind() == null){
+        DDA.Cookie.saveColorblind(false);
+    }
+
     if (DDA.Cookie.getThemeSetting().theme === 'dark') {
         // Dark UI theme
         $('#theme').attr('href', 'css/style-dark.css');
@@ -391,7 +395,7 @@ function getPassedStuff() {
     var passedBill = null;
     if (passedBillI != null) {
         $.ajax({
-            url: "/bills/" + DDA.Cookie.getSessionUser().id + "/getBill",
+            url: "/bills/getBill",
             method: "GET",
             async: false,
             data: {

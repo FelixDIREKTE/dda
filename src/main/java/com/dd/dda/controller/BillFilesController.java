@@ -97,10 +97,9 @@ public class BillFilesController {
 
 
 
-    @GetMapping("{id}/get")
-    @PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<List<Rawfile>> getForOthers(@PathVariable(value = "id") Long id,
-                                                      @RequestParam(value = "bill_id") Long bill_id) {
+    @GetMapping("get")
+    //@PreAuthorize("hasAuthority('User') and principal.id == #id")
+    public ResponseEntity<List<Rawfile>> getForOthers(@RequestParam(value = "bill_id") Long bill_id) {
 
 
         List<Rawfile> result = fileStorageService.getFiles(FileType.BILLFILES, bill_id);

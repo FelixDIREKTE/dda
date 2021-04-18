@@ -19,7 +19,10 @@ public enum VerificationStatus implements Serializable {
     LOCKEDBYADMIN(2),
 
     @JsonProperty("VERIFIED")
-    VERIFIED(3);
+    VERIFIED(3),
+
+    @JsonProperty("REVERIFYEMAIL")
+    REVERIFYEMAIL(4);
 
     private final int value;
 

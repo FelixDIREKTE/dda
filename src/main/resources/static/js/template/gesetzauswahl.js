@@ -43,14 +43,9 @@ $('#viewRangeC').hide();
 
 //Beitrag Hinzufügen-Knopf
 if((!DDA.Cookie.getSessionUser().admin && passedParliamentRole == 0) || DDA.Cookie.getSessionUser().verificationstatus != "VERIFIED") {
-    $('#adminAddBtn').hide();
+    $('#adminAddLink').hide();
 } else {
-    $('#adminAddBtn').off().click(function () {
-
-        $('#stage').fadeOut(300, function () {
-            window.location.href = '/editgesetz.html?p='+passedParliament.id+'&pr='+passedParliamentRole;
-        });
-    });
+    document.getElementById("adminAddLink").href='/editgesetz.html?p='+passedParliament.id+'&pr='+passedParliamentRole;
 }
 //Parlament editieren
 if((!DDA.Cookie.getSessionUser().admin)) {
@@ -77,10 +72,11 @@ logoutIfExpired();
 
 function getRankedBills() {
     $.ajax({
-        url: "/bills/" + DDA.Cookie.getSessionUser().id + "/getRankedBills",
+        url: "/bills/getRankedBills",
         method: "GET",
         async: false,
         data: {
+            "user_id": DDA.Cookie.getSessionUser().id,
             "parliament_id": passedParliament.id,
             "parliament_role": passedParliamentRole
         },
@@ -201,12 +197,7 @@ function showBills(data) {
 
         const pp = data[i];
 
-        $("#" + bid0).off().click(function () {
-            $('#stage').fadeOut(300, function () {
-                heProbablyReadTillHere(pp.id);
-                window.location.href = '/gesetz.html?b=' + pp.id;
-            });
-        });
+        clone.children[0].href='/gesetz.html?b=' + pp.id;
 
     }
 
@@ -311,10 +302,11 @@ function updateSearch(){
 function getBillSearch(searchterm){
 
     $.ajax({
-        url: "/bills/" + DDA.Cookie.getSessionUser().id + "/getBillSearch",
+        url: "/bills/getBillSearch",
         method: "GET",
         async: false,
         data: {
+            "user_id":DDA.Cookie.getSessionUser().id,
             "parliament_id": passedParliament.id,
             "parliament_role": passedParliamentRole,
             "searchterm":searchterm

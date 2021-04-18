@@ -315,6 +315,7 @@ public class UserService {
     public void updateVerificationStatusAndSave(User user){
         boolean otherStuffThere =
                 (          user.getVerificationstatus() == VerificationStatus.VERIFIED
+                        || user.getVerificationstatus() == VerificationStatus.REVERIFYEMAIL
                         || fileStorageService.filesExist(FileType.USERVERIFICATION, user.getId()))
                 && parliamentService.hasAllParlimamentAccess(user.getId());
         user.updateVerificationStatus(otherStuffThere);
@@ -343,7 +344,7 @@ public class UserService {
 
 
         if (id == null || id < 0 ) {
-            log.error("Update Password faild no Id");
+            log.error("Update Email faild no Id");
             return "Nutzer-Id fehlerhaft";
         }
 
@@ -354,7 +355,7 @@ public class UserService {
             if(email != null && !email.isEmpty()){
                 dbUser.setEmail(email);
             }
-            userRepository.save(dbUser);
+            resendVE(id);
 
         } else {
             log.error("Update Userdata failed no User find with this id:" + id);
@@ -475,5 +476,14 @@ public class UserService {
         } else {
             return false;
         }
+    }
+
+    public void resendVE(Long id) {
+        User user = getUserByIdUnencrypted(id);
+        String ve = RandomStringUtils.random(20, true, true);
+        user.setEmailverif( bCryptPasswordEncoder.encode(ve));
+        mailService.sendRegistrationConfirmation(user.getEmail(), ve);
+        updateVerificationStatusAndSave(user);
+
     }
 }

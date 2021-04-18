@@ -26,10 +26,11 @@ if( typeof logoutIfExpired === 'undefined') {
 
 ///////////////////
 $.ajax({
-    url: "/parliaments/" + DDA.Cookie.getSessionUser().id + "/getEligibleParliaments",
+    url: "/parliaments/getEligibleParliaments",
     method: "GET",
     async: false,
     data: {
+        "user_id":DDA.Cookie.getSessionUser().id
     },
     error: function (xhr, ajaxOptions, thrownError) {
         showErrorToast("Fehler beim Laden der Parlamente");
@@ -47,38 +48,17 @@ function showParliaments(data) {
         var clone = parliamentCardTemplate.cloneNode(true);
         //TODO das hier muss geändert werden falls parliamentCardTemplate geändert wird
         clone.children[0].children[0].textContent = data[i].name;
-        bid0 = "btn" + i + "_a";
-        bid1 = "btn" + i + "_i";
-        bid2 = "btn" + i + "_d";
-        clone.children[0].children[1].children[0].children[0].id = bid0;
-        clone.children[0].children[1].children[0].children[1].id = bid1;
-        clone.children[0].children[1].children[0].children[2].id = bid2;
         if(data[i].name == "Europäisches Parlament"){
             btnbad = clone.children[0].children[1].children[0].children[1];
             btnbad.style.visibility='hidden';
-            //btnbad.parentNode.removeChild(btnbad);
         }
         lastCard.after(clone);
         lastCard = clone;
         const pp = data[i];
-        $("#" + bid0).off().click(function () {
-            $('#stage').fadeOut(300, function () {
-                window.location.href = '/gesetzauswahl.html?p='+pp.id+'&pr=0';
-            });
-        });
 
-        $("#" + bid1).off().click(function () {
-            $('#stage').fadeOut(300, function () {
-                window.location.href = '/gesetzauswahl.html?p='+pp.id+'&pr=1';
-            });
-        });
-
-        $("#" + bid2).off().click(function () {
-            $('#stage').fadeOut(300, function () {
-                window.location.href = '/gesetzauswahl.html?p='+pp.id+'&pr=2';
-
-            });
-        });
+        clone.children[0].children[1].children[0].children[0].href="/gesetzauswahl.html?p="+pp.id+"&pr=0";
+        clone.children[0].children[1].children[0].children[1].href="/gesetzauswahl.html?p="+pp.id+"&pr=1";
+        clone.children[0].children[1].children[0].children[2].href="/gesetzauswahl.html?p="+pp.id+"&pr=2";
 
         showParliamentPicture(clone, pp);
 
@@ -92,7 +72,7 @@ function showParliaments(data) {
 
 function showParliamentPicture(clone, pp){
     $.ajax({
-        url: "/parliamentpicfiles/" + DDA.Cookie.getSessionUser().id + "/getForOthers",
+        url: "/parliamentpicfiles/getForOthers",
         method: "GET",
         async: false,
         data: {

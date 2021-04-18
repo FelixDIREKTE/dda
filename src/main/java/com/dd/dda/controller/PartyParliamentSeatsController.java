@@ -87,13 +87,11 @@ public class PartyParliamentSeatsController {
     }
 
 
-    @GetMapping("{id}/getParty")
-    @PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<Party> getParty(@PathVariable(value = "id") Long id,
-                                          @RequestParam(value = "party_id") long party_id
+    @GetMapping("getParty")
+    //@PreAuthorize("hasAuthority('User') and principal.id == #id")
+    public ResponseEntity<Party> getParty(@RequestParam(value = "party_id") long party_id
 
     ) {
-        log.info("enter PartyParliamentSeats " + id);
         return ResponseEntity.ok(partyService.getById(party_id));
     }
 

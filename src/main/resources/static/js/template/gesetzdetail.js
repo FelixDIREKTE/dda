@@ -103,6 +103,7 @@ function toggleFollow(idToFollow){
 
 function updateCommentsFollowUser(user_id){
     userCommentsList = userCommentsMap.get(user_id);
+    result = false;
     if(userCommentsList == null){
         alert("bug");
     } else {
@@ -112,16 +113,17 @@ function updateCommentsFollowUser(user_id){
             if(clone.user_id != user_id){
                 alert("bug");
             }
+            //alert(followingIds.indexOf(user_id));
             if( followingIds.indexOf(user_id) >= 0) {
                 clone.children[1].children[0].children[1].innerHTML = "(<i class=\"fas fa-user-minus\"></i> nicht mehr folgen)";
-                return true;
+                result = true;
             } else {
                 clone.children[1].children[0].children[1].innerHTML = "(<i class=\"fas fa-user-plus\"></i> folgen)";
             }
         }
 
     }
-    return false;
+    return result;
 
 
 }
@@ -217,11 +219,7 @@ function reportComment(comment_id){
 if(passedBill.created_by != null && (passedBill.created_by.id == DDA.Cookie.getSessionUser().id ||
     (DDA.Cookie.getSessionUser().admin &&  passedBill.parliament_role == 0 )
     )) {
-    $('#modifyBtn').off().click(function () {
-        $('#stage').fadeOut(300, function () {
-            window.location.href = '/editgesetz.html?p='+passedBill.parliament.id+'&pr='+passedBill.parliament_role+'&b=' + passedBill.id;
-        });
-    });
+    document.getElementById("modifyBtn").href = '/editgesetz.html?p='+passedBill.parliament.id+'&pr='+passedBill.parliament_role+'&b=' + passedBill.id;
 
     $("#deleteBtn").off().click(function () {
         actionOnDelete = "DELETEBILL";
@@ -234,9 +232,7 @@ if(passedBill.created_by != null && (passedBill.created_by.id == DDA.Cookie.getS
 
 
 } else {
-
     $('#titlecard').hide();
-    //$('#modifyBtn').hide();
 }
 
 
@@ -324,7 +320,7 @@ document.getElementById("Parlament").textContent = passedBill.parliament.name;
 
 logoutIfExpired();
 $.ajax({
-    url: "/billfiles/" + DDA.Cookie.getSessionUser().id + "/get",
+    url: "/billfiles/get",
     method: "GET",
     async: false,
     data: {
@@ -579,7 +575,7 @@ function getParty(party_id){
     result = null;
     logoutIfExpired();
     $.ajax({
-        url: "/seats/" + DDA.Cookie.getSessionUser().id + "/getParty",
+        url: "/seats/getParty",
         method: "GET",
         async: false,
         data: {
@@ -823,7 +819,7 @@ function loadCommentVotesBundle(commentids){
     if(commentids.length > 0) {
 
         $.ajax({
-            url: "/commentrating/" + DDA.Cookie.getSessionUser().id + "/getVotesAsStringBundle",
+            url: "/commentrating/getVotesAsStringBundle",
             method: "GET",
             async: false,
             data: {

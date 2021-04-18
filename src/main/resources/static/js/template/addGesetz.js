@@ -278,7 +278,7 @@ updateDisplay();
 function reloadBill(){
     logoutIfExpired();
     $.ajax({
-        url: "/bills/" + DDA.Cookie.getSessionUser().id + "/getBill",
+        url: "/bills/getBill",
         method: "GET",
         async: false,
         data: {
@@ -319,7 +319,7 @@ function updatebillfilesbody(){
     if(passedBill != null) {
         logoutIfExpired();
         $.ajax({
-            url: "/billfiles/" + DDA.Cookie.getSessionUser().id + "/get",
+            url: "/billfiles/get",
             method: "GET",
             async: false,
             data: {
@@ -423,7 +423,7 @@ function getParty(party_id){
     result = null;
     logoutIfExpired();
     $.ajax({
-        url: "/seats/" + DDA.Cookie.getSessionUser().id + "/getParty",
+        url: "/seats/getParty",
         method: "GET",
         async: false,
         data: {

@@ -31,7 +31,7 @@ public class UserBillVoteController {
 
 
     @GetMapping("/{id}/getVotes")
-    @PreAuthorize("hasAuthority('User') and principal.id == #id")
+    //@PreAuthorize("hasAuthority('User') and principal.id == #id")
     public ResponseEntity<List<Integer>> getVotes(@PathVariable(value = "id") Long id,
                                                   @RequestParam(value = "bill_id") Long bill_id
                                            ) {
@@ -42,7 +42,7 @@ public class UserBillVoteController {
 
 
     @GetMapping("/{id}/getVotesAsStringBundle")
-    @PreAuthorize("hasAuthority('User') and principal.id == #id")
+    //@PreAuthorize("hasAuthority('User') and principal.id == #id")
     public ResponseEntity<List<String>> getVotesAsStringBundle(@PathVariable(value = "id") Long id,
                                                                @RequestParam(value = "bill_ids") String bill_ids
     ) {

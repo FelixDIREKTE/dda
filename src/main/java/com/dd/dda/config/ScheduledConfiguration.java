@@ -21,7 +21,6 @@ import static com.dd.dda.DDAApplication.NOT_TEST;
 public class ScheduledConfiguration {
 
     private final UserService userService;
-    private final NotificationService notificationService;
     private final MailService mailService;
     private final UserBillVoteService userBillVoteService;
     private final BillService billService;
@@ -29,12 +28,10 @@ public class ScheduledConfiguration {
     private final NotificationRepository notificationRepository;
 
 
-    public ScheduledConfiguration(UserService userService, NotificationService notificationService, MailService mailService, UserBillVoteService userBillVoteService, BillService billService, CommentService commentService, NotificationRepository notificationRepository) {
+    public ScheduledConfiguration(UserService userService, MailService mailService, UserBillVoteService userBillVoteService, BillService billService, CommentService commentService, NotificationRepository notificationRepository) {
 
         this.userService = userService;
-        this.notificationService = notificationService;
         this.mailService = mailService;
-
         this.userBillVoteService = userBillVoteService;
         this.billService = billService;
         this.commentService = commentService;

@@ -88,8 +88,10 @@ public class CommentService {
                 }
             }
         }
-        List<Long> followingIds = followsService.getFollowindgIds(user_id);
-        followingIds.add(user_id);
+        List<Long> followingIds = user_id == null ? new ArrayList<>() : followsService.getFollowindgIds(user_id);
+        if(user_id != null) {
+            followingIds.add(user_id);
+        }
         result.stream().forEach(c -> c.customRank(followingIds));
         result = result.stream().sorted(Comparator.comparingDouble(Comment::getCustomRanking)).collect(Collectors.toList());
         Collections.reverse(result);

@@ -24,15 +24,20 @@ public class NotificationService {
         this.htmlConverterService = htmlConverterService;
     }
 
+    public String getLinkToBill(Long bill_id){
+        return "/gesetz.html?b="+bill_id;
+    }
+
     public List<Notification> getNotifications(Long id) {
         List<Notification> result = notificationRepository.getNotifications(id);
         return result;
     }
 
-    public void sendNotification(Long user_id, String msg){
+    public void sendNotification(Long user_id, String msg, String link){
         Notification notification = new Notification();
         notification.setReceiver_user_id(user_id);
         notification.setMessage(msg);
+        notification.setLink(link);
         notification.setCreated_time(new Date());
         if(notificationRepository.findByMsg(user_id, msg).isEmpty()){
             notificationRepository.save(notification);
@@ -46,7 +51,7 @@ public class NotificationService {
         cmttxt = comment.getText().length() < 128 ? cmttxt : cmttxt.substring(0, 128) + "...";
         String msg = comment.getUser().getFirstname() + " " + comment.getUser().getName() +" hat auf deinen Kommentar zu \"" +comment.getBill().getName()+
                 "\"  geantwortet: \"" + cmttxt + "\"";
-        sendNotification(comment.getReply_comment().getUser().getId(), msg);
+        sendNotification(comment.getReply_comment().getUser().getId(), msg, getLinkToBill(comment.getBill().getId()));
     }
 
     //sende wenn ein Kommentar zum ersten Mal von einem verifizierten Nutzer bewertet wird
@@ -60,6 +65,7 @@ public class NotificationService {
             notification.setReceiver_user_id(comment.getUser().getId());
             notification.setMessage(msg);
             notification.setCreated_time(new Date());
+            notification.setLink(getLinkToBill(comment.getBill().getId()));
             result.add(notification);
         }
         notificationRepository.saveAll(result);
@@ -67,12 +73,12 @@ public class NotificationService {
 
     //sende wenn Nutzer verifiziert wird
     public void sendVerifiedNotification(Long user_id){
-        sendNotification(user_id, "Dein Account wurde verifiziert!");
+        sendNotification(user_id, "Dein Account wurde verifiziert!", null);
     }
 
     //sende wenn Nutzer nicht verifiziert wird
     public void sendNotVerifiedNotification(Long user_id, String msg){
-        sendNotification(user_id, msg);
+        sendNotification(user_id, msg, null);
     }
 
 
@@ -88,6 +94,7 @@ public class NotificationService {
             notification.setReceiver_user_id(comment.getReply_comment().getUser().getId());
             notification.setMessage(msg);
             notification.setCreated_time(new Date());
+            notification.setLink(getLinkToBill(comment.getBill().getId()));
             result.add(notification);
         }
         notificationRepository.saveAll(result);
@@ -102,6 +109,7 @@ public class NotificationService {
             notification.setReceiver_user_id(user_id);
             notification.setMessage(msg);
             notification.setCreated_time(new Date());
+            notification.setLink(getLinkToBill(bill.getId()));
             result.add(notification);
         }
         notificationRepository.saveAll(result);
@@ -113,12 +121,12 @@ public class NotificationService {
         cmttxt = comment.getText().length() < 128 ? cmttxt : cmttxt.substring(0, 128) + "...";
         String msg = "Jemandem gefällt dein Kommentar zu \"" +comment.getBill().getName()+
                 "\": \"" + cmttxt + "\"";
-        sendNotification(comment.getUser().getId(), msg); //TODO nur beim 1.
+        sendNotification(comment.getUser().getId(), msg, getLinkToBill(comment.getBill().getId()));
     }
 
     public void sendFollowsNotification(User follower, User followee){
         String msg = follower.getFirstname() + " " + follower.getName() +" folgt dir jetzt.";
-        sendNotification(followee.getId(), msg); //TODO nur beim 1.
+        sendNotification(followee.getId(), msg, null);
     }
 
 

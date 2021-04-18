@@ -55,10 +55,9 @@ public class ParliamentPicFilesController {
 
 
 
-    @GetMapping("{id}/getForOthers")
-    @PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<List<Rawfile>> getForOthers(@PathVariable(value = "id") Long id,
-                                                      @RequestParam(value = "parliament_id") Long parliament_id) {
+    @GetMapping("getForOthers")
+    //@PreAuthorize("hasAuthority('User') and principal.id == #id")
+    public ResponseEntity<List<Rawfile>> getForOthers(   @RequestParam(value = "parliament_id") Long parliament_id) {
 
 
         List<Rawfile> result = fileStorageService.getFiles(FileType.PARLIAMENTFLAG, parliament_id);

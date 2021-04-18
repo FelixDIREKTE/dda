@@ -128,12 +128,19 @@ public class User {
     }
 
     public void updateVerificationStatus(boolean otherStuffThere) {
-        if(allDataPresent() && otherStuffThere){
+        if(allDataPresent() && otherStuffThere && isEmailVerified()){
             if(verificationstatus == VerificationStatus.DATANEEDED){
                 setVerificationstatus(VerificationStatus.WAITINGFORADMIN);
             }
+            if(verificationstatus == VerificationStatus.REVERIFYEMAIL){
+                setVerificationstatus(VerificationStatus.VERIFIED);
+            }
         } else {
-            setVerificationstatus(VerificationStatus.DATANEEDED);
+            if(otherStuffThere && (verificationstatus == VerificationStatus.VERIFIED || verificationstatus == VerificationStatus.REVERIFYEMAIL) && allDataPresent() && !isEmailVerified()){
+                setVerificationstatus(VerificationStatus.REVERIFYEMAIL);
+            } else {
+                setVerificationstatus(VerificationStatus.DATANEEDED);
+            }
         }
     }
 
@@ -143,7 +150,10 @@ public class User {
                 && zipcode != null && !zipcode.isEmpty()
                 && birthdate != null
                 && street != null && !street.isEmpty()
-                && housenr != null && !housenr.isEmpty()
-                && (emailverif == null || emailverif.isEmpty());
+                && housenr != null && !housenr.isEmpty();
+    }
+
+    public boolean isEmailVerified(){
+        return (emailverif == null || emailverif.isEmpty());
     }
 }

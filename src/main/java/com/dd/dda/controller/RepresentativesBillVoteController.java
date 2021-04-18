@@ -26,7 +26,7 @@ public class RepresentativesBillVoteController {
 
 
     @GetMapping("/{id}/getVotes")
-    @PreAuthorize("hasAuthority('User') and principal.id == #id")
+    //@PreAuthorize("hasAuthority('User') and principal.id == #id")
     public ResponseEntity<List<RepresentativesBillVote>> getVotes(@PathVariable(value = "id") Long id,
                                                                   @RequestParam(value = "bill_id") Long bill_id
     ) {

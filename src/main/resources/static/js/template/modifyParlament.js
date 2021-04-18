@@ -183,7 +183,7 @@ function getParty(party_id){
     result = null;
     logoutIfExpired();
     $.ajax({
-        url: "/seats/" + DDA.Cookie.getSessionUser().id + "/getParty",
+        url: "/seats/getParty",
         method: "GET",
         async: false,
         data: {
@@ -242,7 +242,7 @@ $("#uploadImportData3").off().click(function () {
 function updateprofilepicbody(){
     logoutIfExpired();
     $.ajax({
-        url: "/parliamentpicfiles/" + DDA.Cookie.getSessionUser().id + "/getForOthers",
+        url: "/parliamentpicfiles/getForOthers",
         method: "GET",
         async: false,
         data: {

@@ -43,9 +43,9 @@ public class CommentRatingController {
     }*/
 
 
-    @GetMapping("/{id}/getVotesAsStringBundle")
-    @PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<List<String>> getVotesAsStringBundle(@PathVariable(value = "id") Long id,
+    @GetMapping("getVotesAsStringBundle")
+    //@PreAuthorize("hasAuthority('User') and principal.id == #id")
+    public ResponseEntity<List<String>> getVotesAsStringBundle(
                                                    @RequestParam(value = "comment_ids") String comment_ids
     ) {
         log.info("Enter getVotes");

@@ -26,11 +26,11 @@ public class ParliamentController {
     }
 
 
-    @GetMapping("{id}/getEligibleParliaments")
-    @PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<List<Parliament>> getEligibleParliaments(@PathVariable(value = "id") Long id) {
-        log.info("enter getEligibleParliaments " + id);
-        List<Parliament> result = parliamentService.getEligibleParliaments(id);
+    @GetMapping("getEligibleParliaments")
+    //@PreAuthorize("hasAuthority('User') and principal.id == #id")
+    public ResponseEntity<List<Parliament>> getEligibleParliaments(@RequestParam(value = "user_id") Long user_id) {
+        //log.info("enter getEligibleParliaments " + id);
+        List<Parliament> result = parliamentService.getEligibleParliaments(user_id);
         return ResponseEntity.ok(result);
     }
 

@@ -84,40 +84,40 @@ public class BillController {
 
 
 
-    @GetMapping("{id}/getRankedBills")
-    @PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<List<Bill>> getRankedBills(@PathVariable(value = "id") Long id,
+    @GetMapping("getRankedBills")
+    //@PreAuthorize("hasAuthority('User') and principal.id == #id")
+    public ResponseEntity<List<Bill>> getRankedBills(@RequestParam(value = "user_id") Long user_id,
                                                      @RequestParam(value = "parliament_id") long parliament_id,
                                                      @RequestParam(value = "parliament_role") int parliament_role
 
     ) {
-        log.info("enter getRankedBills " + id);
-        return ResponseEntity.ok(billService.getRankedBills(id, parliament_id, parliament_role));
+        log.info("enter getRankedBills " + user_id);
+        return ResponseEntity.ok(billService.getRankedBills(user_id, parliament_id, parliament_role));
     }
 
 
-    @GetMapping("{id}/getBillSearch")
-    @PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<List<Bill>> getBillSearch(@PathVariable(value = "id") Long id,
+    @GetMapping("getBillSearch")
+    //@PreAuthorize("hasAuthority('User') and principal.id == #id")
+    public ResponseEntity<List<Bill>> getBillSearch(@RequestParam(value = "user_id") Long user_id,
                                                      @RequestParam(value = "parliament_id") long parliament_id,
                                                     @RequestParam(value = "parliament_role") Long parliament_role,
                                                      @RequestParam(value = "searchterm")  String searchterm
 
     ) {
-        log.info("enter getBills " + id);
-        return ResponseEntity.ok(billService.getBillSearch(id, parliament_id, parliament_role, searchterm));
+        //log.info("enter getBills " + id);
+        return ResponseEntity.ok(billService.getBillSearch(user_id, parliament_id, parliament_role, searchterm));
     }
 
 
 
 
 
-    @GetMapping("{id}/getBill")
-    @PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<Bill> getBill(@PathVariable(value = "id") Long id,
+    @GetMapping("getBill")
+    //@PreAuthorize("hasAuthority('User') and principal.id == #id")
+    public ResponseEntity<Bill> getBill(
                                                      @RequestParam(value = "bill_id") Long bill_id
     ) {
-        log.info("enter getBill " + id);
+        //log.info("enter getBill " + id);
         return ResponseEntity.ok(billService.getBill(bill_id));
     }
 

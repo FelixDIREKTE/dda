@@ -162,7 +162,7 @@ function showNotifications(data){
         var clone = notificationtemplate.cloneNode(true);
         notificationcontainer.prepend(clone);
         clone.id = "clone__";
-        clone.textContent = "Keine Benachrichtigungen";
+        clone.children[1].children[0].textContent = "Keine Benachrichtigungen";
     }
 
     $('#notificationtemplate').hide();
@@ -173,14 +173,22 @@ function showNotifications(data){
 
 function showNotification(notificationdata, notificationtemplate, notificationcontainer){
     var clone = notificationtemplate.cloneNode(true);
-    notificationcontainer.prepend(clone);
+
+    var atag = document.createElement("a");
+    atag.appendChild(clone);
+    notificationcontainer.prepend(atag);
+
+
     clone.id = "clone" + notificationdata.id;
     //TODO das hier muss geändert werden falls notificationtemplate geändert wird
     //..vor 4 Stunden
     clone.children[0].textContent = erstelltVor(notificationdata.created_time);
     //Text
     clone.children[1].textContent = notificationdata.message;
-
+    //link
+    if(notificationdata.link != "" && notificationdata.link != null) {
+        atag.href = notificationdata.link;
+    }
 }
 
 

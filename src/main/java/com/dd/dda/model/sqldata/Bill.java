@@ -155,14 +155,14 @@ public class Bill {
     // 86.400.000 ms = 1 Tag
 
     public void customRankFutureBills(User u, Date today) {
-        double categBonus = categBonus(u);
+        double categBonus = u == null? 0.0 : categBonus(u);
         long timeleft = date_vote == null ? 8640000000L : date_vote.getTime() - today.getTime(); //100 Tage
         double timeBonus = 86400000.0 /*1Tag*/ / (timeleft + 86400000 /*1 Tag */ ) ;
         customRanking = ranking + categBonus + timeBonus;
     }
 
     public void customRankPastBills(User u, Date today) {
-        double categBonus = categBonus(u);
+        double categBonus = u == null? 0.0 : categBonus(u);
         long timeleft = date_vote == null ? -8640000000L : date_vote.getTime() - today.getTime();
         double timeBonus = timeleft / 864000000.0; //10 Tage = 1 Ranking weniger
         customRanking = ranking + categBonus + timeBonus;
@@ -170,10 +170,11 @@ public class Bill {
     }
 
     public void customRankDiscussion(User u) {
-        double categBonus = categBonus(u);
+        double categBonus = u == null? 0.0 : categBonus(u);
         customRanking = ranking + categBonus;
     }
 
     public void customRankInitiatives(User u) {
+        customRanking = ranking;
     }
 }
