@@ -1,13 +1,18 @@
 
 $('#header').load('template/header.html', function (){
 
+    if(DDA.Cookie.getSessionUser()){
+        myid = DDA.Cookie.getSessionUser().id;
+    } else {
+        myid = null;
+        $('#categoriesHeadline').hide();
+    }
+
 setTabTitleName("");
 
 title = "";
 
-
     [passedParliament, passedParliamentRole, passedBill]=getPassedStuff();
-
 
 if(passedParliamentRole == 0){
     title = passedParliament.name + " - Gesetze";
@@ -26,7 +31,6 @@ if(passedParliamentRole == 2){
 var billSequences = []; // hier wird je Kommentarsektion eine Liste der Kommentare von oben nach unten abgelegt um festzustellen welche gelesen sind
 var readbills = new Set(); //enthält ids aller gelesener kommentare
 
-
 setPageTitle(title);
 $('#footerBar').fadeIn();
 //$('#backToDashboard').show();
@@ -40,15 +44,15 @@ $('#viewRangeC').hide();
 //$('#searchBtn').hide();
 
 
-
 //Beitrag Hinzufügen-Knopf
-if((!DDA.Cookie.getSessionUser().admin && passedParliamentRole == 0) || DDA.Cookie.getSessionUser().verificationstatus != "VERIFIED") {
+if(!DDA.Cookie.getSessionUser() || (!DDA.Cookie.getSessionUser().admin && passedParliamentRole == 0) || DDA.Cookie.getSessionUser().verificationstatus != "VERIFIED") {
     $('#adminAddLink').hide();
 } else {
     document.getElementById("adminAddLink").href='/editgesetz.html?p='+passedParliament.id+'&pr='+passedParliamentRole;
 }
+
 //Parlament editieren
-if((!DDA.Cookie.getSessionUser().admin)) {
+if(!DDA.Cookie.getSessionUser() || !DDA.Cookie.getSessionUser().admin) {
     $('#modifyParliamentBtn').hide();
 } else {
     $('#modifyParliamentBtn').off().click(function () {
@@ -59,7 +63,6 @@ if((!DDA.Cookie.getSessionUser().admin)) {
         });
     });
 }
-
 
 // Load Settings modal and About modal:
 /*$('#modalContainer').load('template/settings-modal.html', function () {
@@ -76,7 +79,7 @@ function getRankedBills() {
         method: "GET",
         async: false,
         data: {
-            "user_id": DDA.Cookie.getSessionUser().id,
+            "user_id": myid,
             "parliament_id": passedParliament.id,
             "parliament_role": passedParliamentRole
         },
@@ -187,17 +190,26 @@ function showBills(data) {
         if(data[i].date_vote != null) {
             clone.children[0].children[1].children[0].children[0].textContent = faellig(data[i].date_vote);
         }
-        if((DDA.Cookie.getSessionUser().admin) && (DDA.Cookie.getSessionUser().id==1)){
+        if((DDA.Cookie.getSessionUser()) && (myid==1)){
             clone.children[0].children[1].children[0].children[1].textContent = "R" + data[i].readCount + ";RD" + data[i].read_detail_count + ";rV" + data[i].relative_value + ";Ra" + data[i].ranking +";cuRa" + data[i].customRanking;
         }
         bid0 = "btn" + i;
         clone.id = bid0;
-
+        bid1 = "btn_" + i;
+        clone.children[0].id = bid1;
         billContainer.append(clone);
-
         const pp = data[i];
-
         clone.children[0].href='/gesetz.html?b=' + pp.id;
+        clone.children[0].onclick=function (e){
+            return heProbablyReadTillHere(pp.id);
+        }
+        //TODO nur bei linker Maustauste, middle mouse?
+
+        /*$("#" + bid0).off().click(function () {
+            heProbablyReadTillHere(pp.id);
+            window.location.href = '/parlamentauswahl.html';
+            //return false;
+        });*/
 
     }
 
@@ -205,11 +217,10 @@ function showBills(data) {
     billContainer.style = "display:block;"
 
 }
-
 //billSequences readbills
 
 function heProbablyReadTillHere(bill_id){
-    if ("" + DDA.Cookie.getSessionUser().verificationstatus == "VERIFIED") {
+    if (DDA.Cookie.getSessionUser() && "" + DDA.Cookie.getSessionUser().verificationstatus == "VERIFIED") {
         //rausfinden in welcher Liste bis wo gelesen wurde
         var listNr;
         for (listNr = 0; listNr < billSequences.length; listNr++) {
@@ -237,6 +248,7 @@ function heProbablyReadTillHere(bill_id){
         savebillsAsRead(newlyReadBills, bill_id);
         //var readbills = new Set(); //enthält ids aller gelesener kommentare
     }
+    //return false;
 
 }
 
@@ -244,7 +256,7 @@ function savebillsAsRead(newlyReadBills, bill_id){
     if(newlyReadBills.length > 0) {
         logoutIfExpired();
         $.ajax({
-            url: "/bills/" + DDA.Cookie.getSessionUser().id + "/saveReadBills",
+            url: "/bills/" + myid + "/saveReadBills",
             method: "PUT",
             async: false,
             traditional: true,
@@ -265,7 +277,7 @@ function savebillsAsRead(newlyReadBills, bill_id){
 function loadReadbills(){
     logoutIfExpired();
     $.ajax({
-        url: "/bills/" + DDA.Cookie.getSessionUser().id + "/loadReadBillsIds",
+        url: "/bills/" + myid + "/loadReadBillsIds",
         method: "GET",
         async: false,
         data: {
@@ -283,13 +295,13 @@ function loadReadbills(){
     });
 }
 
-
-loadReadbills();
+if(DDA.Cookie.getSessionUser()) {
+    loadReadbills();
+}
 
 $("#searchBtn").off().click(function () {
     updateSearch();
 });
-
 function updateSearch(){
     searchterm = $("#searchField").val();
     if(searchterm == "") {
@@ -301,12 +313,14 @@ function updateSearch(){
 
 function getBillSearch(searchterm){
 
+
+
     $.ajax({
         url: "/bills/getBillSearch",
         method: "GET",
         async: false,
         data: {
-            "user_id":DDA.Cookie.getSessionUser().id,
+            "user_id":myid,
             "parliament_id": passedParliament.id,
             "parliament_role": passedParliamentRole,
             "searchterm":searchterm
@@ -334,7 +348,7 @@ function loadBillVotesBundle(billids){
     if(billids.length > 0) {
 
         $.ajax({
-            url: "/userBillVotes/" + DDA.Cookie.getSessionUser().id + "/getVotesAsStringBundle",
+            url: "/userBillVotes/getVotesAsStringBundle",
             method: "GET",
             async: false,
             data: {
@@ -399,7 +413,7 @@ $('#interestSaveChanges').off().click(function () {
 
 function initInterests(){
     $.ajax({
-        url: "/users/" + DDA.Cookie.getSessionUser().id + "/getCategories",
+        url: "/users/" + myid + "/getCategories",
         method: "GET",
         async: false,
         data: {
@@ -412,7 +426,11 @@ function initInterests(){
         }
     });
 }
-initInterests()
+
+    if(DDA.Cookie.getSessionUser())
+    {
+        initInterests()
+    }
 
 function updateUserInterests(){
 
@@ -421,7 +439,7 @@ function updateUserInterests(){
 
 
     $.ajax({
-        url: "/users/" + DDA.Cookie.getSessionUser().id + "/updateCategories",
+        url: "/users/" + myid + "/updateCategories",
         method: "POST",
         async: false,
         data: {
@@ -440,7 +458,6 @@ function updateUserInterests(){
     });
 
 }
-
 var categories = document.getElementById("categories");
 var categoriesHeadline = document.getElementById("categoriesHeadline");
 var showCateg = false;

@@ -1,5 +1,6 @@
 // Main Nav Link "Dashboard"
 function setPageTitle(title){
+
     if(title.length < 50) {
         $('#pageTitle').html(title);
         $('#pageTitleLong').html('');
@@ -11,6 +12,7 @@ function setPageTitle(title){
 }
 
 function logoutIfExpired(){
+    /*
     if(DDA.Cookie.getSessionUser() == null || typeof DDA.Cookie.getSessionUser() === 'undefined'){
         showErrorToast("Deine Sitzung wurde beendet. Bitte logge dich erneut ein.");
         if (typeof lastIntervalC === 'undefined') {
@@ -18,7 +20,7 @@ function logoutIfExpired(){
             clearInterval(lastIntervalC);
         }
         logout();
-    }
+    }*/
 }
 
 /*$('#appTitle').off().click(function () {
@@ -63,16 +65,6 @@ $('#kontoButton').off().click(function () {
 });
 
 
-if(!DDA.Cookie.getSessionUser().admin) {
-    $('#linkVerif').hide();
-} else {
-    $('#linkVerif').off().click(function () {
-        $('#stage').fadeOut(300, function () {
-            $('#stage').load('template/adminverifiz.html?uu=' + randomString()).fadeIn(300);
-        });
-
-    });
-}
 //$('#settings').hide();
 
 /*if(DDA.Cookie.getSessionUser().firstname != null &&  DDA.Cookie.getSessionUser().name != null) {
@@ -80,27 +72,29 @@ if(!DDA.Cookie.getSessionUser().admin) {
 }*/
 
 function showHeaderProfilePic() {
-    $.ajax({
-        url: "/profilepicfiles/" + DDA.Cookie.getSessionUser().id + "/getForSelf",
-        method: "GET",
-        async: false,
-        data: {},
-        error: function (xhr, ajaxOptions, thrownError) {
-            showErrorToast("Fehler beim Laden des Profilbilds");
-        },
-        success: function (data) {
-            if (data.length >= 1) {
-                var img = document.getElementById('userimg');
-                testArray = data[0].bytes;
-                str = "";
-                for (var i = 0; i < testArray.length; i++) {
-                    str += testArray[i];
+    if(DDA.Cookie.getSessionUser()) {
+        $.ajax({
+            url: "/profilepicfiles/" + DDA.Cookie.getSessionUser().id + "/getForSelf",
+            method: "GET",
+            async: false,
+            data: {},
+            error: function (xhr, ajaxOptions, thrownError) {
+                showErrorToast("Fehler beim Laden des Profilbilds");
+            },
+            success: function (data) {
+                if (data.length >= 1) {
+                    var img = document.getElementById('userimg');
+                    testArray = data[0].bytes;
+                    str = "";
+                    for (var i = 0; i < testArray.length; i++) {
+                        str += testArray[i];
+                    }
+                    //img.style="max-width:100%";
+                    img.src = "data:image/png;base64," + str;
                 }
-                //img.style="max-width:100%";
-                img.src = "data:image/png;base64," + str;
             }
-        }
-    });
+        });
+    }
 }
 showHeaderProfilePic();
 
@@ -130,11 +124,28 @@ function loadNotifications(){
     });
 }
 
-loadNotifications();
+if(DDA.Cookie.getSessionUser() == null || typeof DDA.Cookie.getSessionUser() === 'undefined') {
+    $('#notificationdropdown').hide();
+    $('#linkVerif').hide();
+    $('#kontoButton').hide();
+    document.getElementById("linkLogout").innerHTML="<i class=\"fas fa-sign-in-alt mr-2\"></i> Einloggen"; //TODO Symbol
+} else {
+    if(!DDA.Cookie.getSessionUser().admin) {
+        $('#linkVerif').hide();
+    } else {
+        $('#linkVerif').off().click(function () {
+            $('#stage').fadeOut(300, function () {
+                $('#stage').load('template/adminverifiz.html?uu=' + randomString()).fadeIn(300);
+            });
+        });
+    }
 
+    loadNotifications();
+}
 
 
 function showNotifications(data){
+
     shownNotifications = "";
 
     $('#notificationtemplate').show();
@@ -160,9 +171,11 @@ function showNotifications(data){
 
     if(data.length == 0){
         var clone = notificationtemplate.cloneNode(true);
-        notificationcontainer.prepend(clone);
+        var atag = document.createElement("a");
+        atag.appendChild(clone);
+        notificationcontainer.prepend(atag);
         clone.id = "clone__";
-        clone.children[1].children[0].textContent = "Keine Benachrichtigungen";
+        clone.children[1].textContent = "Keine Benachrichtigungen";
     }
 
     $('#notificationtemplate').hide();
@@ -260,6 +273,4 @@ theheader.style = "display:block;"
 }
 
 backToDashboardLink();*/
-
-
 

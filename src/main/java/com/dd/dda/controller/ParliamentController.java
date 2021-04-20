@@ -97,10 +97,9 @@ public class ParliamentController {
     }
 
 
-    @GetMapping("{id}/getParliament")
-    @PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<Parliament> getParliament(@PathVariable(value = "id") Long id,
-                                        @RequestParam(value = "parl_id") Long parl_id
+    @GetMapping("getParliament")
+    //@PreAuthorize("hasAuthority('User') and principal.id == #id")
+    public ResponseEntity<Parliament> getParliament(@RequestParam(value = "parl_id") Long parl_id
     ) {
         return ResponseEntity.ok(parliamentService.getParliamentById(parl_id));
     }

@@ -31,7 +31,7 @@ public class Parliament {
 
     @Override
     public String toString() {
-        return "SomeParliament";
+        return Name;
     }
 
 }

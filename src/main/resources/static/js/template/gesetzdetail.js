@@ -1,4 +1,11 @@
 $('#header').load('template/header.html', function (){
+
+    if(DDA.Cookie.getSessionUser()){
+        myid = DDA.Cookie.getSessionUser().id;
+    } else {
+        myid = null;
+    }
+
     [passedParliament, passedParliamentRole, passedBill]=getPassedStuff();
 setTabTitleName(passedBill.name);
 
@@ -66,19 +73,20 @@ $('#footerBar').fadeOut();
 var followingIds = [];
 
 function getFollowingIds(){
-    $.ajax({
-        url: "/follows/" + DDA.Cookie.getSessionUser().id + "/getFollowingIds",
-        method: "GET",
-        async: false,
-        data: {
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            showErrorToast("Fehler beim Folgen");
-        },
-        success: function (data) {
-            followingIds = data;
-        }
-    });
+    if(DDA.Cookie.getSessionUser()) {
+        $.ajax({
+            url: "/follows/" + myid + "/getFollowingIds",
+            method: "GET",
+            async: false,
+            data: {},
+            error: function (xhr, ajaxOptions, thrownError) {
+                showErrorToast("Fehler beim Folgen");
+            },
+            success: function (data) {
+                followingIds = data;
+            }
+        });
+    }
 }
 
 getFollowingIds();
@@ -160,7 +168,7 @@ $('#holderForNextLoad').load('template/areusure-modal.html', function (){
             //Beitrag löschen
             logoutIfExpired();
             $.ajax({
-                url: "/bills/" + DDA.Cookie.getSessionUser().id + "/delete",
+                url: "/bills/" + myid + "/delete",
                 method: "DELETE",
                 async: false,
                 data: {
@@ -200,7 +208,7 @@ $('#holderForNextLoad').load('template/areusure-modal.html', function (){
 function reportComment(comment_id){
     logoutIfExpired();
     $.ajax({
-        url: "/comments/" + DDA.Cookie.getSessionUser().id + "/reportComment",
+        url: "/comments/" + myid + "/reportComment",
         method: "PUT",
         async: false,
         data: {
@@ -216,8 +224,8 @@ function reportComment(comment_id){
 }
 
 
-if(passedBill.created_by != null && (passedBill.created_by.id == DDA.Cookie.getSessionUser().id ||
-    (DDA.Cookie.getSessionUser().admin &&  passedBill.parliament_role == 0 )
+if(passedBill.created_by != null && (passedBill.created_by.id == myid ||
+    (  DDA.Cookie.getSessionUser() && DDA.Cookie.getSessionUser().admin &&  passedBill.parliament_role == 0 )
     )) {
     document.getElementById("modifyBtn").href = '/editgesetz.html?p='+passedBill.parliament.id+'&pr='+passedBill.parliament_role+'&b=' + passedBill.id;
 
@@ -383,14 +391,14 @@ userVote = null;
 
 
 $.ajax({
-    url: "/userBillVotes/" + DDA.Cookie.getSessionUser().id + "/getVotes",
+    url: "/userBillVotes/getVotes",
     method: "GET",
     async: false,
     data: {
         "bill_id": passedBill.id
     },
     error: function (xhr, ajaxOptions, thrownError) {
-        showErrorToast("Etwas lief schief");
+        showErrorToast("Fehler beim Laden der Nutzerstimmen");
     },
     success: function (data) {
         yesvotes = data[0];
@@ -400,27 +408,30 @@ $.ajax({
 
 setBars(userRedbox, yesvotes, novotes, 0, passedBill.parliament_role == 1);
 
+    if(DDA.Cookie.getSessionUser()) {
+        $.ajax({
+            url: "/userBillVotes/" + myid + "/getUserVote",
+            method: "GET",
+            async: false,
+            data: {
+                "bill_id": passedBill.id
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                showErrorToast("Fehler beim Laden deiner Stimme");
+            },
+            success: function (data) {
+                userVote = data;
+                if (data == "") {
+                    userVote = null;
+                }
 
-$.ajax({
-    url: "/userBillVotes/" + DDA.Cookie.getSessionUser().id + "/getUserVote",
-    method: "GET",
-    async: false,
-    data: {
-        "bill_id": passedBill.id
-    },
-    error: function (xhr, ajaxOptions, thrownError) {
-        showErrorToast("Etwas lief schief");
-    },
-    success: function (data) {
-        userVote = data;
-        if(data == ""){
-            userVote = null;
-        }
-
-        updateYesNoText()
+                updateYesNoText();
+            }
+        });
+    } else {
+        userVote = null;
+        updateYesNoText();
     }
-});
-
 $('#btnYes').off().click(function () {
 
     pressVote(true);
@@ -432,36 +443,40 @@ $('#btnNo').off().click(function () {
 
 
 function pressVote(newvote) {
-    if (userVote != null) {
-        if (userVote.vote) {
-            yesvotes = yesvotes - 1;
-        } else {
-            novotes = novotes - 1;
+    if(DDA.Cookie.getSessionUser()) {
+        if (userVote != null) {
+            if (userVote.vote) {
+                yesvotes = yesvotes - 1;
+            } else {
+                novotes = novotes - 1;
+            }
         }
-    }
 
-    if(userVote != null &&newvote == userVote.vote){
-        deletevote();
-    } else {
-        castvote(newvote);
-        if(newvote){
-            yesvotes = yesvotes + 1;
+        if (userVote != null && newvote == userVote.vote) {
+            deletevote();
         } else {
-            novotes = novotes + 1;
+            castvote(newvote);
+            if (newvote) {
+                yesvotes = yesvotes + 1;
+            } else {
+                novotes = novotes + 1;
+            }
         }
-    }
-    if ("" + DDA.Cookie.getSessionUser().verificationstatus == "VERIFIED") {
-        setBars(userRedbox, yesvotes, novotes,0, passedBill.parliament_role == 1);
-    } else {
-        showLinkToKontoToast("Deine Stimme wurde abgegeben, wird aber erst gezählt sobald dein Account verifiziert ist. (<a href=\"/konto.html\" target=\"_blank\" rel=\"noopener noreferrer\">Klicke hier</a>)");
+        if ("" + DDA.Cookie.getSessionUser().verificationstatus == "VERIFIED") {
+            setBars(userRedbox, yesvotes, novotes, 0, passedBill.parliament_role == 1);
+        } else {
+            showLinkToKontoToast("Deine Stimme wurde abgegeben, wird aber erst gezählt sobald dein Account verifiziert ist. (<a href=\"/konto.html\" target=\"_blank\" rel=\"noopener noreferrer\">Klicke hier</a>)");
 
+        }
+    } else {
+        showInfoToast("Bitte logge Dich ein um abzustimmen.")
     }
 }
 
 function castvote(newvote){
     logoutIfExpired();
     $.ajax({
-        url: "/userBillVotes/" + DDA.Cookie.getSessionUser().id + "/vote",
+        url: "/userBillVotes/" + myid + "/vote",
         method: "PUT",
         async: false,
         data: {
@@ -469,7 +484,7 @@ function castvote(newvote){
             "vote": newvote
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            showErrorToast("Etwas lief schief");
+            showErrorToast("Fehler beim Abstimmen");
         },
         success: function (data) {
             userVote = data;
@@ -481,14 +496,14 @@ function castvote(newvote){
 function deletevote(){
     logoutIfExpired();
     $.ajax({
-        url: "/userBillVotes/" + DDA.Cookie.getSessionUser().id + "/deleteVote",
+        url: "/userBillVotes/" + myid + "/deleteVote",
         method: "DELETE",
         async: false,
         data: {
             "bill_id": passedBill.id
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            showErrorToast("Etwas lief schief");
+            showErrorToast("Fehler beim Zurücknehmen deiner Stimme");
         },
         success: function (data) {
             userVote = null;
@@ -530,7 +545,7 @@ function updateYesNoText(){
 ////////////////////////////////////
 logoutIfExpired();
 $.ajax({
-    url: "/reprBillVotes/" + DDA.Cookie.getSessionUser().id + "/getVotes",
+    url: "/reprBillVotes/getVotes",
     method: "GET",
     async: false,
     data: {
@@ -572,6 +587,7 @@ function showReprVote(partyName, reprVoteY, reprVoteN, reprVoteA){
 }
 
 function getParty(party_id){
+    //TODO bundle
     result = null;
     logoutIfExpired();
     $.ajax({
@@ -620,7 +636,7 @@ function createComment(){
     } else {
         logoutIfExpired();
         $.ajax({
-            url: "/comments/" + DDA.Cookie.getSessionUser().id + "/create",
+            url: "/comments/" + myid + "/create",
             method: "PUT",
             async: false,
             data: {
@@ -739,7 +755,9 @@ initCountdown();
 
 ///////////////////////
 //////SHOW/////////////
-showOwnProfilepic();
+    if(DDA.Cookie.getSessionUser()) {
+        showOwnProfilepic();
+    }
 document.getElementById("maincontainer").style.display = "block";
 
 
@@ -758,10 +776,11 @@ document.getElementById("maincontainer").style.display = "block";
 function loadReplies(comment_id) {
     logoutIfExpired();
     $.ajax({
-        url: "/comments/" + DDA.Cookie.getSessionUser().id + "/getRankedComments",
+        url: "/comments/getRankedComments",
         method: "GET",
         async: false,
         data: {
+            "user_id":myid,
             "bill_id": passedBill.id,
             "reply_comment_id": comment_id
         },
@@ -826,7 +845,7 @@ function loadCommentVotesBundle(commentids){
                 "comment_ids": arrayToString(commentids)
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                showErrorToast("Etwas lief schief");
+                showErrorToast("Fehler beim Laden der Kommentarbewertungen");
             },
             success: function (data) {
                 for (var i = 0; i < data.length; i++) {
@@ -837,27 +856,36 @@ function loadCommentVotesBundle(commentids){
             }
         });
 
-        $.ajax({
-            url: "/commentrating/" + DDA.Cookie.getSessionUser().id + "/getUserVoteBundle",
-            method: "GET",
-            async: false,
-            data: {
-                "comment_ids": arrayToString(commentids)
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                showErrorToast("Etwas lief schief");
-            },
-            success: function (data) {
-                for (var i = 0; i < commentids.length; i++) {
-                    ownCommentVotes.set(commentids[i], data[i]);
-                    if (data[i] == "") {
-                        ownCommentVotes.set(commentids[i], null);
+        if (DDA.Cookie.getSessionUser()) {
+
+            $.ajax({
+                url: "/commentrating/" + myid + "/getUserVoteBundle",
+                method: "GET",
+                async: false,
+                data: {
+                    "comment_ids": arrayToString(commentids)
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    showErrorToast("Fehler beim Laden Deiner Kommentarbewertungen");
+                },
+                success: function (data) {
+                    for (var i = 0; i < commentids.length; i++) {
+                        ownCommentVotes.set(commentids[i], data[i]);
+                        if (data[i] == "") {
+                            ownCommentVotes.set(commentids[i], null);
+                        }
+                        updateCommentVoteButtons(commentids[i]);
                     }
-                    updateCommentVoteButtons(commentids[i]);
                 }
+            });
+            //loadCommentVotes(commentids[i]);
+        } else {
+            for (var i = 0; i < commentids.length; i++) {
+                ownCommentVotes.set(commentids[i], null);
+                updateCommentVoteButtons(commentids[i]);
             }
-        });
-        //loadCommentVotes(commentids[i]);
+            //TODO nicht eingeloggt, wie wird dargestellt?
+        }
     }
 
 }
@@ -893,11 +921,11 @@ function showComment(commentdata, commenttemplate, readCommentSection){
     clone.children[1].children[1].innerHTML = commentdata.text;
 
     //Ranking-Info, zu löschen
-    if((DDA.Cookie.getSessionUser().admin) && (DDA.Cookie.getSessionUser().id==1)) {
+    if((myid==1)) {
         clone.children[1].children[1].innerHTML = commentdata.text +  "<br>R" + commentdata.readCount + ";Rv" + strip(commentdata.relative_value) + ";Ra" + strip(commentdata.ranking) + ";cuRa" + strip(commentdata.customRanking);
     }
 
-    //Profilbild
+
     commentHtmls.set(commentdata.id, clone);
 
 
@@ -905,7 +933,7 @@ function showComment(commentdata, commenttemplate, readCommentSection){
     const pp = commentdata;
     const cc = clone;
 
-    if(commentdata.user.id == DDA.Cookie.getSessionUser().id){
+    if(commentdata.user.id == myid){
         //Eigenes Kommentar
 
         //Kein Cursor beim Liken
@@ -938,32 +966,37 @@ function showComment(commentdata, commenttemplate, readCommentSection){
         });
 
     } else {
-        //Fremdes Kommentar
-        updateCommentsFollowUser(commentdata.user.id);
+        if(DDA.Cookie.getSessionUser()) {
+            //Fremdes Kommentar
+            updateCommentsFollowUser(commentdata.user.id);
 
-        rndid52 = "rndid_" + commentdata.id + "_52";
-        clone.children[1].children[0].children[1].id = rndid52;
+            rndid52 = "rndid_" + commentdata.id + "_52";
+            clone.children[1].children[0].children[1].id = rndid52;
 
-        $('#'+rndid52).off().click(function () {
-            toggleFollow(pp.user.id);
-            if(updateCommentsFollowUser(pp.user.id)){
-                showSuccessToast("Kommentare von "+clone.children[1].children[0].children[0].textContent+" werden nun für Dich weiter oben angezeigt.");
-            }
-        });
+            $('#' + rndid52).off().click(function () {
+                toggleFollow(pp.user.id);
+                if (updateCommentsFollowUser(pp.user.id)) {
+                    showSuccessToast("Kommentare von " + clone.children[1].children[0].children[0].textContent + " werden nun für Dich weiter oben angezeigt.");
+                }
+            });
 
-        //Löschen-Knopf wird Report-Knopf
-        //clone.children[1].children[2].children[RP_DELETE].style.visibility='hidden';
-        rndid = "rndid_" + commentdata.id + "_5";
-        clone.children[1].children[2].children[RP_DELETE].id = rndid;
-        clone.children[1].children[2].children[RP_DELETE].children[0].innerHTML = "Melden";
 
-        $('#'+rndid).off().click(function () {
-            heProbablyReadTillHere(pp.id);
-            actionOnDelete = "REPORTCOMMENT";
-            targetOnDelete = pp.id;
-            document.getElementById("AreUSureLabel").textContent = "Verfassungswidriges Kommentar melden?";
-            document.getElementById("confirmdeletebtn").innerHTML = "Melden";
-        });
+            //Löschen-Knopf wird Report-Knopf
+            //clone.children[1].children[2].children[RP_DELETE].style.visibility='hidden';
+            rndid = "rndid_" + commentdata.id + "_5";
+            clone.children[1].children[2].children[RP_DELETE].id = rndid;
+            clone.children[1].children[2].children[RP_DELETE].children[0].innerHTML = "Melden";
+
+            $('#' + rndid).off().click(function () {
+                heProbablyReadTillHere(pp.id);
+                actionOnDelete = "REPORTCOMMENT";
+                targetOnDelete = pp.id;
+                document.getElementById("AreUSureLabel").textContent = "Verfassungswidriges Kommentar melden?";
+                document.getElementById("confirmdeletebtn").innerHTML = "Melden";
+            });
+        } else {
+            clone.children[1].children[2].children[RP_DELETE].children[0].innerHTML = "";
+        }
 
 
         ////////////Like-btn/////////////
@@ -1027,7 +1060,7 @@ function deleteComment(c_id){
     result = false;
     logoutIfExpired();
     $.ajax({
-        url: "/comments/" + DDA.Cookie.getSessionUser().id + "/delete",
+        url: "/comments/" + myid + "/delete",
         method: "DELETE",
         async: false,
         data: {
@@ -1053,7 +1086,7 @@ function deleteComment(c_id){
 function showOwnProfilepic(){
     logoutIfExpired();
     $.ajax({
-        url: "/profilepicfiles/" + DDA.Cookie.getSessionUser().id + "/getForSelf",
+        url: "/profilepicfiles/" + myid + "/getForSelf",
         method: "GET",
         async: false,
         data: {
@@ -1088,7 +1121,7 @@ function showOthersProfilepicBundle(comment_ids){
     if(user_ids.length > 0) {
         strids = arrayToString(user_ids);
         $.ajax({
-            url: "/profilepicfiles/" + DDA.Cookie.getSessionUser().id + "/getForOthersBundle",
+            url: "/profilepicfiles/getForOthersBundle",
             method: "GET",
             async: false,
             data: {
@@ -1145,6 +1178,7 @@ function nothingToMap(){
 
 
 function upvoteComment(comment_id, newrating, deleteany) {
+    if(DDA.Cookie.getSessionUser()) {
     userCommentVote = ownCommentVotes.get(comment_id);
     if (userCommentVote != null) {
         //Stimme von da wegnehmen wo sie vorher war
@@ -1166,12 +1200,15 @@ function upvoteComment(comment_id, newrating, deleteany) {
     } else {
         showLinkToKontoToast("Deine Stimme wurde abgegeben, wird aber erst gezählt sobald dein Account verifiziert ist. (<a href=\"/konto.html\" target=\"_blank\" rel=\"noopener noreferrer\">Klicke hier</a>)");
     }
+    } else {
+        showInfoToast("Bitte logge Dich ein um Kommentare zu bewerten.")
+    }
 }
 
 function castCommentvote(comment_id, newvote){
     logoutIfExpired();
     $.ajax({
-        url: "/commentrating/" + DDA.Cookie.getSessionUser().id + "/vote",
+        url: "/commentrating/" + myid + "/vote",
         method: "PUT",
         async: false,
         data: {
@@ -1179,7 +1216,7 @@ function castCommentvote(comment_id, newvote){
             "vote": newvote
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            showErrorToast("Etwas lief schief");
+            showErrorToast("Fehler beim Bewerten des Kommentars");
         },
         success: function (data) {
             ownCommentVotes.set(comment_id, data);
@@ -1191,14 +1228,14 @@ function castCommentvote(comment_id, newvote){
 function deleteCommentvote(comment_id){
     logoutIfExpired();
     $.ajax({
-        url: "/commentrating/" + DDA.Cookie.getSessionUser().id + "/deleteVote",
+        url: "/commentrating/" + myid + "/deleteVote",
         method: "DELETE",
         async: false,
         data: {
             "comment_id": comment_id
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            showErrorToast("Etwas lief schief");
+            showErrorToast("Fehler beim Zurücknehmen der Kommentarbewertung");
         },
         success: function (data) {
             ownCommentVotes.set(comment_id, null);
@@ -1270,11 +1307,20 @@ function setCommentVotesText(comment_id){
 ////////////////////////////////////////////
 
 $('#writeCommentProBtn').off().click(function () {
-    toggleShowReplies(-1);
+    if(DDA.Cookie.getSessionUser()) {
+        toggleShowReplies(-1);
+    } else {
+        showInfoToast("Bitte logge Dich ein um zu kommentieren.")
+    }
+
 });
 
 $('#writeCommentContraBtn').off().click(function () {
-    toggleShowReplies(-2);
+    if(DDA.Cookie.getSessionUser()) {
+        toggleShowReplies(-2);
+    } else {
+        showInfoToast("Bitte logge Dich ein um zu kommentieren.")
+    }
 });
 
 function toggleShowReplies(comment_id){
@@ -1330,9 +1376,10 @@ function isReplysectionOpen(comment_id){
 
 function openReplySection(comment_id){
     repliedCommentId = comment_id;
-    var writeCommentSection = document.getElementById("writeCommentSection");
-    writeCommentSection.style="display:block;";
-
+    if(DDA.Cookie.getSessionUser()) {
+        var writeCommentSection = document.getElementById("writeCommentSection");
+        writeCommentSection.style = "display:block;";
+    }
     if(comment_id < 0) {
         if (comment_id == -1) {
             document.getElementById("writeCommentProBtn").after(writeCommentSection)
@@ -1343,13 +1390,16 @@ function openReplySection(comment_id){
     } else {
         //Antwort-Text in Kommentar ändern
         var clone = commentHtmls.get(comment_id);
+
+
         clone.children[1].children[2].children[RP_REPLY].children[0].innerHTML = "Antworten einklappen";
 
         var replycontainer = clone.children[2];
         //repliedCommentId = comment_id;
         //Input-Feld verschieben
-        replycontainer.appendChild(writeCommentSection);
-
+        if(DDA.Cookie.getSessionUser()) {
+            replycontainer.appendChild(writeCommentSection);
+        }
         //Nur 1 Knopf
         //$('#commentContraBtn').hide();
         document.getElementById("commentProBtn").innerText = "Antworten";
@@ -1366,7 +1416,7 @@ function openReplySection(comment_id){
 /////////////////////////////////////////////////////////
 
 function heProbablyReadTillHere(comment_id){
-    if ("" + DDA.Cookie.getSessionUser().verificationstatus == "VERIFIED") {
+    if (DDA.Cookie.getSessionUser() && "" + DDA.Cookie.getSessionUser().verificationstatus == "VERIFIED") {
         //rausfinden in welcher Liste bis wo gelesen wurde
         var listNr;
         for (listNr = 0; listNr < commentSequences.length; listNr++) {
@@ -1376,7 +1426,7 @@ function heProbablyReadTillHere(comment_id){
             }
         }
         if (ind == -1) {
-            showErrorToast("Etwas lief schief. Bitte Seite neu laden.")
+            showErrorToast("Fehler in heProbablyReadTillHere")
             return;
         }
         //alle Kommentare in dieser Liste vorher als gelesen markieren
@@ -1400,7 +1450,7 @@ function saveCommentsAsRead(newlyReadComments){
     if(newlyReadComments.length > 0) {
         logoutIfExpired();
         $.ajax({
-            url: "/comments/" + DDA.Cookie.getSessionUser().id + "/saveReadComments",
+            url: "/comments/" + myid + "/saveReadComments",
             method: "PUT",
             async: false,
             traditional: true,
@@ -1408,7 +1458,7 @@ function saveCommentsAsRead(newlyReadComments){
                 "readCommentsIds": newlyReadComments
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                showErrorToast("Etwas lief schief");
+                showErrorToast("Fehler beim Lesen der Kommentare");
             },
             success: function (data) {
             }
@@ -1420,14 +1470,14 @@ function saveCommentsAsRead(newlyReadComments){
 function loadReadComments(){
     logoutIfExpired();
     $.ajax({
-        url: "/comments/" + DDA.Cookie.getSessionUser().id + "/loadReadCommentsIds",
+        url: "/comments/" + myid + "/loadReadCommentsIds",
         method: "GET",
         async: false,
         data: {
             "bill_id": passedBill.id
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            showErrorToast("Etwas lief schief");
+            showErrorToast("Fehler in loadReadComments");
         },
         success: function (data) {
             for(var i = 0; i < data.length; i++) {
@@ -1437,7 +1487,9 @@ function loadReadComments(){
     });
 }
 
-loadReadComments();
+    if(DDA.Cookie.getSessionUser()) {
+        loadReadComments();
+    }
 
 
 

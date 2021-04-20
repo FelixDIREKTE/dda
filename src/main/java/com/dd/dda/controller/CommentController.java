@@ -77,14 +77,13 @@ public class CommentController {
 
 
 
-    @GetMapping("{id}/getRankedComments")
-    @PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<List<Comment>> getRankedComments(@PathVariable(value = "id") Long id,
+    @GetMapping("getRankedComments")
+    //@PreAuthorize("hasAuthority('User') and principal.id == #id")
+    public ResponseEntity<List<Comment>> getRankedComments(@RequestParam(value = "user_id") Long user_id,
                                                            @RequestParam(value = "bill_id") Long bill_id,
                                                            @RequestParam(value = "reply_comment_id") Long reply_comment_id
                                                            ) {
-        log.info("enter getBills " + id);
-        List<Comment> result = commentService.getRankedComments(id, bill_id, reply_comment_id);
+        List<Comment> result = commentService.getRankedComments(user_id, bill_id, reply_comment_id);
         return ResponseEntity.ok(result);
 
     }

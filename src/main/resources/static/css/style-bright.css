@@ -202,7 +202,7 @@ sup {
     top: -.5em; }
 
 a {
-    color: #000000;
+    color: #000033;
     text-decoration: none;
     background-color: transparent; }
 a:hover {
@@ -7683,7 +7683,7 @@ body {
     padding-top: 2rem; }
 
 .modal-body a {
-    color: black;
+    color: #000043;
 }
 .modal-body a:hover {
     color: #333333;

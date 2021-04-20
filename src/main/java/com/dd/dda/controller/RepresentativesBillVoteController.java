@@ -25,10 +25,9 @@ public class RepresentativesBillVoteController {
     }
 
 
-    @GetMapping("/{id}/getVotes")
+    @GetMapping("getVotes")
     //@PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<List<RepresentativesBillVote>> getVotes(@PathVariable(value = "id") Long id,
-                                                                  @RequestParam(value = "bill_id") Long bill_id
+    public ResponseEntity<List<RepresentativesBillVote>> getVotes(@RequestParam(value = "bill_id") Long bill_id
     ) {
         log.info("Enter getVotes");
         List<RepresentativesBillVote> result = representativesBillVoteService.getVotes(bill_id);

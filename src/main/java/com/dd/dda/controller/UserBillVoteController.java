@@ -30,10 +30,9 @@ public class UserBillVoteController {
     }
 
 
-    @GetMapping("/{id}/getVotes")
+    @GetMapping("getVotes")
     //@PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<List<Integer>> getVotes(@PathVariable(value = "id") Long id,
-                                                  @RequestParam(value = "bill_id") Long bill_id
+    public ResponseEntity<List<Integer>> getVotes(@RequestParam(value = "bill_id") Long bill_id
                                            ) {
         log.info("Enter getVotes");
         List<Integer> result = userBillVoteService.getVotes(bill_id);
@@ -41,10 +40,9 @@ public class UserBillVoteController {
     }
 
 
-    @GetMapping("/{id}/getVotesAsStringBundle")
+    @GetMapping("getVotesAsStringBundle")
     //@PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<List<String>> getVotesAsStringBundle(@PathVariable(value = "id") Long id,
-                                                               @RequestParam(value = "bill_ids") String bill_ids
+    public ResponseEntity<List<String>> getVotesAsStringBundle(@RequestParam(value = "bill_ids") String bill_ids
     ) {
         List<Long> ids = utilService.stringToArray(bill_ids);
         List<String> result = new ArrayList<>();

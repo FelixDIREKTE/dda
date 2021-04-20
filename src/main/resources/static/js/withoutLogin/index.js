@@ -402,7 +402,7 @@ function getPassedStuff() {
                 "bill_id": passedBillI
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                showErrorToast("Seite konnte nicht geladen werden.")
+                showErrorToast("Beitrag konnte nicht geladen werden.")
             },
             success: function (data) {
                 passedBill = data;
@@ -410,16 +410,15 @@ function getPassedStuff() {
         });
     }
     if (passedParliamentI != null) {
-
         $.ajax({
-            url: "/parliaments/" + DDA.Cookie.getSessionUser().id + "/getParliament",
+            url: "/parliaments/getParliament",
             method: "GET",
             async: false,
             data: {
                 "parl_id": passedParliamentI
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                showErrorToast("Seite konnte nicht geladen werden.")
+                showErrorToast("Parlament konnte nicht geladen werden.")
             },
             success: function (data) {
 

@@ -25,12 +25,19 @@ if( typeof logoutIfExpired === 'undefined') {
 
 
 ///////////////////
+
+    if(DDA.Cookie.getSessionUser()){
+        myid = DDA.Cookie.getSessionUser().id;
+    } else {
+        myid = null;
+    }
+
 $.ajax({
     url: "/parliaments/getEligibleParliaments",
     method: "GET",
     async: false,
     data: {
-        "user_id":DDA.Cookie.getSessionUser().id
+        "user_id":myid
     },
     error: function (xhr, ajaxOptions, thrownError) {
         showErrorToast("Fehler beim Laden der Parlamente");
@@ -104,8 +111,14 @@ if (typeof setPageTitle === 'undefined') {
     setPageTitle('Parlament wählen');
 }
 //Willkommen
-if (DDA.Cookie.getSessionUser().verificationstatus == "VERIFIED") {
-    $('#welcomeRow').hide();
+if (DDA.Cookie.getSessionUser() ){
+    document.getElementById("kontolink").href="/konto.html";
+    if( DDA.Cookie.getSessionUser().verificationstatus == "VERIFIED") {
+    } else {
+        $('#welcomeRow').show();
+    }
+} else {
+    $('#welcomeRow').show();
 }
 
 

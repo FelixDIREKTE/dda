@@ -46,7 +46,7 @@ public class ProfilePicFilesController {
 
 
 
-    @GetMapping("{id}/getForOthers")
+    /*@GetMapping("{id}/getForOthers")
     //@PreAuthorize("hasAuthority('User') and principal.id == #id")
     public ResponseEntity<List<Rawfile>> getForOthers(@PathVariable(value = "id") Long id,
                                                             @RequestParam(value = "othersid") Long othersid) {
@@ -54,12 +54,11 @@ public class ProfilePicFilesController {
 
         List<Rawfile> result = fileStorageService.getFiles(FileType.USERPROFILEPIC, othersid);
         return ResponseEntity.ok(result);
-    }
+    }*/
 
-    @GetMapping("{id}/getForOthersBundle")
+    @GetMapping("getForOthersBundle")
     //@PreAuthorize("hasAuthority('User') and principal.id == #id")
-    public ResponseEntity<List<Rawfile>> getForOthersBundle(@PathVariable(value = "id") Long id,
-                                                                @RequestParam(value = "othersids") String othersids) {
+    public ResponseEntity<List<Rawfile>> getForOthersBundle(@RequestParam(value = "othersids") String othersids) {
 
         List<Long> ids = utilService.stringToArray(othersids);
         List<Rawfile> result = fileStorageService.getFilesBundle(FileType.USERPROFILEPIC, ids);
