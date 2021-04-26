@@ -263,7 +263,6 @@ lastIntervalC = setInterval(loadNotifications, 180000);
 var theheader = document.querySelector('#theheader');
 theheader.style = "display:block;"
 
-
 /*function backToDashboardLink() {
     $('#backToDashboard').off().click(function () {
         $('#stage').fadeOut(300, function () {

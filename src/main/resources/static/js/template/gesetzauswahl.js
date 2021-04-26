@@ -28,7 +28,7 @@ if(passedParliamentRole == 2){
     document.getElementById("parlroledescription").innerHTML = "Hier werden Diskussionen angezeigt. Du kannst deine Ansichten mit anderen Wählern austauschen, Unterstützung für deine Anliegen im Parlament und bei der Formulierung von Initiativen finden, oder Fragen stellen.";
 }
 
-var billSequences = []; // hier wird je Kommentarsektion eine Liste der Kommentare von oben nach unten abgelegt um festzustellen welche gelesen sind
+var billSequences = [[]]; // hier wird je Kommentarsektion eine Liste der Kommentare von oben nach unten abgelegt um festzustellen welche gelesen sind
 var readbills = new Set(); //enthält ids aller gelesener kommentare
 
 setPageTitle(title);
@@ -72,7 +72,6 @@ if(!DDA.Cookie.getSessionUser() || !DDA.Cookie.getSessionUser().admin) {
 
 logoutIfExpired();
 
-
 function getRankedBills() {
     $.ajax({
         url: "/bills/getRankedBills",
@@ -81,15 +80,14 @@ function getRankedBills() {
         data: {
             "user_id": myid,
             "parliament_id": passedParliament.id,
-            "parliament_role": passedParliamentRole
+            "parliament_role": passedParliamentRole,
+            "shownbillsids": arrayToString(billSequences[0])
         },
         error: function (xhr, ajaxOptions, thrownError) {
             showErrorToast("Fehler beim Laden der Gesetze");
         },
         success: function (data) {
-
             showBills(data);
-
         }
     });
 }
@@ -113,9 +111,8 @@ function faellig(time){
     billDate.setFullYear(y, M, d);
     billDate.setHours(h,m,s);
 
-    let currentDate = new Date();
 
-    var timeDiffDays = Math.floor((currentDate.getTime() - billDate.getTime()) /86400000);
+    var timeDiffDays = Math.floor((currentTime - billDate.getTime()) /86400000);
 
     if (timeDiffDays > 100){
         s = time;
@@ -143,23 +140,27 @@ function faellig(time){
 
 }
 
-function showBills(data) {
+function resetShownBills(){
+    var billContainer = document.querySelector('#billContainer');
+    while (billContainer.lastChild) {
+        billContainer.removeChild(billContainer.lastChild);
+    }
+    billSequences = [[]];
 
+}
+
+function showBills(data) {
 
     billids = [];
     for (var i = 0; i < data.length ; i++) {
         billids.push(data[i].id);
+        billSequences[0].push(data[i].id);
     }
-    billSequences.push(billids);
     allBillVotes = loadBillVotesBundle(billids);
 
     $('#billTileTemplate').show();
-
     var billContainer = document.querySelector('#billContainer');
     billContainer.style = "display:none;"
-    while (billContainer.lastChild) {
-        billContainer.removeChild(billContainer.lastChild);
-    }
 
     var billTileTemplate = document.querySelector('#billTileTemplate');
     for (var i = 0; i < data.length; i++) {
@@ -215,9 +216,22 @@ function showBills(data) {
 
     $('#billTileTemplate').hide();
     billContainer.style = "display:block;"
+    const p6 = data[data.length-1];
+
+    if(data.length == billsPerLoad) {
+        var showmore = document.createElement('a');
+        showmore.classList.add("pointer");
+        showmore.style = "color:cornflowerblue;";
+        showmore.innerHTML = "Weitere laden";
+        showmore.onclick = function () {
+            heProbablyReadTillHere(p6.id);
+            showmore.remove();
+            getRankedBills();
+        }
+        billContainer.appendChild(showmore);
+    }
 
 }
-//billSequences readbills
 
 function heProbablyReadTillHere(bill_id){
     if (DDA.Cookie.getSessionUser() && "" + DDA.Cookie.getSessionUser().verificationstatus == "VERIFIED") {
@@ -231,17 +245,17 @@ function heProbablyReadTillHere(bill_id){
         }
         if (ind == -1) {
             logoutIfExpired();
-            // showErrorToast("Etwas lief schief. Bitte Seite neu laden.")
+            showErrorToast("Etwas lief schief. Bitte Seite neu laden.")
             return;
         }
         //alle Kommentare in dieser Liste vorher als gelesen markieren
         newlyReadBills = [];
-        ind2 = Math.min(1.3 * ind, billSequences[listNr].length - 1);
-        for (var i = 0; i <= ind2; i++) {
+        //ind2 = Math.min(1.3 * ind, billSequences[listNr].length - 1);
+        for (var i = 0; i <= ind; i++) {
             var c_id = billSequences[listNr][i];
-            if (readbills.has(c_id)) {
-                continue;
-            }
+            //if (readbills.has(c_id)) {
+            //    continue;
+            //}
             readbills.add(c_id);
             newlyReadBills.push(c_id);
         }
@@ -261,8 +275,8 @@ function savebillsAsRead(newlyReadBills, bill_id){
             async: false,
             traditional: true,
             data: {
-                "readBillsIds": newlyReadBills,
-                "readBillDetailId" : bill_id
+                "readBillsIds": newlyReadBills
+                //"readBillDetailId" : bill_id
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 showErrorToast("Etwas lief schief");
@@ -329,6 +343,7 @@ function getBillSearch(searchterm){
             showErrorToast("Fehler beim Laden der Gesetze");
         },
         success: function (data) {
+            resetShownBills();
             showBills(data);
         }
     });
@@ -346,7 +361,6 @@ function getBillSearch(searchterm){
 function loadBillVotesBundle(billids){
     result = [];
     if(billids.length > 0) {
-
         $.ajax({
             url: "/userBillVotes/getVotesAsStringBundle",
             method: "GET",

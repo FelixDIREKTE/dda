@@ -98,11 +98,14 @@ public class BillFilesController {
 
 
     @GetMapping("get")
-    //@PreAuthorize("hasAuthority('User') and principal.id == #id")
     public ResponseEntity<List<Rawfile>> getForOthers(@RequestParam(value = "bill_id") Long bill_id) {
-
-
         List<Rawfile> result = fileStorageService.getFiles(FileType.BILLFILES, bill_id);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("isEmpty")
+    public ResponseEntity<Boolean> isEmpty(@RequestParam(value = "bill_id") Long bill_id) {
+        boolean result = fileStorageService.isEmpty(FileType.BILLFILES, bill_id);
         return ResponseEntity.ok(result);
     }
 

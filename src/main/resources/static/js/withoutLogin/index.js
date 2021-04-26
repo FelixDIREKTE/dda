@@ -1,4 +1,5 @@
-
+const billsPerLoad = 24;
+const commentsPerLoad = 24;
 
 
 $(document).ready(function () {
@@ -39,7 +40,6 @@ $(document).ready(function () {
 
     }
 
-
     if (DDA.Cookie.getLoginData() != null && DDA.Cookie.getLoginData().basicAuth != null && (DDA.Cookie.getSessionUser() == null || !isLoggedIn())) {
         $.ajax({
             url: "login",
@@ -54,8 +54,9 @@ $(document).ready(function () {
                 DDA.Cookie.saveSessionUser(data);
             }
         });
-
     }
+
+
 });
 
 
@@ -157,6 +158,8 @@ function getCurrentTime(){
     );
 }
 
+let currentTime = getCurrentTime().getTime();
+
 
 function erstelltVor(time){
     if(time == null){
@@ -175,8 +178,8 @@ function erstelltVor(time){
     commentDate.setFullYear(y, M, d);
     commentDate.setHours(h,m,s);
 
-    let currentDate = getCurrentTime();
-    var timeDiffMin = Math.floor((currentDate.getTime() - commentDate.getTime()) / 1000 /60);
+
+    var timeDiffMin = Math.floor((currentTime - commentDate.getTime()) / 1000 /60);
     if(timeDiffMin <= 1){
         return "vor 1 Minute";
     }
@@ -345,6 +348,9 @@ function intToCategoryList(resultInt){
 
 function arrayToString(arr){
     result = "";
+    if(typeof arr === 'undefined' || arr == null){
+        return result;
+    }
     sep = "";
     for(var z = 0; z < arr.length; z++){
         result = result + sep + arr[z];

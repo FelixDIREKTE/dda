@@ -5,6 +5,7 @@ import com.dd.dda.model.exception.DDAException;
 import com.dd.dda.model.sqldata.Bill;
 import com.dd.dda.service.BillService;
 import com.dd.dda.service.UserService;
+import com.dd.dda.service.UtilService;
 import com.dd.dda.service.file.FileStorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,11 +23,13 @@ public class BillController {
     private final BillService billService;
     private final UserService userService;
     private final FileStorageService fileStorageService;
+    private final UtilService utilService;
 
-    public BillController(BillService billService, UserService userService, FileStorageService fileStorageService) {
+    public BillController(BillService billService, UserService userService, FileStorageService fileStorageService, UtilService utilService) {
         this.billService = billService;
         this.userService = userService;
         this.fileStorageService = fileStorageService;
+        this.utilService = utilService;
     }
 
 
@@ -88,11 +91,14 @@ public class BillController {
     //@PreAuthorize("hasAuthority('User') and principal.id == #id")
     public ResponseEntity<List<Bill>> getRankedBills(@RequestParam(value = "user_id") Long user_id,
                                                      @RequestParam(value = "parliament_id") long parliament_id,
-                                                     @RequestParam(value = "parliament_role") int parliament_role
+                                                     @RequestParam(value = "parliament_role") int parliament_role,
+                                                     @RequestParam(value = "shownbillsids") String shownbillsids
 
     ) {
-        log.info("enter getRankedBills " + user_id);
-        return ResponseEntity.ok(billService.getRankedBills(user_id, parliament_id, parliament_role));
+        List<Long> shown_bills_ids = utilService.stringToArray(shownbillsids);
+        List<Bill> result = billService.getRankedBills(user_id, parliament_id, parliament_role, shown_bills_ids);
+        result.forEach(b -> b.setAbstr(null));
+        return ResponseEntity.ok(result);
     }
 
 
@@ -146,12 +152,12 @@ public class BillController {
     @PutMapping("/{id}/saveReadBills")
     @PreAuthorize("hasAuthority('User') and principal.id == #id")
     public ResponseEntity saveReadBills(    @PathVariable(value = "id") Long id,
-                                            @RequestParam(value = "readBillsIds") Long[] readbillsIds,
-                                               @RequestParam(value = "readBillDetailId") Long readBillDetailId
+                                            @RequestParam(value = "readBillsIds") Long[] readbillsIds
+                                               //@RequestParam(value = "readBillDetailId") Long readBillDetailId
     ) {
 
         userService.addCommentsRead(id, readbillsIds.length);
-        billService.addReads(readbillsIds, readBillDetailId);
+        billService.addReads(readbillsIds);
         return ResponseEntity.ok(true);
     }
 

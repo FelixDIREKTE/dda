@@ -87,7 +87,7 @@ public class PartyParliamentSeatsService {
         if(maxdate.isEmpty()) {
             return new ArrayList<>();
         }
-        List<PartyParliamentSeats> result = xx.get(maxdate.get());
+        List<PartyParliamentSeats> result = xx.get(maxdate.get()).stream().filter(pps -> pps.getSeats() > 0).collect(Collectors.toList());
         return result;
     }
 

@@ -202,7 +202,7 @@ sup {
     top: -.5em; }
 
 a {
-    color: #000033;
+    color: #000088;
     text-decoration: none;
     background-color: transparent; }
 a:hover {
@@ -8449,7 +8449,7 @@ body {
     border-radius: 9px;
     width: 100%;
     height: 40px;
-    background-color: #ff0000;
+    background-color: #ff0f0f;
     text-align: right;
     box-sizing: border-box;
     position: relative;
@@ -8475,7 +8475,7 @@ body {
     border-radius: 9px 0px 0px 9px;
     width: 50%;
     height: 40px;
-    background-color: #009900;
+    background-color: #055c00;
     text-align: left;
     padding-top: 20px;
     padding-bottom: 20px;

@@ -2,10 +2,7 @@ package com.dd.dda.controller;
 
 import com.dd.dda.model.sqldata.Comment;
 import com.dd.dda.model.sqldata.User;
-import com.dd.dda.service.CommentRatingService;
-import com.dd.dda.service.CommentService;
-import com.dd.dda.service.MailService;
-import com.dd.dda.service.UserService;
+import com.dd.dda.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +19,13 @@ public class CommentController {
     private final CommentService commentService;
     private final MailService mailService;
     private final UserService userService;
-    private final CommentRatingService commentRatingService;
+    private final UtilService utilService;
 
-    public CommentController(CommentService commentService, MailService mailService, UserService userService, CommentRatingService commentRatingService) {
+    public CommentController(CommentService commentService, MailService mailService, UserService userService, UtilService utilService) {
         this.commentService = commentService;
         this.mailService = mailService;
         this.userService = userService;
-        this.commentRatingService = commentRatingService;
+        this.utilService = utilService;
     }
 
 
@@ -81,9 +78,11 @@ public class CommentController {
     //@PreAuthorize("hasAuthority('User') and principal.id == #id")
     public ResponseEntity<List<Comment>> getRankedComments(@RequestParam(value = "user_id") Long user_id,
                                                            @RequestParam(value = "bill_id") Long bill_id,
-                                                           @RequestParam(value = "reply_comment_id") Long reply_comment_id
+                                                           @RequestParam(value = "reply_comment_id") Long reply_comment_id,
+                                                           @RequestParam(value = "showncommentsids") String showncommentsids
                                                            ) {
-        List<Comment> result = commentService.getRankedComments(user_id, bill_id, reply_comment_id);
+        List<Long> shown_comments_ids = utilService.stringToArray(showncommentsids);
+        List<Comment> result = commentService.getRankedComments(user_id, bill_id, reply_comment_id, shown_comments_ids);
         return ResponseEntity.ok(result);
 
     }

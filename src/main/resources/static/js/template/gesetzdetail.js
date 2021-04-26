@@ -13,8 +13,7 @@ setTabTitleName(passedBill.name);
 //Gesetz
 if(passedBill.parliament_role == 0) {
     document.getElementById("communityVoteHeadline").innerHTML = "Abstimmung der Bevölkerung";
-    document.getElementById("dokheadline").innerHTML = "Gesetzestext";
-    document.getElementById("dokheadline").innerHTML = "Gesetzestext";
+    dokheadlineText = "Gesetzestext";
 }
 
 ////Initiative : Unterstützen statt ja/nein
@@ -22,23 +21,39 @@ if(passedBill.parliament_role == 1){
     $('#btnNo').hide();
     document.getElementById("yesinactive").innerHTML = "<i class=\"far fa-thumbs-up\"></i> Unterstützen";
     document.getElementById("yesactive").innerHTML = "<i class=\"fas fa-thumbs-up\"></i></em><B> Unterstützt</B>";
-    document.getElementById("btnYes").classList.remove("votebtn")
-    document.getElementById("btnYes").classList.add("initiativevotebtn")
+    document.getElementById("btnYes").classList.remove("votebtn");
+    document.getElementById("btnYes").classList.add("initiativevotebtn");
     document.getElementById("communityVoteHeadline").innerHTML = "Unterschriften";
-    document.getElementById("dokheadline").innerHTML = "Gesetzestext";
+    dokheadlineText = "Gesetzestext";
 }
 
 //Diskussion
 if(passedBill.parliament_role == 2) {
     document.getElementById("communityVoteHeadline").innerHTML = "Bewertung des Beitrags";
-    document.getElementById("dokheadline").innerHTML = "Dokumente";
-    document.getElementById("contraCommentSectionHalf").style = "display:none;";
+    dokheadlineText = "Dokumente";
+
+    /*document.getElementById("contraCommentSectionHalf").style = "display:none;";
     document.getElementById("proCommentSectionHalf").style = "width:100% !important;";
-    document.getElementById("writeCommentProBtn").innerHTML = "Kommentar schreiben";
-
-
-
+    document.getElementById("writeCommentProBtn").innerHTML = "Kommentar schreiben";*/
 }
+
+
+
+    var dokheadline = document.getElementById("dokheadline");
+
+    if(noDocuments()){
+        dokheadline.innerHTML = dokheadlineText;
+    } else {
+        dokheadline.innerHTML = dokheadlineText + " (laden)";
+        var showDoks = false;
+        $('#dokheadline').off().click(function () {
+            if (showDoks == false) {
+                showDoks = true;
+                dokheadline.innerHTML = dokheadlineText;
+                showDocuments();
+            }
+        });
+    }
 
 
 
@@ -147,7 +162,7 @@ var allCommentVotes = new Map();
 var commentHtmls = new Map();
 var userCommentsMap = new Map();
 var userPicMap = new Map();
-var commentSequences = []; // hier wird je Kommentarsektion eine Liste der Kommentare von oben nach unten abgelegt um festzustellen welche gelesen sind
+var commentSequences = new Map(); // hier wird je Kommentarsektion eine Liste der Kommentare von oben nach unten abgelegt um festzustellen welche gelesen sind
 var readComments = new Set(); //enthält ids aller gelesener kommentare
 
 function Sleep(milliseconds) {
@@ -320,6 +335,9 @@ if(passedBill.date_vote == null) {
 
 document.getElementById("Parlament").textContent = passedBill.parliament.name;
 
+
+
+
 ////////////////////////////////////
 ////////////////////////////////////
 /////////Dokumente//////////////////
@@ -327,25 +345,46 @@ document.getElementById("Parlament").textContent = passedBill.parliament.name;
 ////////////////////////////////////
 
 logoutIfExpired();
-$.ajax({
-    url: "/billfiles/get",
-    method: "GET",
-    async: false,
-    data: {
-        "bill_id": passedBill.id,
-    },
-    error: function (xhr, ajaxOptions, thrownError) {
-        showErrorToast("Fehler beim Laden der Anhänge");
-    },
-    success: function (data) {
-        showOwnFiles(data);
 
+    function noDocuments() {
+        result = false;
+        $.ajax({
+            url: "/billfiles/isEmpty",
+            method: "GET",
+            async: false,
+            data: {
+                "bill_id": passedBill.id,
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                showErrorToast("Fehler beim Laden der Anhänge");
+            },
+            success: function (data) {
+                result=data;
+            }
+        });
+        return result;
     }
-});
+
+function showDocuments() {
+    $.ajax({
+        url: "/billfiles/get",
+        method: "GET",
+        async: false,
+        data: {
+            "bill_id": passedBill.id,
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            showErrorToast("Fehler beim Laden der Anhänge");
+        },
+        success: function (data) {
+            showOwnFiles(data);
+        }
+    });
+}
 
 function showOwnFiles(data){
 
-    $('#downloadtest').show();
+    //$('#downloadtest').show();
 
     var parent = document.getElementById('billfilesbody');
     while (parent.lastChild) {
@@ -364,15 +403,17 @@ function showOwnFiles(data){
         var l = pointparts.length;
         fileending = pointparts[l-1];
 
-        var downloadtest = document.getElementById('downloadtest').cloneNode(true);
-        downloadtest.id="somerandomstring"+j;
+        var downloadtest = document.createElement('a');
+        thisid = "somerandomstring"+j;
+        downloadtest.id=thisid
         downloadtest.href="data:file/"+fileending+";base64," + str;
         downloadtest.download=data[j].filename;
         downloadtest.innerHTML="<u>"+ data[j].filename + "</u><br>";
         parent.appendChild(downloadtest);
 
+
     }
-    $('#downloadtest').hide();
+    //$('#downloadtest').hide();
 
 }
 
@@ -539,6 +580,7 @@ function updateYesNoText(){
 }
 
 
+
 ///////////////////////////////////
 //////////PARLAMENT-ABSTIMMUNG///////
 //////////////////////////////////
@@ -671,7 +713,7 @@ function createComment(){
                         //setCommentVotesText(repliedCommentId);
                     }
 
-                    showComment(data, commenttemplate, whereToPost);
+                    showComment(data, commenttemplate, whereToPost, repliedCommentId, true);
                     showOthersProfilepicBundle([data.id]);
                     updateCommentVoteButtons(data.id);
 
@@ -707,40 +749,51 @@ function initCountdown() {
         clearInterval(lastInterval);
     }
     if(passedBill.parliament_role == 0) {
-        var second = 1000,
-            minute = second * 60,
-            hour = minute * 60,
-            day = hour * 24;
+
         var deadline = passedBill.date_vote;
+        if(deadline == null){
 
-        //let deadline = "Mar 23, 2021 11:35:00",
-        var countDown = new Date(deadline).getTime();
+            let headline = document.getElementById("countdownheadline"),
+                countdown = document.getElementById("countdown");
+            headline.innerText = "Das Ende der Abstimmung steht noch aus.";
+            countdown.style.display = "none";
+            //clearInterval(x);
+        } else {
 
-        lastIntervalFun = function () {
-            let now = new Date().getTime(),
-                distance = countDown - now;
 
-            (document.getElementById("days").innerText = Math.floor(distance / day)),
-                (document.getElementById("hours").innerText = Math.floor(
-                    (distance % day) / hour
-                )),
-                (document.getElementById("minutes").innerText = Math.floor(
-                    (distance % hour) / minute
-                )),
-                (document.getElementById("seconds").innerText = Math.floor(
-                    (distance % minute) / second
-                ));
+            var second = 1000,
+                minute = second * 60,
+                hour = minute * 60,
+                day = hour * 24;
 
-            //do something later when date is reached
-            if (distance < 0) {
-                let headline = document.getElementById("countdownheadline"),
-                    countdown = document.getElementById("countdown");
-                headline.innerText = "Die Abstimmung ist beendet. Ergebnis: " + passedBill.final_yes_votes + " Ja-Stimmen, " + passedBill.final_no_votes + " Nein-Stimmen";
-                countdown.style.display = "none";
-                clearInterval(x);
+            //let deadline = "Mar 23, 2021 11:35:00",
+            var countDown = new Date(deadline).getTime();
+            lastIntervalFun = function () {
+                let now = new Date().getTime(),
+                    distance = countDown - now;
+
+                (document.getElementById("days").innerText = Math.floor(distance / day)),
+                    (document.getElementById("hours").innerText = Math.floor(
+                        (distance % day) / hour
+                    )),
+                    (document.getElementById("minutes").innerText = Math.floor(
+                        (distance % hour) / minute
+                    )),
+                    (document.getElementById("seconds").innerText = Math.floor(
+                        (distance % minute) / second
+                    ));
+
+                //do something later when date is reached
+                if (distance < 0) {
+                    let headline = document.getElementById("countdownheadline"),
+                        countdown = document.getElementById("countdown");
+                    headline.innerText = "Die Abstimmung ist beendet. Ergebnis: " + passedBill.final_yes_votes + " Ja-Stimmen, " + passedBill.final_no_votes + " Nein-Stimmen";
+                    countdown.style.display = "none";
+                    clearInterval(x);
+                }
             }
+            lastInterval = setInterval(lastIntervalFun, 1000);
         }
-        lastInterval = setInterval(lastIntervalFun, 1000);
     } else {
         let headline = document.getElementById("countdownheadline"),
             countdown = document.getElementById("countdown");
@@ -772,7 +825,6 @@ document.getElementById("maincontainer").style.display = "block";
 ////////////////////////////////////
 ////////////////////////////////////
 
-
 function loadReplies(comment_id) {
     logoutIfExpired();
     $.ajax({
@@ -782,7 +834,8 @@ function loadReplies(comment_id) {
         data: {
             "user_id":myid,
             "bill_id": passedBill.id,
-            "reply_comment_id": comment_id
+            "reply_comment_id": comment_id,
+            "showncommentsids": arrayToString(commentSequences.get(comment_id))
         },
         error: function (xhr, ajaxOptions, thrownError) {
             showErrorToast("Fehler beim Laden der Kommentare");
@@ -795,7 +848,6 @@ function loadReplies(comment_id) {
 
 loadReplies(-1);
 loadReplies(-2);
-
 
 
 
@@ -817,19 +869,41 @@ function showComments(data, comment_id) {
     readCommentSection.style = "display:none;"
 
     //
-    commentids = [];
-    for (var i = 0; i < data.length ; i++) {
-        commentids.push(data[i].id);
-    }
-    commentSequences.push(commentids);
-    for (var i = data.length-1; i >= 0  ; i--) {
-        showComment(data[i], commenttemplate, readCommentSection);
+    newcommentids = [];
+    allcommentids = commentSequences.get(comment_id);
+    if(allcommentids == null){
+        allcommentids = [];
     }
 
-    loadCommentVotesBundle(commentids);
-    showOthersProfilepicBundle(commentids)
+    for (var i = 0; i < data.length ; i++) {
+        newcommentids.push(data[i].id);
+        allcommentids.push(data[i].id);
+    }
+    commentSequences.set(comment_id, allcommentids);
+    for (var i = 0; i < data.length; i++) {
+        showComment(data[i], commenttemplate, readCommentSection, comment_id, false);
+    }
+
+    loadCommentVotesBundle(newcommentids);
+    showOthersProfilepicBundle(newcommentids)
     $('#commenttemplate').hide();
     readCommentSection.style = "display:block;"
+
+    const p6 = data[data.length-1];
+
+
+    if(data.length == commentsPerLoad) {
+        var showmore = document.createElement('a');
+        showmore.classList.add("pointer");
+        showmore.style = "color:cornflowerblue;";
+        showmore.innerHTML = "Weitere laden";
+        showmore.onclick = function () {
+            heProbablyReadTillHere(p6.id, comment_id);
+            showmore.remove();
+            loadReplies(comment_id);
+        }
+        readCommentSection.appendChild(showmore);
+    }
 
 }
 
@@ -884,7 +958,6 @@ function loadCommentVotesBundle(commentids){
                 ownCommentVotes.set(commentids[i], null);
                 updateCommentVoteButtons(commentids[i]);
             }
-            //TODO nicht eingeloggt, wie wird dargestellt?
         }
     }
 
@@ -895,9 +968,8 @@ function strip(number) {
 }
 
 
-function showComment(commentdata, commenttemplate, readCommentSection){
+function showComment(commentdata, commenttemplate, readCommentSection, repliedCommentId, prepend){
     var clone = commenttemplate.cloneNode(true);
-    readCommentSection.prepend(clone);
     clone.id = "clone" + commentdata.id;
     clone.user_id = commentdata.user.id;
 
@@ -947,53 +1019,42 @@ function showComment(commentdata, commenttemplate, readCommentSection){
         //Folgen nicht möglich
         clone.children[1].children[0].children[1].style.display='none';
         //clone.children[1].children[2].children[1].style.visibility='hidden';
-        rndid = "rndid_" + commentdata.id + "_5";
         //Delete button
-        clone.children[1].children[2].children[RP_DELETE].id = rndid;
-        $('#'+rndid).off().click(function () {
+        clone.children[1].children[2].children[RP_DELETE].onclick = function () {
             actionOnDelete = "DELETECOMMENT";
             targetOnDelete = pp.id;
             document.getElementById("AreUSureLabel").textContent = "Kommentar wirklich löschen?";
             document.getElementById("confirmdeletebtn").innerHTML = "<i class=\"fas fa-trash-alt\"></i>Löschen";
+        };
 
-        });
-
-        rndid6 = "rndid_" + commentdata.id + "_6";
         //Antworten-btn
-        clone.children[1].children[2].children[RP_REPLY].id = rndid6;
-        $('#'+rndid6).off().click(function () {
+        clone.children[1].children[2].children[RP_REPLY].onclick = function () {
             toggleShowReplies(pp.id);
-        });
+        };
 
     } else {
         if(DDA.Cookie.getSessionUser()) {
             //Fremdes Kommentar
             updateCommentsFollowUser(commentdata.user.id);
 
-            rndid52 = "rndid_" + commentdata.id + "_52";
-            clone.children[1].children[0].children[1].id = rndid52;
-
-            $('#' + rndid52).off().click(function () {
+            clone.children[1].children[0].children[1].onclick = function () {
                 toggleFollow(pp.user.id);
                 if (updateCommentsFollowUser(pp.user.id)) {
                     showSuccessToast("Kommentare von " + clone.children[1].children[0].children[0].textContent + " werden nun für Dich weiter oben angezeigt.");
                 }
-            });
+            };
 
 
             //Löschen-Knopf wird Report-Knopf
             //clone.children[1].children[2].children[RP_DELETE].style.visibility='hidden';
-            rndid = "rndid_" + commentdata.id + "_5";
-            clone.children[1].children[2].children[RP_DELETE].id = rndid;
             clone.children[1].children[2].children[RP_DELETE].children[0].innerHTML = "Melden";
-
-            $('#' + rndid).off().click(function () {
-                heProbablyReadTillHere(pp.id);
+            clone.children[1].children[2].children[RP_DELETE].onclick = function () {
+                heProbablyReadTillHere(pp.id, repliedCommentId);
                 actionOnDelete = "REPORTCOMMENT";
                 targetOnDelete = pp.id;
                 document.getElementById("AreUSureLabel").textContent = "Verfassungswidriges Kommentar melden?";
                 document.getElementById("confirmdeletebtn").innerHTML = "Melden";
-            });
+            };
         } else {
             clone.children[1].children[2].children[RP_DELETE].children[0].innerHTML = "";
         }
@@ -1001,58 +1062,48 @@ function showComment(commentdata, commenttemplate, readCommentSection){
 
         ////////////Like-btn/////////////
         //Source
-        rndid = "rndid_" + commentdata.id + "_1" + "_" + RP_DP_SOURCE;
-        clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_SOURCE].id = rndid;
-        $('#'+rndid).off().click(function () {
-            heProbablyReadTillHere(pp.id);
+        clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_SOURCE].onclick = function () {
+            heProbablyReadTillHere(pp.id, repliedCommentId);
             upvoteComment(pp.id, "GOODSOURCE", false);
-        });
+        };
 
         //Point
-        rndid17 = "rndid_" + commentdata.id + "_1" + "_" + RP_DP_POINT;
-        clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_POINT].id = rndid17;
-        $('#'+rndid17).off().click(function () {
-            heProbablyReadTillHere(pp.id);
+        clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_POINT].onclick = function () {
+            heProbablyReadTillHere(pp.id, repliedCommentId);
             upvoteComment(pp.id, "GOODPOINT", false);
-        });
+        };
 
         //Prop
-        rndid27 = "rndid_" + commentdata.id + "_1" + "_" + RP_DP_PROP;
-        clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_PROP].id = rndid27;
-        $('#'+rndid27).off().click(function () {
-            heProbablyReadTillHere(pp.id);
+        clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_PROP].onclick=function () {
+            heProbablyReadTillHere(pp.id, repliedCommentId);
             upvoteComment(pp.id, "GOODPROPOSAL", false);
-        });
+        };
 
         //Default
-        rndid37 = "rndid_" + commentdata.id + "_1" + "_DEFAULT";
-        clone.children[1].children[2].children[RP_LIKE].children[0].id = rndid37;
-        $('#'+rndid37).off().click(function () {
+        clone.children[1].children[2].children[RP_LIKE].children[0].onclick = function () {
             //goodpoint oder delete
-            heProbablyReadTillHere(pp.id);
+            heProbablyReadTillHere(pp.id, repliedCommentId);
             upvoteComment(pp.id, "GOODPOINT", true);
-        });
-
-
-
-
-
+        };
 
 
 
         //////////////////////
 
-        rndid6 = "rndid_" + commentdata.id + "_6";
         //Antworten-btn
-        clone.children[1].children[2].children[RP_REPLY].id = rndid6;
-        $('#'+rndid6).off().click(function () {
-            heProbablyReadTillHere(pp.id);
+        clone.children[1].children[2].children[RP_REPLY].onclick = function () {
+            heProbablyReadTillHere(pp.id, repliedCommentId);
             toggleShowReplies(pp.id);
-        });
+        };
     }
 
     //clone.children[1].children[2].children[4].style.visibility='hidden'; //Editieren
 
+    if(prepend) {
+        readCommentSection.prepend(clone);
+    } else {
+        readCommentSection.append(clone);
+    }
 
 }
 
@@ -1325,8 +1376,6 @@ $('#writeCommentContraBtn').off().click(function () {
 
 function toggleShowReplies(comment_id){
     if(isReplysectionOpen(comment_id)){
-    //if(repliedCommentId == comment_id){ //TODO if replycontainer leer
-        //alle Antworten ausblenden
         closeReplySection(comment_id)
     } else {
         if(repliedCommentId != null){
@@ -1415,25 +1464,20 @@ function openReplySection(comment_id){
 /////////GELESENE KOMMENTARE IDENTIFIZIEREN//////////////
 /////////////////////////////////////////////////////////
 
-function heProbablyReadTillHere(comment_id){
+function heProbablyReadTillHere(comment_id, repliedCommentId){
     if (DDA.Cookie.getSessionUser() && "" + DDA.Cookie.getSessionUser().verificationstatus == "VERIFIED") {
         //rausfinden in welcher Liste bis wo gelesen wurde
-        var listNr;
-        for (listNr = 0; listNr < commentSequences.length; listNr++) {
-            ind = commentSequences[listNr].indexOf(comment_id);
-            if (ind != -1) {
-                break;
-            }
-        }
+        ind = commentSequences.get(repliedCommentId).indexOf(comment_id);
+
         if (ind == -1) {
             showErrorToast("Fehler in heProbablyReadTillHere")
             return;
         }
         //alle Kommentare in dieser Liste vorher als gelesen markieren
         newlyReadComments = [];
-        ind2 = Math.min(1.3 * ind, commentSequences[listNr].length - 1);
-        for (var i = 0; i <= ind2; i++) {
-            var c_id = commentSequences[listNr][i];
+        //ind2 = Math.min(1.3 * ind, commentSequences.get(repliedCommentId).length - 1);
+        for (var i = 0; i <= ind; i++) {
+            var c_id = commentSequences.get(repliedCommentId)[i];
             if (readComments.has(c_id)) {
                 continue;
             }
@@ -1490,9 +1534,6 @@ function loadReadComments(){
     if(DDA.Cookie.getSessionUser()) {
         loadReadComments();
     }
-
-
-
 
 
 ///////THE END///////////

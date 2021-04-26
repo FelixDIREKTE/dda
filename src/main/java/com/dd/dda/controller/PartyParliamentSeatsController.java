@@ -51,7 +51,7 @@ public class PartyParliamentSeatsController {
         if (party == null || party.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
         }
-        if (seats == null || seats == 0) {
+        if (seats == null) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
         }
         if (parliament_id == null || parliament_id <= 0) {

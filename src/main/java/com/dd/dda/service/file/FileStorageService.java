@@ -182,7 +182,7 @@ public class FileStorageService {
 
         } else {
 
-            if( isPicture(file) && file.getSize() > 200000){
+            if( isPicture(file) && file.getSize() > 1000000){ //1MB
 
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
@@ -303,7 +303,7 @@ public class FileStorageService {
         int ow = originalImage.getWidth();
         int oh = originalImage.getHeight();
 
-        final int pixelcnt = 1024*1024;
+        final int pixelcnt = 4*1024*1024;
         final double q = 1.0 * ow / oh;
         int nw = (int) Math.sqrt(pixelcnt * q);
         int nh = pixelcnt / nw;
@@ -344,7 +344,8 @@ public class FileStorageService {
                 try {
                     byte[] bytes = Files.readAllBytes(p);
                     String n = p.getFileName().toString();
-                    return new Rawfile(bytes, n);
+                    String p2 = p.toString();
+                    return new Rawfile(bytes, n, p2);
 
 
                 } catch (IOException e) {
@@ -358,6 +359,16 @@ public class FileStorageService {
             //throw new DDAException("IOException beim Lesen des VerificationProof-Ordner von " + id );
         }
         return result2;
+    }
+
+    public boolean isEmpty(FileType fileType, Long id){
+        Path path = fileSpecificPath(fileType, id);
+
+        try {
+            return Files.list(path).count() == 0;
+        } catch (IOException e) {
+            return true;
+        }
     }
 
 
@@ -400,7 +411,7 @@ public class FileStorageService {
                     try {
                         byte[] bytes = Files.readAllBytes(p);
                         String n = p.getFileName().toString();
-                        return new Rawfile(bytes, n);
+                        return new Rawfile(bytes, n, null);
                     } catch (IOException e) {
                         e.printStackTrace();
                         throw new DDAException("IOException beim Lesen des VerificationProof-Ordner von " + id);

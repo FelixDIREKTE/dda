@@ -1,3 +1,5 @@
+
+
 $('#header').load('template/header.html', function (){
     $('#footer').load('template/footer.html');
 
@@ -11,14 +13,10 @@ $('#footerBar').fadeIn();
 
 
 
-
-//alert("1");
-
 if( typeof logoutIfExpired === 'undefined') {
 } else {
     logoutIfExpired();
 }
-//alert("2");
 
 
 // Back to Dashboard Link (Home Icon)
@@ -49,6 +47,7 @@ $.ajax({
 });
 
 function showParliaments(data) {
+
     var parliamentCardTemplate = document.querySelector('#parliamentCardTemplate');
     var lastCard = parliamentCardTemplate;
     for (var i = 0; i < data.length; i++) {
@@ -95,6 +94,8 @@ function showParliamentPicture(clone, pp){
                 for (var i = 0; i < testArray.length; i++) {
                     url += testArray[i];
                 }
+
+
 
 
                 clone.style="background: url(\""+ url.replace(/(\r\n|\n|\r)/gm, "") +"\") no-repeat center;background-size: 100% auto;"
@@ -147,7 +148,5 @@ if(ve != null && ve != ""){
         }
     });
 }
-
-
 
 });

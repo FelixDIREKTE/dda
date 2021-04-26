@@ -401,7 +401,6 @@ if(passedBill != null && passedBill.date_vote != null){
 function showReprVotesInput(data){
     var container = document.getElementById('reprVotesContainer');
     var template = document.getElementById('reprVotesTemplate');
-    var lastcard = template;
     for(var i = 0; i < data.length; i++){
         party = getParty(data[i].party_id);
         parties.push(party);

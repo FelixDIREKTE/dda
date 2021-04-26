@@ -31,6 +31,7 @@ public class CommentService {
     private final NotificationService notificationService;
     private final HtmlConverterService htmlConverterService;
     private final FollowsService followsService;
+    private final int commentsPerLoad = 24;
 
     public Double getAvgLikeRatio() {
         if(avgLikeRatio == null){
@@ -64,24 +65,25 @@ public class CommentService {
         this.commentIdsToRerank = new ConcurrentHashSet<Long>();
     }
 
-    public List<Comment> getRankedComments(Long user_id , Long bill_id, Long reply_comment_id) {
+    public List<Comment> getRankedComments(Long user_id , Long bill_id, Long reply_comment_id, List<Long> shown_comments_ids) {
         List<Comment> result;
         if(reply_comment_id == -1){
             result = commentRepository.getCommentsForPro(bill_id).stream().
-                    filter(c -> c.getUser().getVerificationstatus() == VerificationStatus.VERIFIED
+                    filter(c -> c.getUser().getVerificationstatus() == VerificationStatus.VERIFIED && !shown_comments_ids.contains(c.getId())
                              )
                     .collect(Collectors.toList());
         } else {
             if (reply_comment_id == -2){
                 result = commentRepository.getCommentsForContra(bill_id).stream().
-                        filter(c -> c.getUser().getVerificationstatus() == VerificationStatus.VERIFIED
+                        filter(c -> c.getUser().getVerificationstatus() == VerificationStatus.VERIFIED && !shown_comments_ids.contains(c.getId())
                                 )
                         .collect(Collectors.toList());
 
             } else {
                 if(reply_comment_id > 0) {
                     result = commentRepository.getCommentsFor(bill_id, reply_comment_id).stream().
-                            filter(c -> c.getUser().getVerificationstatus() == VerificationStatus.VERIFIED)
+                            filter(c -> c.getUser().getVerificationstatus() == VerificationStatus.VERIFIED && !shown_comments_ids.contains(c.getId())
+                            )
                             .collect(Collectors.toList());
                 } else {
                     throw new DDAException("Ungültige reply_comment_id " + reply_comment_id);
@@ -96,9 +98,7 @@ public class CommentService {
         result = result.stream().sorted(Comparator.comparingDouble(Comment::getCustomRanking)).collect(Collectors.toList());
         Collections.reverse(result);
 
-        return result;
-
-
+        return result.subList(0, Math.min(result.size(), commentsPerLoad));
     }
 
     public Comment createComment(Long id, Long bill_id, String text, Long replied_comment_id, boolean pro) {

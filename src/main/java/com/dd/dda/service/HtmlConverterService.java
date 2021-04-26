@@ -84,10 +84,14 @@ public class HtmlConverterService {
     }
 
     public boolean isUrlWithPrefixValid(String url){
+        int l = url.lastIndexOf('.');
+        if(l < 3 || url.length() - l <= 2){
+            return false;
+        }
         return url.contains(".") && ( isUrlValid(url) || isUrlValid( "https://"+url) || isUrlValid("https://www." +url));
     }
 
-    public boolean isUrlValid(String url) {
+    private boolean isUrlValid(String url) {
         try {
             URL obj = new URL(url);
             obj.toURI();

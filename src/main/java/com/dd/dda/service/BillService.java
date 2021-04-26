@@ -28,6 +28,7 @@ public class BillService {
     private final UtilService utilService;
     private final Set<Long> billIdsToRerank;
     private final HtmlConverterService htmlConverterService;
+    private final int billsPerLoad = 24;
 
     public Double getAvgLikeRatio() {
         if(avgLikeRatio == null){
@@ -156,39 +157,39 @@ public class BillService {
         return null;
     }
 
-    public List<Bill> getRankedBills(Long user_id, long parliament_id, long parliament_role) {
+    public List<Bill> getRankedBills(Long user_id, long parliament_id, long parliament_role, List<Long> shown_bills_ids) {
         User u = user_id == null? null : userService.getUserByIdUnencrypted(user_id);
         if(parliament_role == 0){
             //Ranke Gesetze
             Date today = new Date();
             List<Bill> result = new ArrayList<>();
-            List<Bill> futureBills = billRepository.getFutureBillsForParliamentOrderedByDateVote(parliament_id, parliament_role, today);
-            List<Bill> pastBills = billRepository.getPastBillsForParliamentOrderedByDateVote(parliament_id, parliament_role, today);
+            List<Bill> futureBills = billRepository.getFutureBillsForParliamentOrderedByDateVote(parliament_id, parliament_role, today).stream().filter(b -> !shown_bills_ids.contains(b.getId()) ).collect(Collectors.toList());
+            List<Bill> pastBills = billRepository.getPastBillsForParliamentOrderedByDateVote(parliament_id, parliament_role, today).stream().filter(b -> !shown_bills_ids.contains(b.getId()) ).collect(Collectors.toList());
             futureBills.stream().forEach(b -> b.customRankFutureBills(u, today));
             pastBills.stream().forEach(b -> b.customRankPastBills(u, today));
             result.addAll(futureBills);
             result.addAll(pastBills);
             result = result.stream().sorted(Comparator.comparingDouble(Bill::getCustomRanking)).collect(Collectors.toList());
             Collections.reverse(result);
-            return result;
+            return result.subList(0, Math.min(result.size(), billsPerLoad));
 
         } else {
             if(parliament_role == 1){
                 //Ranke Initiativen
-                List<Bill> result = billRepository.getBillsForParliamentOrderedByRanking(parliament_id, parliament_role);
+                List<Bill> result = billRepository.getBillsForParliamentOrderedByRanking(parliament_id, parliament_role).stream().filter(b -> !shown_bills_ids.contains(b.getId()) ).collect(Collectors.toList());
                 result.stream().forEach(b -> b.customRankInitiatives(u));
                 result = result.stream().sorted(Comparator.comparingDouble(Bill::getCustomRanking)).collect(Collectors.toList());
                 Collections.reverse(result);
-                return result;
+                return result.subList(0, Math.min(result.size(), billsPerLoad));
 
             } else {
                 if(parliament_role == 2){
                     //Ranke Diskussionen
-                    List<Bill> result = billRepository.getBillsForParliamentOrderedByRanking(parliament_id, parliament_role);
+                    List<Bill> result = billRepository.getBillsForParliamentOrderedByRanking(parliament_id, parliament_role).stream().filter(b -> !shown_bills_ids.contains(b.getId()) ).collect(Collectors.toList());
                     result.stream().forEach(b -> b.customRankDiscussion(u));
                     result = result.stream().sorted(Comparator.comparingDouble(Bill::getCustomRanking)).collect(Collectors.toList());
                     Collections.reverse(result);
-                    return result;
+                    return result.subList(0, Math.min(result.size(), billsPerLoad));
                 } else {
                     throw new DDAException("Illegal parliament_role" + parliament_role);
                 }
@@ -260,6 +261,7 @@ public class BillService {
         if(b.isEmpty()){
             throw new DDAException("No Bill with id "+ bill_id);
         }
+        billRepository.addDetailRead(bill_id);
         return b.get();
     }
 
@@ -305,9 +307,8 @@ public class BillService {
         return result.stream().map(c -> c.getId()).distinct().collect(Collectors.toList());
     }
 
-    public void addReads(Long[] readBillsIds, Long readBillDetailId) {
+    public void addReads(Long[] readBillsIds) {
         billRepository.addRead(readBillsIds);
-        billRepository.addDetailRead(readBillDetailId);
         billIdsToRerank.addAll(Arrays.asList(readBillsIds));
     }
 
