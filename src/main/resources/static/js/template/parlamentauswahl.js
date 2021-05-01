@@ -108,20 +108,25 @@ function showParliamentPicture(clone, pp){
 }
 
 if (typeof setPageTitle === 'undefined') {
+    $('#pageTitle').html('Parlament wählen');
 } else {
     setPageTitle('Parlament wählen');
 }
 //Willkommen
 if (DDA.Cookie.getSessionUser() ){
-    document.getElementById("kontolink").href="/konto.html";
+    //document.getElementById("kontolink").href="/konto.html";
     if( DDA.Cookie.getSessionUser().verificationstatus == "VERIFIED") {
     } else {
-        $('#welcomeRow').show();
-    }
+        document.getElementById("sometext").innerHTML="Bevor wir deine Stimme zählen können, müssen wir aber verifizieren dass Du ein echter, " +
+            "wahlberechtigter Mensch bist. " +
+            "Ergänze dafür bitte im <a href=\"/konto.html\" >Benutzerkonto</a> die geforderten Angaben.";    }
 } else {
-    $('#welcomeRow').show();
+    document.getElementById("sometext").innerHTML="Bevor wir deine Stimme zählen können, müssen wir aber verifizieren dass Du ein echter, " +
+        "wahlberechtigter Mensch bist. Erstelle dafür bitte einen <a href=\"/login.html\">Account</a>" +
+        " und ergänze im Benutzerkonto die geforderten Angaben.";
 }
 
+//
 
 
 

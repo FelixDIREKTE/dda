@@ -1,12 +1,4 @@
-//Delete JSessionID
-$.ajax({
-    url: "logout",
-    method: "GET",
-    async: false,
-    error: function (xhr, ajaxOptions, thrownError) {
-        console.log("Fehler beim Pre Logout: " + xhr);
-    }
-});
+
 
 function validEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -66,9 +58,3 @@ $('#forgetPasswordLink').off().click(function () {
     });
 
 });
-
-if(typeof tabTitleStr == 'undefined'){
-    document.getElementById("tabtitle").textContent = "Demokratie DIREKT!";
-} else {
-    document.getElementById("tabtitle").textContent = tabTitleStr;
-}

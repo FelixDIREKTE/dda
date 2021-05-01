@@ -169,7 +169,7 @@ public class BillService {
             pastBills.stream().forEach(b -> b.customRankPastBills(u, today));
             result.addAll(futureBills);
             result.addAll(pastBills);
-            result = result.stream().sorted(Comparator.comparingDouble(Bill::getCustomRanking)).collect(Collectors.toList());
+            result = result.stream().filter(b -> b.getCustomRanking() > -20).sorted(Comparator.comparingDouble(Bill::getCustomRanking)).collect(Collectors.toList());
             Collections.reverse(result);
             return result.subList(0, Math.min(result.size(), billsPerLoad));
 
@@ -178,7 +178,7 @@ public class BillService {
                 //Ranke Initiativen
                 List<Bill> result = billRepository.getBillsForParliamentOrderedByRanking(parliament_id, parliament_role).stream().filter(b -> !shown_bills_ids.contains(b.getId()) ).collect(Collectors.toList());
                 result.stream().forEach(b -> b.customRankInitiatives(u));
-                result = result.stream().sorted(Comparator.comparingDouble(Bill::getCustomRanking)).collect(Collectors.toList());
+                result = result.stream().filter(b -> b.getCustomRanking() > -20).sorted(Comparator.comparingDouble(Bill::getCustomRanking)).collect(Collectors.toList());
                 Collections.reverse(result);
                 return result.subList(0, Math.min(result.size(), billsPerLoad));
 
@@ -187,7 +187,7 @@ public class BillService {
                     //Ranke Diskussionen
                     List<Bill> result = billRepository.getBillsForParliamentOrderedByRanking(parliament_id, parliament_role).stream().filter(b -> !shown_bills_ids.contains(b.getId()) ).collect(Collectors.toList());
                     result.stream().forEach(b -> b.customRankDiscussion(u));
-                    result = result.stream().sorted(Comparator.comparingDouble(Bill::getCustomRanking)).collect(Collectors.toList());
+                    result = result.stream().filter(b -> b.getCustomRanking() > -20).sorted(Comparator.comparingDouble(Bill::getCustomRanking)).collect(Collectors.toList());
                     Collections.reverse(result);
                     return result.subList(0, Math.min(result.size(), billsPerLoad));
                 } else {

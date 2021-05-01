@@ -140,10 +140,13 @@ public class Bill {
     }
 
     private double categBonus(User u){
+        int mutualCateg = u.getCategories_bitstring() & categories_bitstring;
+        if(mutualCateg == 0 && u.getCategories_bitstring() != 0){
+            return -100.0;
+        }
         if(categories_bitstring == 0){
             return 0.0;
         }
-        int mutualCateg = u.getCategories_bitstring() & categories_bitstring;
         return 0.7 * q2(mutualCateg) / q2(categories_bitstring);
     }
 

@@ -2,6 +2,7 @@ const DDA_LOGIN_DATA = "DDALoginData";
 const DDA_USER_DATA = "DDAUserData";
 const DDA_THEME_SETTING = "DDAThemeSetting";
 const DDA_COLORBLIND = "DDAColorblind";
+const DDA_ACCEPTEDCOOKIES = "DDAAcceptedCookies"
 
 if (typeof DDA === 'undefined') {
     var DDA = {};
@@ -33,6 +34,17 @@ DDA.Cookie = new function () {
         saveColorblind: function (data) {
             Cookies.set(DDA_COLORBLIND, data, {expires: 1825});
         },
+
+        getAcceptedCookies: function () {
+            return Cookies.getJSON(DDA_ACCEPTEDCOOKIES);
+        },
+
+        saveAcceptedCookies: function (data) {
+            Cookies.set(DDA_ACCEPTEDCOOKIES, data, {expires: 1825});
+        },
+
+
+
 
 
         resetLoginData: function () {

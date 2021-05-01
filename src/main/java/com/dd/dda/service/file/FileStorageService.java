@@ -4,6 +4,9 @@ import com.dd.dda.config.FileStorageConfiguration;
 import com.dd.dda.model.FileType;
 import com.dd.dda.model.Rawfile;
 import com.dd.dda.model.exception.DDAException;
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.exif.ExifIFD0Directory;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -162,15 +165,69 @@ public class FileStorageService {
     }
 
 
+    public int flippedRight(InputStream imagePath) {
+        try {
+            Metadata metadata = ImageMetadataReader.readMetadata(imagePath);
+            ExifIFD0Directory exifIFD0 = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
+            int orientation = exifIFD0.getInt(ExifIFD0Directory.TAG_ORIENTATION);
+            if(orientation == 1){
+                return 0;
+            }
+            if(orientation == 6){
+                return 1;
+            }
+            if(orientation == 3){
+                return 2;
+            }
+            if(orientation == 9){
+                return 3;
+            }
+
+            throw new DDAException("Unbekannte Rotierung " + orientation);
+        } catch (Exception e){
+            return 0;
+            //e.printStackTrace();
+            //throw new DDAException("Metadaten-Fehler");
+        }
+    }
+
+
+
+
+    public static BufferedImage rotate(BufferedImage img)
+    {
+        // Getting Dimensions of image
+        int width = img.getWidth();
+        int height = img.getHeight();
+        // Creating a new buffered image
+        BufferedImage newImage = new BufferedImage(
+                img.getHeight(), img.getWidth(),  img.getType());
+        // creating Graphics in buffered image
+        Graphics2D g2 = newImage.createGraphics();
+        g2.translate(height/2, width/2);
+        g2.rotate(Math.toRadians(90));
+        g2.translate(-width /2, -height/2);
+        g2.drawImage(img, null, 0, 0);
+
+        // Return rotated buffer image
+        return newImage;
+    }
+
+
+
     public String storeFile(FileType fileType, Long id, MultipartFile file) throws IOException {
         Path path = fileSpecificPath(fileType, id, file);
         Files.createDirectories(path.getParent());
+
+        //Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        //return path.toString();
+
         if(fileType == FileType.USERPROFILEPIC){
+
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-            try (InputStream is = new FileInputStream(path.toFile())) {
-                resize(is, path, IMG_WIDTH, IMG_HEIGHT);
-            }
+            resize(path, path, IMG_WIDTH, IMG_HEIGHT);
+
             if(isJPG(file)) {
                 compress(path.toString(), path.toString(), file.getSize());
             } else {
@@ -186,10 +243,8 @@ public class FileStorageService {
 
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
+                resize(path, path);
 
-                try (InputStream is = new FileInputStream(path.toFile())) {
-                    resize(is, path);
-                }
                 if( isJPG(file)) {
                     compress(path.toString(), path.toString(), file.getSize());
                     //delete(path.toString());
@@ -252,10 +307,22 @@ public class FileStorageService {
     private final int IMG_WIDTH = 128;
     private final int IMG_HEIGHT = 128;
 
-    private void resize(InputStream input, Path target,
+    private void resize(Path path, Path target,
                                int width, int height) throws IOException {
         // read an image to BufferedImage for processing
-        BufferedImage originalImage = ImageIO.read(input);
+        BufferedImage originalImage;
+        try (InputStream is = new FileInputStream(path.toFile())) {
+            originalImage = ImageIO.read(is);
+        }
+        int flippedRight;
+        try (InputStream is = new FileInputStream(path.toFile())) {
+            flippedRight = flippedRight(is);
+        }
+        for(int ö = 0; ö < flippedRight; ö++){
+            originalImage = rotate(originalImage);
+        }
+
+
         // create a new BufferedImage for drawing
         BufferedImage newResizedImage
                 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -296,9 +363,20 @@ public class FileStorageService {
 
     }
 
-    private void resize(InputStream input, Path target) throws IOException {
+    private void resize(Path path, Path target) throws IOException {
         // read an image to BufferedImage for processing
-        BufferedImage originalImage = ImageIO.read(input);
+        BufferedImage originalImage;
+        try (InputStream is = new FileInputStream(path.toFile())) {
+            originalImage = ImageIO.read(is);
+        }
+        int flippedRight;
+        try (InputStream is = new FileInputStream(path.toFile())) {
+            flippedRight = flippedRight(is);
+        }
+        for(int ö = 0; ö < flippedRight; ö++){
+            originalImage = rotate(originalImage);
+        }
+
 
         int ow = originalImage.getWidth();
         int oh = originalImage.getHeight();

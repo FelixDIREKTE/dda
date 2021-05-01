@@ -64,12 +64,6 @@ if(!DDA.Cookie.getSessionUser() || !DDA.Cookie.getSessionUser().admin) {
     });
 }
 
-// Load Settings modal and About modal:
-/*$('#modalContainer').load('template/settings-modal.html', function () {
-    $('#modalContainer').append('<div id="holderForNextLoad" />');
-    $('#holderForNextLoad').load('template/about-modal.html');
-});*/
-
 logoutIfExpired();
 
 function getRankedBills() {
@@ -194,24 +188,13 @@ function showBills(data) {
         if((DDA.Cookie.getSessionUser()) && (myid==1)){
             clone.children[0].children[1].children[0].children[1].textContent = "R" + data[i].readCount + ";RD" + data[i].read_detail_count + ";rV" + data[i].relative_value + ";Ra" + data[i].ranking +";cuRa" + data[i].customRanking;
         }
-        bid0 = "btn" + i;
-        clone.id = bid0;
-        bid1 = "btn_" + i;
-        clone.children[0].id = bid1;
+        clone.id = "btn" + i;
         billContainer.append(clone);
         const pp = data[i];
-        clone.children[0].href='/gesetz.html?b=' + pp.id;
-        clone.children[0].onclick=function (e){
+        clone.href='/gesetz.html?b=' + pp.id;
+        clone.onclick=function (e){
             return heProbablyReadTillHere(pp.id);
         }
-        //TODO nur bei linker Maustauste, middle mouse?
-
-        /*$("#" + bid0).off().click(function () {
-            heProbablyReadTillHere(pp.id);
-            window.location.href = '/parlamentauswahl.html';
-            //return false;
-        });*/
-
     }
 
     $('#billTileTemplate').hide();
@@ -317,6 +300,7 @@ $("#searchBtn").off().click(function () {
     updateSearch();
 });
 function updateSearch(){
+    resetShownBills();
     searchterm = $("#searchField").val();
     if(searchterm == "") {
         getRankedBills();

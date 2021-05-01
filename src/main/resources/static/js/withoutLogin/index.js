@@ -56,6 +56,15 @@ $(document).ready(function () {
         });
     }
 
+    if (DDA.Cookie.getAcceptedCookies() == null) {
+        $('#cookiebanner').delay(2000).fadeIn();
+
+        $('#closecookie').click(function () {
+            $('#cookiebanner').fadeOut();
+            DDA.Cookie.saveAcceptedCookies(true);
+        });
+    }
+
 
 });
 
@@ -437,6 +446,9 @@ function getPassedStuff() {
 
 
 
+
+
+
 // Load Settings modal and About modal:
 $('#modalContainer').load('template/settings-modal.html', function () {
     $('#modalContainer').append('<div id="holderForNextLoad" />');
@@ -444,7 +456,13 @@ $('#modalContainer').load('template/settings-modal.html', function () {
 
     $('#modalContainer').append('<div id="holderForNextLoad1" />');
     $('#holderForNextLoad1').load('template/help-modal.html');
+
+
+
 });
+
+
+
 
 
 function setBars(redbox, yesvotes, novotes, abstvotes, isInitiative){

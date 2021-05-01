@@ -3484,8 +3484,8 @@ select option{
 .card-header {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
-  background-color: #ffffff;
-  border-bottom: 1px solid #ffffff;
+  background-color: #000000;
+  border-bottom: 1px solid #000000;
 }
 .card-header:first-child {
   border-radius: -1px -1px 0 0; }
@@ -3495,7 +3495,7 @@ select option{
 
 .card-footer {
   padding: 0.75rem 1.25rem;
-  background-color: #ffffff;
+  background-color: #000000;
   border-top: 1px solid #364049; }
 .card-footer:last-child {
   border-radius: 0 0 -1px -1px; }
@@ -4207,11 +4207,11 @@ a.badge-dark:focus, a.badge-dark.focus {
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1;
-  color: #000000;
-  text-shadow: 0 1px 0 #000000;
+  color: #ffffff;
+  text-shadow: 0 1px 0 #ffffff;
   opacity: .5; }
 .close:hover {
-  color: #222222;
+  color: #cccccc;
   text-decoration: none; }
 .close:not(:disabled):not(.disabled):hover, .close:not(:disabled):not(.disabled):focus {
   opacity: .75; }
@@ -4229,15 +4229,15 @@ a.close.disabled {
   max-width: 500px;
   overflow: hidden;
   font-size: 0.875rem;
-  background-color: rgba(242, 242, 242, 0.85);
+  /*background-color: rgba(242, 242, 242, 0.85);*/
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
   opacity: 0;
   border-radius: 0.5rem;
-  background: #d4d4d4;
-  color: #000000;
+  background-color: #000000;
+  color: #ffffff;
   border: darkblue solid;
   padding: .75em;
   margin-bottom: 2rem;
@@ -4335,7 +4335,7 @@ a.close.disabled {
   flex-direction: column;
   width: 100%;
   pointer-events: auto;
-  background-color: #d4d4d4;
+  background-color: #000000;
   background-clip: padding-box;
   border: 1px solid #3f4a55;
   border-radius: 0;
@@ -4375,7 +4375,6 @@ a.close.disabled {
   position: relative;
   flex: 1 1 auto;
   padding: 1rem;
-  color: black;
 }
 
 .modal-footer {
@@ -7363,7 +7362,7 @@ a.text-dark:hover, a.text-dark:focus {
   background-color: #f28f04; }
 
 .footer-bg {
-  background-color: #ffffff; }
+  background-color: #000000; }
 
 
 
@@ -7395,7 +7394,7 @@ a.text-dark:hover, a.text-dark:focus {
   border: 1px solid #596978; }
 
 .modal-header {
-  background-color: #d4d4d4; }
+  background-color: #000000; }
 
 
 
@@ -7671,9 +7670,6 @@ body {
 /*--------------------------------------------------------------------------------------
     5. Modals
 ---------------------------------------------------------------------------------------*/
-.modal-title {
-  color: #000000;
-}
 
 .modal-footer {
   border-top: none; }
@@ -7683,13 +7679,6 @@ body {
 
 .modal-body {
   padding-top: 2rem; }
-
-.modal-body a {
-  color: #000043;
-}
-.modal-body a:hover {
-  color: #333333;
-  text-decoration: none; }
 
 .settings-modal {
   min-height: 480px; }
@@ -8518,14 +8507,10 @@ body {
     color: white;
 }*/
 
-.blacktext{
-  color: #000000;
-}
-
 .blacklink {
-  color: #000000;}
+  color: #ffffff;}
 .blacklink:hover {
-  color: #07171f;
+  color: #dddddd;
   text-decoration: none; }
 
 
@@ -8683,7 +8668,6 @@ Comments
   position: relative;
   word-wrap: break-word;
   margin-bottom: 0px;
-  background-color:  #f3f3f3;
 }
 
 .comment .textcolumn .buttonline{
@@ -9031,4 +9015,33 @@ Comments
 iframe{
   width: 26rem;
   max-width: 100%;
+}
+
+
+.cookie-banner {
+  position: fixed;
+  top: 10%;
+  left: 10%;
+  right: 10%;
+  width: 80%;
+  padding: 5px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #000000;
+  border-radius: 5px;
+  box-shadow: 0 0 2px 1px rgba(255,255, 255, 0.2);
+}
+
+.closebtn {
+  height: 20px;
+  background-color: #777;
+  border: none;
+  color: white;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.defaultcolor {
+  color: #ffffff;
 }

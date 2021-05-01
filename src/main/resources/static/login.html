@@ -38,7 +38,11 @@
     <!-- Global footer bar -->
     <div id="footer"></div>
 </div>
-
+<div class="cookie-banner" style="display:none" id="cookiebanner"><p>
+    Diese Internetseite verwendet nur technisch notwendige Cookies zur Darstellung der Benutzeroberfläche und des Nutzerkontos. Durch die weitere Nutzung der Website stimmst Du der Verwendung zu. Weitere Informationen hierzu findest Du in unserer
+    <a href="/favicon.ico" download>
+        Datenschutzerklärung</a>.
+</p><button class="closebtn" id="closecookie">&times;</button></div>
 <!-- Load modals into this container to make sure that they are always on top -->
 <div id="modalContainer"></div>
 <!-- jQuery -->
@@ -75,7 +79,7 @@
 <script src="js/withoutLogin/index.js"></script>
 <script>
     $('#stage').fadeOut(300, function () {
-        $('#stage').load('template/login.html').fadeIn(300);
+        $('#stage').load('template/loginorregister.html').fadeIn(300);
     });
 </script>
 </body>

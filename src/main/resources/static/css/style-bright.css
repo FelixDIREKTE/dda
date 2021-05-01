@@ -4375,7 +4375,6 @@ a.close.disabled {
     position: relative;
     flex: 1 1 auto;
     padding: 1rem;
-    color: black;
 }
 
 .modal-footer {
@@ -7669,9 +7668,6 @@ body {
 /*--------------------------------------------------------------------------------------
     5. Modals
 ---------------------------------------------------------------------------------------*/
-.modal-title {
-    color: #000000;
-}
 
 .modal-footer {
     border-top: none; }
@@ -7681,13 +7677,6 @@ body {
 
 .modal-body {
     padding-top: 2rem; }
-
-.modal-body a {
-    color: #000043;
-}
-.modal-body a:hover {
-    color: #333333;
-    text-decoration: none; }
 
 .settings-modal {
     min-height: 480px; }
@@ -8511,14 +8500,7 @@ body {
 .status-list li{
     color: grey;
 }
-/*
-.status-list li:nth-child(1) {
-    color: white;
-}*/
 
-.blacktext{
-    color: #000000;
-}
 
 .blacklink {
     color: #000000;}
@@ -8681,7 +8663,6 @@ Comments
     position: relative;
     word-wrap: break-word;
     margin-bottom: 0px;
-    background-color:  #f3f3f3;
 }
 
 .comment .textcolumn .buttonline{
@@ -9031,4 +9012,33 @@ Comments
 iframe{
     width: 26rem;
     max-width: 100%;
+}
+
+
+.cookie-banner {
+    position: fixed;
+    top: 10%;
+    left: 10%;
+    right: 10%;
+    width: 80%;
+    padding: 5px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #eee;
+    border-radius: 5px;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.closebtn {
+     height: 20px;
+     background-color: #777;
+     border: none;
+     color: white;
+     border-radius: 2px;
+     cursor: pointer;
+ }
+
+.defaultcolor {
+    color: #000000;
 }
