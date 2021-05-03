@@ -99,3 +99,11 @@ function login(){
         }
     });
 }
+
+function loginProcess(data) {
+    DDA.Cookie.saveSessionUser(data);
+
+    $('#stage').fadeOut(300, function () {
+        window.location.href = '/parlamentauswahl.html';
+    });
+}
