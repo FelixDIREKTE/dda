@@ -142,7 +142,7 @@ public class MailService {
 
     public void sendReminderMails(User u) {
         String name = " " + u.getName();
-        if(name == null ){
+        if(u.getName() == null ){
             name = "";
         }
         String EMAIL_SUBJECT = "Erinnerung: Verifiziere deinen Account um abzustimmen!";

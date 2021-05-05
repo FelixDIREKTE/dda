@@ -8594,11 +8594,6 @@ Comments
 }
 
 /* User and time info */
-/*
-.comment .textcolumn .info{
-    width: 70%;
-}*/
-
 
 
 
@@ -8745,6 +8740,11 @@ Comments
 
 /* Responsive styles */
 
+.info{
+    padding-left: 18px;
+    min-height: 38px;
+}
+
 @media (max-width: 800px){
     .commentButton{
         margin-right: 1px;
@@ -8762,9 +8762,7 @@ Comments
         width:100% !important;
     }
 
-    .info{
-        min-height: 38px;
-    }
+
 
 
     .parltypebtn {
@@ -9040,5 +9038,5 @@ iframe{
  }
 
 .defaultcolor {
-    color: #000000;
+    color: #000000 !important;
 }

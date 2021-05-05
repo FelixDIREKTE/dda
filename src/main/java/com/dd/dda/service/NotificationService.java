@@ -117,9 +117,10 @@ public class NotificationService {
 
 
     public void sendFirstLikeNotification(Comment comment){
+        String bname = comment.getBill().getName().length() < 100 ? comment.getBill().getName() : comment.getBill().getName().substring(0, 100) + "...";
         String cmttxt = htmlConverterService.htmlToString(comment.getText());
-        cmttxt = comment.getText().length() < 128 ? cmttxt : cmttxt.substring(0, 128) + "...";
-        String msg = "Jemandem gefällt dein Kommentar zu \"" +comment.getBill().getName()+
+        cmttxt = cmttxt.length() < 100 ? cmttxt : cmttxt.substring(0, 100) + "...";
+        String msg = "Jemandem gefällt dein Kommentar zu \"" +bname+
                 "\": \"" + cmttxt + "\"";
         sendNotification(comment.getUser().getId(), msg, getLinkToBill(comment.getBill().getId()));
     }

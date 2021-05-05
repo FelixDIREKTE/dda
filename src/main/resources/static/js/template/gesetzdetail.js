@@ -6,6 +6,7 @@ $('#header').load('template/header.html', function (){
         myid = null;
     }
 
+
     [passedParliament, passedParliamentRole, passedBill]=getPassedStuff();
 setTabTitleName(passedBill.name);
 
@@ -30,6 +31,7 @@ if(passedBill.parliament_role == 1){
 //Diskussion
 if(passedBill.parliament_role == 2) {
     document.getElementById("communityVoteHeadline").innerHTML = "Bewertung des Beitrags";
+    document.getElementById("zusammenfassungwarnung").innerHTML = "";
     dokheadlineText = "Dokumente";
 
     /*document.getElementById("contraCommentSectionHalf").style = "display:none;";
@@ -1308,18 +1310,24 @@ function updateCommentVoteButtons(comment_id){
     clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_SOURCE].style="color:grey;";
 
     var ownVote = ownCommentVotes.get(comment_id);
+
+    clone.children[1].children[2].children[RP_LIKE].children[0].classList.remove("defaultcolor");
+    clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_POINT].classList.remove("defaultcolor");
+    clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_PROP].classList.remove("defaultcolor");
+    clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_SOURCE].classList.remove("defaultcolor");
+
     if(ownVote != null){
             //Like-btn
-        clone.children[1].children[2].children[RP_LIKE].children[0].style="color:black;";
+        clone.children[1].children[2].children[RP_LIKE].children[0].classList.add("defaultcolor");
 
         if(ownVote.rating == "GOODPOINT"){
-            clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_POINT].style="color:black;";
+            clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_POINT].classList.add("defaultcolor");
         }
         if(ownVote.rating == "GOODPROPOSAL"){
-            clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_PROP].style="color:black;";
+            clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_PROP].classList.add("defaultcolor");
         }
         if(ownVote.rating == "GOODSOURCE"){
-            clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_SOURCE].style="color:black;";
+            clone.children[1].children[2].children[RP_LIKE].children[2].children[RP_DP_SOURCE].classList.add("defaultcolor");
         }
     }
 }

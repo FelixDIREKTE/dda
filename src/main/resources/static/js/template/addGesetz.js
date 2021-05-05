@@ -59,9 +59,7 @@ $('#header').load('template/header.html', function (){
         document.getElementById("beitragsartText").textContent = role;
 
 
-        if (DDA.Cookie.getThemeSetting() != null && DDA.Cookie.getThemeSetting().theme === "dark") {
-        } else {
-        }
+
 //Import Section
         $('#customFile2').on('change', function () {
             var fileName = $(this)[0].files[0].name;
