@@ -154,6 +154,8 @@ public class User {
     }
 
     public boolean isEmailVerified(){
-        return (emailverif == null || emailverif.isEmpty());
+        return true;
+        //TODO wieder rein sobald mailproblem gelöst
+        //return (emailverif == null || emailverif.isEmpty());
     }
 }

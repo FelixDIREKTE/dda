@@ -32,9 +32,40 @@ public class MailService {
     Benachrichtigung bei Duplikaten*/
 
 
+
     public MailService(NoreplyMailConfiguration noreplyMailConfiguration) {
         this.noreplyMailConfiguration = noreplyMailConfiguration;
     }
+    /*
+    private void ssmtp() throws IOException, InterruptedException {
+        Process p = new ProcessBuilder("ssmtp").start();
+        PrintStream out = new PrintStream(p.getOutputStream());
+        out.println("testmessage");
+        out.close();
+
+
+        ProcessBuilder builder = new ProcessBuilder();
+        builder.command("ssmtp", "email@gmail.com", "<", "msg.txt");
+        Process p = builder.start();
+
+        //echo "inhalt" | mail -s "betreff" felix@montenegros.de
+
+        ProcessBuilder builder = new ProcessBuilder();
+        builder.command("echo", "\"inhalt\"", "|", "mail", "-s", "\"betreff\"", "felix@montenegros.de");
+        Process p = builder.start();
+
+
+
+        String cmd = "eche \"inhalt\"";
+        cmd = "echo \"Mail-Inhalt\" | ssmtp -4 felix@montenegros.de";
+
+
+        cmd = "echo \"inhalt\" | mail -s \"betreff\" felix@montenegros.de";
+        Process pythonProcess = Runtime.getRuntime().exec(cmd);
+        pythonProcess.waitFor();
+        System.out.println(pythonProcess.exitValue());
+
+    }*/
 
     public void sendRegistrationConfirmation(String email, String emailverif){
         // for example, smtp.mailgun.org
@@ -81,6 +112,7 @@ public class MailService {
         prop.put("mail.smtp.auth", "true");
         prop.put("mail.smtp.port", "25"); // default port 25
         prop.put("mail.smtp.starttls.enable", "true");
+        //prop.put("mail.smtp.ssl.enable", "true");
 
         Session session = Session.getInstance(prop, null);
         Message msg = new MimeMessage(session);
@@ -97,15 +129,11 @@ public class MailService {
             SMTPTransport t = (SMTPTransport) session.getTransport("smtp");
             t.connect(SMTP_SERVER, USERNAME, PASSWORD);
             t.sendMessage(msg, msg.getAllRecipients());
-
             log.info("Response: " + t.getLastServerResponse());
-
             t.close();
-
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-
     }
 
     public void sendVerificationPositiveMessage(User verifiedUser) {
