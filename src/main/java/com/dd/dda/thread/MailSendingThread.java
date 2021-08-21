@@ -27,7 +27,7 @@ public class MailSendingThread  extends Thread {
 
     @Override
     public void run() {
-        mailService.sendMail(EMAIL_TO, EMAIL_TO_CC, EMAIL_SUBJECT, EMAIL_TEXT);
+        mailService.sendMailStmps(EMAIL_TO, EMAIL_TO_CC, EMAIL_SUBJECT, EMAIL_TEXT);
 
     }
 

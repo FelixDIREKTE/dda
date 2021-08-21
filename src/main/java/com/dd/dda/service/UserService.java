@@ -453,14 +453,9 @@ public class UserService {
 
         String ve = RandomStringUtils.random(20, true, true);
         user.setEmailverif( bCryptPasswordEncoder.encode(ve));
-        try{
-            User u2 = createUser(user);
-            parliamentService.giveDefaultAccess(user.getId());
-            mailService.sendRegistrationConfirmation(email, ve);
-        } catch (Exception e){
-            throw new DDAException("Nutzer konnte nicht angelegt werden");
-            //return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(false);
-        }
+        User u2 = createUser(user);
+        parliamentService.giveDefaultAccess(user.getId());
+        mailService.sendRegistrationConfirmation(email, ve);
 
     }
 

@@ -128,7 +128,7 @@ if(DDA.Cookie.getSessionUser() == null || typeof DDA.Cookie.getSessionUser() ===
     $('#notificationdropdown').hide();
     $('#linkVerif').hide();
     $('#kontoButton').hide();
-    document.getElementById("linkLogout").innerHTML="<i class=\"fas fa-sign-in-alt mr-2\"></i> Einloggen"; //TODO Symbol
+    document.getElementById("linkLogout").innerHTML="<i class=\"fas fa-sign-in-alt mr-2\"></i> Einloggen";
 } else {
     if(!DDA.Cookie.getSessionUser().admin) {
         $('#linkVerif').hide();

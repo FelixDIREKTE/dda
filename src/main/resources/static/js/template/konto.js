@@ -44,6 +44,7 @@ logoutIfExpired();
             isBirthdateMissing = (birthdate == null);
             isemailverifmissing = (emailverif != null) && (emailverif != "");
 
+
             //missingEmailVerif
             if (isemailverifmissing) {
                 $('#missingEmailVerif').show();
